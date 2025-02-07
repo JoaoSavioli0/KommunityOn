@@ -250,6 +250,8 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8080/usuario/interacoes/${this.usuario.id}`);
         this.curtidos = response.data
+        console.log("id: " + this.usuario.id)
+        console.log("Curtidos:" + this.curtidos)
       } catch (error) {
         console.error("Erro ao buscar interações do usuário: ", error);
       }
