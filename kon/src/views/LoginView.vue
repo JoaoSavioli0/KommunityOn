@@ -15,7 +15,7 @@
                     </div>
                     <div class="w-full flex flex-col mt-6">
                         <div class="w-full relative">
-                            <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">E-mail</span>
+                            <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">CPF ou E-mail</span>
                             <input type="text" v-model="cpfOuEmail"
                                 class="border-[2px] border-gray-800 rounded-[10px] py-2 px-4 outline-none w-full">
                         </div>

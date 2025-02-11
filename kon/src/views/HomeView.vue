@@ -60,7 +60,7 @@
         </p>
       </div>
       <div
-        class="w-[120px] h-[120px] rounded-full shadow-lg overflow-hidden relative bg-gray-800 flex-shrink-0 group cursor-pointer">
+        class="w-[120px] h-[120px] rounded-full shadow-md overflow-hidden relative bg-gray-800 flex-shrink-0 group cursor-pointer">
         <img src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
         <div
           class="absolute w-full h-full bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-200 flex justify-center items-center pointer-events-none">
@@ -130,24 +130,27 @@
     </div>
 
     <div class="solicitacoes mt-8 flex flex-col gap-y-4 ">
+
       <div class="w-[97%] rounded-[20px] bg-gray-800 flex px-6 py-4 text-left justify-between items-center relative"
         v-for="solicitacao in solicitacoes" :key="solicitacao.id">
-        <div class="flex flex-col w-[80%]">
-          <h1 class="text-white font-semibold text-2xl w-[80%]">{{ solicitacao.titulo }}</h1>
-          <p class="text-gray-300 line-clamp-4 w-[80%]">{{ solicitacao.descricao }}</p>
-          <div class="flex mt-2">
-            <div class=" flex items-center text-white mt-[3px]">
-              <img src="../assets/location.png" class="filtro size-[19px]">
-              <span class="ml-2">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
+        <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
+          <div class="flex flex-col w-[80%]">
+            <h1 class="text-white font-semibold text-2xl w-[80%]">{{ solicitacao.titulo }}</h1>
+            <p class="text-gray-300 line-clamp-4 w-[80%]">{{ solicitacao.descricao }}</p>
+            <div class="flex mt-2">
+              <div class=" flex items-center text-white mt-[3px]">
+                <img src="../assets/location.png" class="filtro size-[19px]">
+                <span class="ml-2">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
 
-              <div class="ml-8 flex items-center">
-                <img src="../assets/comments.png" class="size-[19px] filtro">
-                <span class="ml-2">{{ solicitacao.num_comentarios }}</span>
+                <div class="ml-8 flex items-center">
+                  <img src="../assets/comments.png" class="size-[19px] filtro">
+                  <span class="ml-2">{{ solicitacao.num_comentarios }}</span>
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
+        </RouterLink>
         <div class="border-l-[1px] border-gray-600 pl-6 flex justify-center items-center absolute end-[-35px]">
           <span class="text-white font-semibold mr-4">{{ solicitacao.num_likes }}</span>
           <div class="size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">

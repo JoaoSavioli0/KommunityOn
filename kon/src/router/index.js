@@ -5,6 +5,7 @@ import LoginView from '@/views/LoginView.vue';
 import SolicitacoesUsuarioView from '@/views/SolicitacoesUsuarioView.vue';
 import CadastroView from '@/views/CadastroView.vue';
 import MenuView from '@/views/MenuView.vue';
+import SolicitacaoView from '@/views/SolicitacaoView.vue';
 
 const routes = [
   {
@@ -37,7 +38,13 @@ const routes = [
     path: '/menu',
     name: 'menu',
     component: MenuView
-  }
+  },
+  {
+    path: '/solicitacao/:id',
+    name: 'solicitacao',
+    component: SolicitacaoView,
+    props: true
+  },
 ]
 
 const router = createRouter({

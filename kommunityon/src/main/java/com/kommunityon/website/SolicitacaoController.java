@@ -47,8 +47,16 @@ public class SolicitacaoController {
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Solicitacao> solicitacao(@PathVariable Long id){
+        Optional<Solicitacao> solicitacaoEncontrada = solicitacaoService.solicitacaoPorId(id);
+        if(solicitacaoEncontrada.isPresent()){
+            return ResponseEntity.ok(solicitacaoEncontrada.get());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     
 }

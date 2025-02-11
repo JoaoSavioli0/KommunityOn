@@ -50,7 +50,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - senha.length
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="w-full">
@@ -63,9 +63,9 @@
                         <div class="w-full relative mt-6">
                             <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">Confirme a
                                 senha</span>
-                            <input :type="senhaConfirmVisivel ? 'text' : 'password'" v-model="senhaConfirm"
-                                :class="([senhaConfirm.disabled ? 'border-gray-800' : 'border-gray-300'])"
-                                :disabled="senha.length == 0"
+                            <input :type="senhaConfirmVisivel ? 'text' : 'password'" v-model="senhaConfirm" :class="[!senha ? 'border-gray-300' : '',
+                            erroSenhaConfirm && senha ? 'border-red-500' : '',
+                            senha && !erroSenhaConfirm ? 'border-gray-800' : '']" :disabled="senha.length == 0"
                                 class="border-[2px] transition-all duration-200 rounded-[10px] py-2 px-4 outline-none w-full">
 
                             <div class="absolute end-[15px] top-[12px] flex items-center"
@@ -77,7 +77,8 @@
                                     @click="senhaConfirmVisivel = false" v-if="senhaConfirmVisivel">
                             </div>
 
-                            <span v-if="!senhaIgual" class="text-red-500 p-2 text-left w-full text-xs block">As senhas
+                            <span v-if="!senhaIgual && senha" class="text-red-500 p-2 text-left w-full text-xs block">As
+                                senhas
                                 não
                                 conferem</span>
                         </div>
@@ -91,6 +92,7 @@
                             <div class="w-[125px]">
                                 <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">Estado</span>
                                 <select type="text" v-model="uf" @change="cidades()"
+                                    :class="{ 'border-red-500': erroUf }"
                                     class="border-[2px] transition-all rounded-[10px] border-gray-800 h-[43px] px-4 outline-none w-full">
                                     <option v-for="estado in estados.estados" :key="estado.sigla" :value="estado.sigla">
                                         {{ estado.sigla }}
@@ -100,6 +102,7 @@
                             <div class="grow pl-2">
                                 <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">Cidade</span>
                                 <select type="text" v-model="cidade" @change="cidades()"
+                                    :class="{ 'border-red-500': erroCidade }"
                                     class="border-[2px] transition-all rounded-[10px] border-gray-800 h-[43px] px-4 outline-none w-full">
                                     <option v-for="cidade in cidades_uf" :key="cidade" :value="cidade">
                                         {{ cidade }}
@@ -110,7 +113,7 @@
 
                         <div class="w-full relative mt-6">
                             <span class="absolute bg-white ml-[17px] top-[-11px] font-normal px-2">Bairro</span>
-                            <input type="text" v-model="bairro" maxlength="40"
+                            <input type="text" v-model="bairro" maxlength="40" :class="{ 'border-red-500': erroBairro }"
                                 class="border-[2px] transition-all rounded-[10px] border-gray-800 py-2 px-4 outline-none w-full">
                         </div>
 
@@ -175,7 +178,7 @@ export default {
             erroTelefone: false,
             erroSenha: false,
             erroSenhaConfirm: false,
-            erroEstado: false,
+            erroUf: false,
             erroCidade: false,
             erroBairro: false,
         }
@@ -235,10 +238,10 @@ export default {
             this.erroEmail = !this.validarEmail()
             this.erroCpf = !this.validarCpf(cpfNumeros)
             this.erroTelefone = telefoneNumeros.length < 10
-            this.erroSenha = this.senhaAviso.length > 0
+            this.erroSenha = this.senhaAviso.length > 0 || !this.senha
             this.erroSenhaConfirm = this.senha !== this.senhaConfirm
-            this.erroUf = this.uf == ''
-            this.erroCidade = this.cidade == ''
+            this.erroUf = !this.uf
+            this.erroCidade = !this.cidade
             this.erroBairro = this.bairro.length < 2
 
             if (this.erroNome || this.erroEmail || this.erroCpf || this.erroTelefone || this.erroSenha || this.erroSenhaConfirm || this.erroUf || this.erroCidade || this.erroBairro) {

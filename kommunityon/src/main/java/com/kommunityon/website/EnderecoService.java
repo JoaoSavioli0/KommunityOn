@@ -22,4 +22,14 @@ public class EnderecoService {
             return null;
         }      
     }
+
+    public Optional<Endereco> enderecoUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if(usuario.isPresent()){
+            return enderecoRepository.findByUsuario(usuario.get());
+        }else{
+            return Optional.empty();
+        }
+
+    }
 }

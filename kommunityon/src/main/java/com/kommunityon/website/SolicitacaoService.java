@@ -36,6 +36,11 @@ public class SolicitacaoService {
         return solicitacaoRepository.findByUsuario(usuario.get());
     }
 
+    public Optional<Solicitacao> solicitacaoPorId(Long id){
+        Optional<Solicitacao> solicitacao = solicitacaoRepository.findById(id);
+        return solicitacao;
+    }
+
     public Solicitacao registrar(NewSolicitacaoDTO newSolicitacaoDTO){
         Optional<Long> solicitacaoAberta = solicitacaoAberta(newSolicitacaoDTO.getIdUsuario());
 
