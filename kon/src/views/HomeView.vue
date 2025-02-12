@@ -80,7 +80,7 @@
 
     <RouterLink :to="`/solicitacoes/${usuario.id}`" class="p-0 relative w-full">
       <button
-        class="w-full mt-4 rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden mt-8 text-xl font-medium flex justify-center items-center relative z-[50] bg-[#F0F4F9] hover:bg-gray-200 transition-all">
+        class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden mt-4 text-xl font-medium flex justify-center items-center relative z-[50] bg-[#F0F4F9] hover:bg-gray-200 transition-all">
         <span class="absolute">Suas solicitações</span>
       </button>
     </RouterLink>
@@ -93,7 +93,7 @@
     <div class="w-full mt-6">
       <div class="py-[6px] rounded-md border-[1.5px] border-gray-800 w-full flex justify-start">
         <input type="text" class="px-[12px] focus:outline-none w-full bg-transparent text-gray-700"
-          placeholder="Pesquisar">
+          placeholder="Pesquisar" v-model="pesquisa">
         <div class="border-l-[1.5px] border-zinc-400 px-[10px] flex justify-center">
           <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza">
         </div>
@@ -130,10 +130,10 @@
       <span class="loading loading-ring loading-lg"></span>
     </div>
 
-    <div class="solicitacoes mt-8 flex flex-col gap-y-4 ">
+    <div class="solicitacoes mt-8 flex flex-col gap-y-4 w-full">
 
       <div class="w-[97%] rounded-[20px] bg-gray-800 flex px-6 py-4 text-left justify-between items-center relative"
-        v-for="solicitacao in solicitacoes" :key="solicitacao.id">
+        v-for="solicitacao in solicitacoesPesquisadas" :key="solicitacao.id">
         <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
           <div class="flex flex-col w-[80%]">
             <h1 class="text-white font-semibold text-2xl w-[80%]">{{ solicitacao.titulo }}</h1>
@@ -157,8 +157,7 @@
           <div class="size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">
             <!-- <img src="../assets/heart.png" "
               class="filtro-gray-800 size-[48px] hover:scale-[1.15] translate-y-[2px] transition-all duration-300"> -->
-            <div class="heart-container" title="Like"
-              @click.prevent="idSolicitacaoInteragir = solicitacao.id, confirmaInteracaoBox = true">
+            <div class="heart-container" title="Like" @click.prevent="botaoCurtirEvent(solicitacao.id)">
               <input type="checkbox" class="checkbox" :id="solicitacao.id" :checked="curtidos.includes(solicitacao.id)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
@@ -217,6 +216,7 @@ export default {
     return {
       exibindo: "",
       solicitacoes: [],
+      solicitacoesPesquisadas: [],
       usuario: {},
       filtro: 'por_like',
       carregando: true,
@@ -228,7 +228,8 @@ export default {
       confirmaInteracaoBox: false,
       idSolicitacaoInteragir: 0,
       menuBox: false,
-      itemsMenu: []
+      itemsMenu: [],
+      pesquisa: ''
     }
   },
   mounted() {
@@ -243,7 +244,7 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8080/solicitacao/solicitacoes/${this.filtro}`);
         this.solicitacoes = response.data;
-
+        this.solicitacoesPesquisadas = this.solicitacoes
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);
       } finally {
@@ -290,6 +291,12 @@ export default {
       const userStore = useUserStore();
       userStore.logout();
       this.$router.push("/login")
+    },
+    botaoCurtirEvent(id) {
+      if (!this.curtidos.includes(id)) {
+        this.idSolicitacaoInteragir = id;
+        this.confirmaInteracaoBox = true;
+      }
     }
   },
   computed: {
@@ -301,6 +308,16 @@ export default {
     }
   },
   watch: {
+    pesquisa() {
+      if (this.pesquisa) {
+        this.solicitacoesPesquisadas = this.solicitacoes.filter((s) => {
+          return (s.titulo.includes(this.pesquisa) || s.descricao.includes(this.pesquisa) || s.bairro.includes(this.pesquisa)
+            || this.pesquisa.includes(s.titulo) || this.pesquisa.includes(s.descricao) || this.pesquisa.includes(s.bairro))
+        })
+      } else {
+        this.solicitacoesPesquisadas = this.solicitacoes
+      }
+    }
   }
 }
 </script>

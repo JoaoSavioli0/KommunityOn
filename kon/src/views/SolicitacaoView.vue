@@ -25,22 +25,33 @@
             </div>
         </div>
 
-        <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="avisoBox">
+        <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="avisoCurtirBox">
             <div
                 class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
                 <h1 class="text-2xl font-semibold">{{ aviso }}</h1>
                 <div class="w-full flex justify-center mt-4">
                     <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
-                        @click.prevent="avisoBox = false">Ok</button>
+                        @click.prevent="avisoCurtirBox = false">Ok</button>
                 </div>
             </div>
         </div>
 
-        <div class="w-full mt-12 text-left">
-            <h1 class="font-semibold text-4xl">{{ solicitacao.titulo }}</h1>
+        <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaExcluirBox">
+            <div
+                class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+                <h1 class="text-2xl font-semibold">Deseja excluir essa solicitação?</h1>
+                <p class="my-2">Essa ação não poderá ser revertida.</p>
+                <div class="w-full flex justify-start mt-4">
+                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+                        @click.prevent="confirmaExcluirBox = false, excluiSolicitacao()">Confirmar</button>
+                    <button
+                        class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
+                        @click.prevent="confirmaExcluirBox = false">Cancelar</button>
+                </div>
+            </div>
         </div>
 
-        <div class="w-full flex items-center mt-4 text-left">
+        <div class="w-full flex items-center mt-12 text-left">
             <div class="rounded-full size-[40px] bg-gray-800"></div>
             <div class="flex ml-2 flex-col">
                 <h1 class="text-lg font-semibold">{{ usuarioSolicitacao.nome }}</h1>
@@ -51,7 +62,12 @@
             </div>
         </div>
 
-        <div class="mt-6 font-lg text-justify font-medium w-full">
+        <div class="w-full mt-4 text-left">
+            <h1 class="font-semibold text-4xl">{{ solicitacao.titulo }}</h1>
+            <h2 class="text-gray-600 text-2xl font-medium">Em {{ solicitacao.bairro }}</h2>
+        </div>
+
+        <div class="mt-2 font-lg text-justify font-medium w-full">
             {{ solicitacao.descricao }}
         </div>
 
@@ -75,23 +91,24 @@
                 <span class="ml-2 text-gray-100 font-medium">Compartilhar</span>
             </button>
 
-            <button class="bg-gray-800 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4">
+            <button class="bg-gray-800 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4"
+                v-if="solicitacaoPropria" @click="excluiSolicitacao()">
                 <img src="../assets/trash.svg" class="filtro size-[20px]">
                 <span class="ml-2 text-gray-100 font-medium">Excluir</span>
             </button>
         </div>
 
-        <div class="w-full text-left flex justify-between mt-16 flex items-center">
+        <div class="w-full text-left flex justify-between mt-12 flex items-center">
             <h1 class="text-2xl font-semibold">Comentários</h1>
             <h1 class="text-2xl font-semibold font-medium">{{ solicitacao.numComentarios }}</h1>
         </div>
 
-        <div class="w-full mt-4">
+        <div class="w-full mt-6">
             <textarea v-model="textoComentario"
                 class="min-h-[50px] max-h-[300px] rounded-md bg-gray-200 p-2 w-full focus:outline-none"
                 placeholder="Escreva um comentário"></textarea>
             <div class="w-full flex justify-start">
-                <button class="rounded-md bg-gray-800 text-gray-100 px-4 py-[4px] font-medium w-fit"
+                <button class="rounded-md bg-gray-800 text-gray-100 px-4 py-[4px] font-medium w-fit mt-2"
                     @click="enviaComentario()">Enviar</button>
             </div>
         </div>
@@ -138,9 +155,12 @@ export default {
             endereco: {},
             textoComentario: "",
             aviso: '',
-            avisoBox: false,
+            avisoCurtirBox: false,
             confirmaInteracaoBox: false,
-            avisoBoxTimeOutExec: false,
+            confirmaExcluirBox: false,
+            avisoCurtirBoxTimeOutExec: false,
+            solicitacoesUsuario: [],
+            solicitacaoPropria: false,
         }
     },
     setup() {
@@ -167,8 +187,10 @@ export default {
         async carregaSolicitacao() {
             try {
                 const solicitacao = await axios.get(`http://localhost:8080/solicitacao/${this.id}`)
+
                 this.solicitacao = solicitacao.data
                 this.usuarioSolicitacao = this.solicitacao.usuario
+                this.solicitacaoPropria = this.usuarioSolicitacao.id == this.usuario.id
 
                 const endereco = await axios.get(`http://localhost:8080/endereco/${this.usuarioSolicitacao.id}`)
                 this.endereco = endereco.data
@@ -215,12 +237,21 @@ export default {
                     this.solicitacao.numLikes++;
                 } else {
                     this.aviso = response.data
-                    this.avisoBox = true
+                    this.avisoCurtirBox = true
                 }
             } catch (error) {
                 console.error("Erro ao curtir solicitação: " + error)
             }
         },
+
+        async excluiSolicitacao() {
+            try {
+                await axios.delete(`http://localhost:8080/solicitacao/exclui/${this.id}`)
+                this.$router.push("/home")
+            } catch (error) {
+                console.log("Erro ao deletar a solicitação: " + error)
+            }
+        }
     }
 }
 </script>

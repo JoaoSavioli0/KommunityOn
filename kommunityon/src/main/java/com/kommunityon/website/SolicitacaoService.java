@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SolicitacaoService {
     @Autowired
@@ -18,6 +20,9 @@ public class SolicitacaoService {
 
     @Autowired
     UsuarioLikeSolicitacaoRepository usuarioLikeSolicitacaoRepository;
+
+    @Autowired
+    ComentarioRepository comentarioRepository;
 
     public Optional<List<SolicitacaoDTO>> solicitacoes(String filtro){
         switch(filtro){
@@ -115,6 +120,13 @@ public class SolicitacaoService {
         usuarioLikeSolicitacao.setUsuario(usuario);
         usuarioLikeSolicitacao.setSolicitacao(solicitacao);
         usuarioLikeSolicitacaoRepository.save(usuarioLikeSolicitacao);
+    }
+
+    @Transactional
+    public void excluiSolicitacao(Long id){
+        usuarioLikeSolicitacaoRepository.deleteBySolicitacaoId(id);
+        comentarioRepository.deleteBySolicitacaoId(id);
+        solicitacaoRepository.deleteById(id);
     }
 
     public Optional<Long> solicitacaoAberta(Long idUsuario){
