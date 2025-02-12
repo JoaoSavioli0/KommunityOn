@@ -41,6 +41,10 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Optional<Usuario> usuarioPorId(Long id){
+        return usuarioRepository.findById(id);
+    }
+
     public List<Long> solicitacoes(Long idUsuario){
         return usuarioLikeSolicitacaoRepository.findSolicitacaoIdsByUsuario(idUsuario);
     }

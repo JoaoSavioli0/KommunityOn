@@ -20,7 +20,7 @@
         class="flex items-start flex-col fixed w-[300px] rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-8 py-6">
         <div class="w-full flex justify-between">
           <h1 class="text-xl font-semibold">Menu</h1>
-          <button @click="menuBox = false"><img src="../assets/close.svg" class="size-[20px]"></button>
+          <button @click="menuBox = false, aviso = ''"><img src="../assets/close.svg" class="size-[20px]"></button>
         </div>
         <ul class="w-full mt-4">
           <li
@@ -39,6 +39,7 @@
       :class="([avisoBox ? 'animate__fadeIn' : 'animate__fadeOut'])">
       {{ aviso }}
     </div>
+
     <div class="w-full flex justify-between">
       <button @click="logout()"
         class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
@@ -267,6 +268,7 @@ export default {
           this.carregaSolicitacoes();
         } else {
           this.aviso = response.data
+          this.avisoBox = true
         }
       } catch (error) {
         this.aviso = error
@@ -299,18 +301,6 @@ export default {
     }
   },
   watch: {
-    aviso() {
-      if (this.aviso != '') {
-        if (!this.avisoBoxTimeOutExec) {
-          this.avisoBox = true;
-        }
-        this.avisoBoxTimeOutExec = true;
-      }
-      if (this.avisoBoxTimeOutExec) {
-        setTimeout(() => { if (this.avisoBox) { this.avisoBox = false } }, 5000);
-        setTimeout(() => { if (!this.avisoBox) { this.aviso = '' } this.avisoBoxTimeOutExec = false }, 5600);
-      }
-    }
   }
 }
 </script>

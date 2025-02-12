@@ -24,6 +24,11 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>{
     @Query("UPDATE Solicitacao s SET s.numLikes = s.numLikes + 1 WHERE s.id = :id")
     int incrementaLike(@Param("id") Long id);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Solicitacao s SET s.numComentarios = :numComentarios WHERE s.id = :id")
+    int incrementaComentario(@Param("numComentarios") int numComentarios, @Param("id") Long id);
+
     @Query("SELECT s.id FROM Solicitacao s WHERE s.dataConclusao IS NULL AND s.usuario.id = :id")
     Optional<Long> verificaSolicitacaoAberta(@Param("id") Long id);
 

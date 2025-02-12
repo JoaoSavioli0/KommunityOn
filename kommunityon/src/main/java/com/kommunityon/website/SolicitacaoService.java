@@ -41,6 +41,10 @@ public class SolicitacaoService {
         return solicitacao;
     }
 
+    public void atualizarNumComentarios(int numComentarios, Long id){
+        solicitacaoRepository.incrementaComentario(numComentarios, id);
+    }
+
     public Solicitacao registrar(NewSolicitacaoDTO newSolicitacaoDTO){
         Optional<Long> solicitacaoAberta = solicitacaoAberta(newSolicitacaoDTO.getIdUsuario());
 
@@ -83,7 +87,7 @@ public class SolicitacaoService {
 
             LocalDateTime dataInteracao1 = usuario.getDataInteracao1();
             LocalDateTime dataInteracao2 = usuario.getDataInteracao2();
-            LocalDateTime dataAtual = LocalDateTime.now();
+            LocalDateTime dataAtual = LocalDateTime.now(); 
 
             Long tempoDecorridoInteracao1 = (dataInteracao1 != null) ? ChronoUnit.DAYS.between(dataInteracao1, dataAtual) : Long.MAX_VALUE;
             Long tempoDecorridoInteracao2 = (dataInteracao2 != null) ? ChronoUnit.DAYS.between(dataInteracao2, dataAtual) : Long.MAX_VALUE;
