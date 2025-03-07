@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +24,9 @@ public class SolicitacaoController {
 
     @GetMapping("/solicitacoes/{filtro}")
     public ResponseEntity<List<SolicitacaoDTO>> solicitacoes(@PathVariable String filtro){
-        Optional<List<SolicitacaoDTO>> solicitacoesCarregadas = solicitacaoService.solicitacoes(filtro);
-        if(solicitacoesCarregadas.isPresent()){
-            return ResponseEntity.ok(solicitacoesCarregadas.get());
+        List<SolicitacaoDTO> solicitacoesCarregadas = solicitacaoService.solicitacoes(filtro);
+        if(!solicitacoesCarregadas.isEmpty()){
+            return ResponseEntity.ok(solicitacoesCarregadas);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -65,5 +66,11 @@ public class SolicitacaoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id){
         solicitacaoService.excluiSolicitacao(id);
+    }
+
+    @PatchMapping("/conclui/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void concluir (@PathVariable Long id){
+        solicitacaoService.concluiSolictacao(id);
     }
 }

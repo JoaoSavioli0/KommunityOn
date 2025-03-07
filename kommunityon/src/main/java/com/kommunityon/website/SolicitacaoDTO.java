@@ -1,15 +1,19 @@
 package com.kommunityon.website;
 
+import java.time.LocalDateTime;
+
 public class SolicitacaoDTO {
 
-    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int num_likes, int num_comentarios){
+    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int num_likes, int num_comentarios, LocalDateTime dataConclusao, Boolean anonimo){
         this.id = id;
         this.titulo = titulo;
         this.idUsuario = idUsuario;
         this.bairro = bairro;
         this.descricao = descricao;
-        this.num_likes = num_likes;
-        this.num_comentarios = num_comentarios;
+        this.numLikes = num_likes;
+        this.numComentarios = num_comentarios;
+        this.dataConclusao = dataConclusao;
+        this.anonimo = anonimo;
     }
 
     private Long id;
@@ -18,8 +22,10 @@ public class SolicitacaoDTO {
     private Long idUsuario;
     private String bairro;
     private String descricao;
-    private int num_likes;
-    private int num_comentarios;
+    private int numLikes;
+    private int numComentarios;
+    private LocalDateTime dataConclusao;
+    private Boolean anonimo;
 
     //Getters & Setters
     public String getTitulo() {
@@ -46,23 +52,39 @@ public class SolicitacaoDTO {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    public int getNum_likes() {
-        return num_likes;
+    public int getNumLikes() {
+        return numLikes;
     }
-    public void setNum_likes(int num_likes) {
-        this.num_likes = num_likes;
+    public void setNumLikes(int num_likes) {
+        this.numLikes = num_likes;
     }
-    public int getNum_comentarios() {
-        return num_comentarios;
+    public int getNumComentarios() {
+        return numComentarios;
     }
-    public void setNum_comentarios(int num_comentarios) {
-        this.num_comentarios = num_comentarios;
+    public void setNumComentarios(int num_comentarios) {
+        this.numComentarios = num_comentarios;
     }
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getDataConclusao() {
+        return dataConclusao;
+    }
+
+    public void setDataConclusao(LocalDateTime dataConclusao) {
+        this.dataConclusao = dataConclusao;
+    }
+
+    public Boolean getAnonimo() {
+        return anonimo;
+    }
+
+    public void setAnonimo(Boolean anonimo) {
+        this.anonimo = anonimo;
     }
 
     

@@ -6,6 +6,9 @@ import SolicitacoesUsuarioView from '@/views/SolicitacoesUsuarioView.vue';
 import CadastroView from '@/views/CadastroView.vue';
 import MenuView from '@/views/MenuView.vue';
 import SolicitacaoView from '@/views/SolicitacaoView.vue';
+import ContaMenu from '@/components/ContaMenu.vue';
+import SettingsMenu from '@/components/SettingsMenu.vue';
+import SuporteMenu from '@/components/SuporteMenu.vue';
 
 const routes = [
   {
@@ -37,7 +40,12 @@ const routes = [
   {
     path: '/menu',
     name: 'menu',
-    component: MenuView
+    component: MenuView,
+    children:[
+      {path: 'conta', component: ContaMenu},
+      {path: 'configuracoes', component: SettingsMenu},
+      {path: 'suporte', component: SuporteMenu}
+    ]
   },
   {
     path: '/solicitacao/:id',

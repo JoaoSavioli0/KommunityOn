@@ -24,7 +24,7 @@ public class SolicitacaoService {
     @Autowired
     ComentarioRepository comentarioRepository;
 
-    public Optional<List<SolicitacaoDTO>> solicitacoes(String filtro){
+    public List<SolicitacaoDTO> solicitacoes(String filtro){
         switch(filtro){
             case "por_data" -> {
                 return solicitacaoRepository.findAllPorData();
@@ -32,8 +32,11 @@ public class SolicitacaoService {
             case "por_like" -> {
                 return solicitacaoRepository.findAllPorLike();
             }
+            case "todos" -> {
+                return solicitacaoRepository.findAllPorTodos();
+            }
         }
-        return Optional.empty();
+        return null;
     }
 
     public Optional<List<Solicitacao>> solicitacoesUsuario(Long id){
@@ -64,6 +67,7 @@ public class SolicitacaoService {
             solicitacao.setBairro(newSolicitacaoDTO.getBairro());
             solicitacao.setDescricao(newSolicitacaoDTO.getDescricao());
             solicitacao.setTitulo(newSolicitacaoDTO.getTitulo());
+            solicitacao.setAnonimo(newSolicitacaoDTO.getAnonimo());
             solicitacao.setUsuario(usuario.get());
         }
         return solicitacaoRepository.save(solicitacao);
@@ -80,6 +84,10 @@ public class SolicitacaoService {
 
             if(solicitacao.getUsuario().getId().equals(idUsuario)){
                 return "Você não pode curtir a própria solicitação!";
+            }
+
+            if(solicitacao.getDataConclusao() != null){
+                return "Você não pode curtir solicitações concluídas!";
             }
 
             List<Long> solicitacoesInteragidas = usuarioLikeSolicitacaoRepository.findSolicitacaoIdsByUsuario(idUsuario);
@@ -127,6 +135,12 @@ public class SolicitacaoService {
         usuarioLikeSolicitacaoRepository.deleteBySolicitacaoId(id);
         comentarioRepository.deleteBySolicitacaoId(id);
         solicitacaoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void concluiSolictacao(Long id){
+        LocalDateTime dataConclusao = LocalDateTime.now();
+        solicitacaoRepository.concluiSolicitacao(dataConclusao, id);
     }
 
     public Optional<Long> solicitacaoAberta(Long idUsuario){

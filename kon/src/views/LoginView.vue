@@ -96,7 +96,8 @@ export default {
                             senha: response.data.senha,
                             telefone: response.data.telefone,
                             tipo: response.data.tipo,
-                            id: response.data.id
+                            id: response.data.id,
+                            profile: response.data.fotoPerfil
                         }
                         this.aviso = "Login realizado com sucesso!"
                         const userStore = useUserStore()

@@ -23,13 +23,16 @@
           <button @click="menuBox = false, aviso = ''"><img src="../assets/close.svg" class="size-[20px]"></button>
         </div>
         <ul class="w-full mt-4">
-          <li
-            class="p-2 border-b-[1px] border-gray-400 text-left font-medium menu-item hover:bg-gray-200 transition-all duration-200 cursor-pointer flex items-center group"
-            v-for="item in itemsMenu">
-            <img :src="item.svg" class="size-[20px]"><span
-              class="ml-2 group-hover:translate-x-2 transition-all duration-200 text-gray-800">{{
-                item.title }}</span>
-          </li>
+          <RouterLink :to="item.link" class="p-0" v-for="item in itemsMenu">
+            <li
+              class="p-2 border-b-[1px] border-gray-400 text-left font-medium menu-item hover:bg-gray-200 transition-all duration-200 cursor-pointer flex items-center group">
+
+              <img :src="item.svg" class="size-[20px]"><span
+                class="ml-2 group-hover:translate-x-2 transition-all duration-200 text-gray-800">{{
+                  item.title }}</span>
+
+            </li>
+          </RouterLink>
         </ul>
       </div>
     </div>
@@ -56,18 +59,22 @@
     <div class="w-full flex items-center mt-8">
       <div class="flex flex-col">
         <h1 class="text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{ primeiroNome
-            }}</span></h1>
+        }}</span></h1>
         <p class="text-left text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na sua região!
         </p>
       </div>
-      <div
-        class="w-[120px] h-[120px] rounded-full shadow-md overflow-hidden relative bg-gray-800 flex-shrink-0 group cursor-pointer">
-        <img src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
+      <RouterLink to="menu/conta" class="p-0 rounded-full">
         <div
-          class="absolute w-full h-full bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-200 flex justify-center items-center pointer-events-none">
-          <img src="../assets/pencil.svg" class="size-[70px] filtro opacity-80">
+          class="w-[120px] h-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
+          :class="[imagemUsuario ? 'bg-transparent' : 'bg-gray-800']">
+          <img v-if="imagemUsuario" :src="imagemUsuario" class="h-full w-full object-cover absolute">
+          <img v-else src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
+          <div
+            class="absolute w-full h-full bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-200 flex justify-center items-center pointer-events-none">
+            <img src="../assets/pencil.svg" class="size-[70px] filtro opacity-80">
+          </div>
         </div>
-      </div>
+      </RouterLink>
     </div>
 
     <RouterLink to="/new" class="p-0 relative w-full">
@@ -85,9 +92,9 @@
       </button>
     </RouterLink>
 
-    <div class="w-full flex justify-between mt-8">
-      <span class="font-semibold text-xl text-gray-800">Chamados</span>
-      <span class="font-medium text-gray-800 cursor-pointer">Ver todos</span>
+    <div class="w-full flex justify-between mt-8 items-center">
+      <span class="font-semibold text-xl text-gray-800">Solicitações</span>
+      <span class="font-medium text-gray-800 text-lg font-medium cursor-pointer">{{ solicitacoes.length }}</span>
     </div>
 
     <div class="w-full mt-6">
@@ -103,25 +110,32 @@
     <form class="w-full">
       <div class="w-full flex justify-between mt-6">
 
-        <label class="w-[30%]">
+        <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" checked value="destaque" class="hidden peer" />
           <div @click="mudaFiltro('por_like')"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
-            Em destaque</div>
+            Destaques</div>
         </label>
 
-        <label class="w-[30%]">
+        <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="proximo" class="hidden peer" />
           <div @click="mudaFiltro('por_data')"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Próximos</div>
         </label>
 
-        <label class="w-[30%]">
+        <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="recente" class="hidden peer" />
           <div @click="mudaFiltro('por_data')"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Recentes</div>
+        </label>
+
+        <label class="w-[22%]">
+          <input type="radio" name="option" v-model="exibindo" value="todos" class="hidden peer" />
+          <div @click="mudaFiltro('todos')"
+            class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+            Todos</div>
         </label>
       </div>
     </form>
@@ -145,7 +159,13 @@
 
                 <div class="ml-8 flex items-center">
                   <img src="../assets/comments.png" class="size-[19px] filtro">
-                  <span class="ml-2">{{ solicitacao.num_comentarios }}</span>
+                  <span class="ml-2">{{ solicitacao.numComentarios }}</span>
+                </div>
+
+                <div class="ml-8 flex items-center">
+                  <img src="../assets/clock.svg" class="size-[22px] filtro-atencao"
+                    v-if="solicitacao.dataConclusao == null">
+                  <img src="../assets/success.svg" class="size-[22px] filtro-sucesso" v-else>
                 </div>
               </div>
 
@@ -153,7 +173,7 @@
           </div>
         </RouterLink>
         <div class="border-l-[1px] border-gray-600 pl-6 flex justify-center items-center absolute end-[-35px]">
-          <span class="text-white font-semibold mr-4">{{ solicitacao.num_likes }}</span>
+          <span class="text-white font-semibold mr-4">{{ solicitacao.numLikes }}</span>
           <div class="size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">
             <!-- <img src="../assets/heart.png" "
               class="filtro-gray-800 size-[48px] hover:scale-[1.15] translate-y-[2px] transition-all duration-300"> -->
@@ -229,7 +249,8 @@ export default {
       idSolicitacaoInteragir: 0,
       menuBox: false,
       itemsMenu: [],
-      pesquisa: ''
+      pesquisa: '',
+      imagemUsuario: null
     }
   },
   mounted() {
@@ -238,13 +259,29 @@ export default {
     this.carregaSolicitacoes()
     this.carregaInteracoes()
     this.carregaMenu()
+    this.carregaImagem()
   },
   methods: {
+    async carregaImagem() {
+      this.imagemUsuario = null
+      try {
+        this.imagemUsuario = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+      } catch (error) {
+        console.log("Ocorreu um erro ao carregar a foto de usuário: " + error)
+      }
+      if (this.imagemUsuario != null) {
+        if (!this.imagemUsuario.data) return;
+        // Adiciona o prefixo correto para exibir no <img>
+        this.imagemUsuario = `data:image/png;base64,${this.imagemUsuario.data}`;
+      }
+    },
+
     async carregaSolicitacoes() {
       try {
         const response = await axios.get(`http://localhost:8080/solicitacao/solicitacoes/${this.filtro}`);
         this.solicitacoes = response.data;
         this.solicitacoesPesquisadas = this.solicitacoes
+        console.log(this.solicitacoes)
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);
       } finally {
@@ -277,9 +314,9 @@ export default {
     },
     carregaMenu() {
       this.itemsMenu.push(
-        { id: 1, title: "Conta", link: `user/${this.usuario.id}`, svg: require("@/assets/user.svg") },
-        { id: 2, title: "Configurações", link: `user/${this.usuario.id}`, svg: require("@/assets/settings.svg") },
-        { id: 3, title: "Suporte", link: `user/${this.usuario.id}`, svg: require("@/assets/support.svg") }
+        { id: 1, title: "Conta", link: `menu/conta`, svg: require("@/assets/user.svg") },
+        { id: 2, title: "Configurações", link: `menu/configuracoes`, svg: require("@/assets/settings.svg") },
+        { id: 3, title: "Suporte", link: `menu/suporte`, svg: require("@/assets/support.svg") }
       )
       console.log(this.itemsMenu)
     },
@@ -310,10 +347,24 @@ export default {
   watch: {
     pesquisa() {
       if (this.pesquisa) {
+        const removerAcentos = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+        const pesquisaNormalizada = removerAcentos(this.pesquisa);
+
         this.solicitacoesPesquisadas = this.solicitacoes.filter((s) => {
-          return (s.titulo.includes(this.pesquisa) || s.descricao.includes(this.pesquisa) || s.bairro.includes(this.pesquisa)
-            || this.pesquisa.includes(s.titulo) || this.pesquisa.includes(s.descricao) || this.pesquisa.includes(s.bairro))
-        })
+          const tituloNormalizado = removerAcentos(s.titulo);
+          const descricaoNormalizada = removerAcentos(s.descricao);
+          const bairroNormalizado = removerAcentos(s.bairro);
+
+          return (
+            tituloNormalizado.includes(pesquisaNormalizada) ||
+            descricaoNormalizada.includes(pesquisaNormalizada) ||
+            bairroNormalizado.includes(pesquisaNormalizada) ||
+            pesquisaNormalizada.includes(tituloNormalizado) ||
+            pesquisaNormalizada.includes(descricaoNormalizada) ||
+            pesquisaNormalizada.includes(bairroNormalizado)
+          );
+        });
       } else {
         this.solicitacoesPesquisadas = this.solicitacoes
       }

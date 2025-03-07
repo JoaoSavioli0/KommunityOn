@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/usuario")
@@ -42,9 +44,31 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> usuario(@PathVariable Long id){
+        Optional<Usuario> usuario = usuarioService.usuarioPorId(id);
+
+        if(usuario.isPresent()){
+            return ResponseEntity.ok(usuario.get());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @PostMapping("/cadastro")
     public ResponseEntity<Usuario> cadastro(@RequestBody Usuario usuario){
         return ResponseEntity.ok(usuarioService.cadastro(usuario));
+    }
+
+    @PostMapping("/atualiza/{id}")
+    public ResponseEntity<Usuario> atualiza(@RequestBody Usuario novosDados){
+        Usuario usuarioAtualizado = usuarioService.atualiza(novosDados);
+        
+        if(usuarioAtualizado != null){
+            return ResponseEntity.ok(usuarioAtualizado);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/curtir/{idUsuario}/{idSolicitacao}")
@@ -65,6 +89,27 @@ public class UsuarioController {
     @GetMapping("/interacoes/{idUsuario}")
     public ResponseEntity<List<Long>> interacoesUsuario(@PathVariable Long idUsuario){
         return ResponseEntity.ok(usuarioService.solicitacoes(idUsuario));
+    }
+
+    @PostMapping("/foto-perfil/{id}/nova")
+    public ResponseEntity<String> uploadFotoPerfil(@PathVariable Long id, @RequestParam("file") MultipartFile foto){
+        String msg = usuarioService.uploadFoto(id, foto);
+        if(msg.contains("sucesso")){
+            return ResponseEntity.ok(msg);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
+        }
+    }
+
+    @GetMapping("/foto-perfil/{id}")
+    public ResponseEntity<String> getFotoPerfil(@PathVariable Long id){
+        String imagemBase64 = usuarioService.getFoto(id);
+
+        if(imagemBase64.contains("não encontrado")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(imagemBase64);
+        }
     }
 
 }

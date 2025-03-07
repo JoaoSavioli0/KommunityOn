@@ -97,11 +97,13 @@ export default {
                 return
             }
             try {
+                console.log("esconderNome: " + this.esconderNome)
                 const response = await axios.post("http://localhost:8080/solicitacao/new", {
                     titulo: this.titulo,
                     bairro: this.bairro,
                     descricao: this.descricao,
-                    idUsuario: this.usuario.id
+                    idUsuario: this.usuario.id,
+                    anonimo: this.esconderNome
                 }, {
                     headers: {
                         "Content-Type": "application/json",

@@ -19,6 +19,7 @@ public class Solicitacao {
     private String titulo;
     private String bairro;
     private String descricao;
+    private Boolean anonimo;
 
     @Column(name = "num_likes")
     private int numLikes;
@@ -36,13 +37,13 @@ public class Solicitacao {
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
+    //Getters & Setters
     public Usuario getUsuario() {
         return usuario;
     }
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    //Getters & Setters
     public String getTitulo() {
         return titulo;
     }
@@ -70,7 +71,7 @@ public class Solicitacao {
     public LocalDateTime getDataAbertura() {
         return dataAbertura;
     }
-    public void setData_abertura(LocalDateTime dataAbertura) {
+    public void setDataAbertura(LocalDateTime dataAbertura) {
         this.dataAbertura = dataAbertura;
     }
     public LocalDateTime getDataConclusao() {
@@ -94,6 +95,12 @@ public class Solicitacao {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public Boolean getAnonimo() {
+        return anonimo;
+    }
+    public void setAnonimo(Boolean anonimo) {
+        this.anonimo = anonimo;
     }
 
     

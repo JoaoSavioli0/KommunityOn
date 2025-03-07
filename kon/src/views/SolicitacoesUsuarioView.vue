@@ -62,32 +62,35 @@
     <div v-else class="solicitacoes mt-8">
         <div v-if="solicitacoes.length > 0" class="flex-col flex gap-y-4">
             <div class="w-full rounded-[20px] bg-gray-800 flex px-6 py-4 text-left justify-between items-center relative"
-                v-for="solicitacao in solicitacoes">
-                <div class="flex flex-col">
-                    <h1 class="text-white font-semibold text-2xl">{{ solicitacao.titulo }}</h1>
-                    <div class="flex mt-2">
-                        <div class=" flex items-center text-white mt-[3px]">
-                            <img src="../assets/location.png" class="filtro size-[19px]">
-                            <span class="ml-2">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
+                v-for="solicitacao in solicitacoes" :key="solicitacao.id">
+                <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
+                    <div class="flex flex-col">
+                        <h1 class="text-white font-semibold text-2xl">{{ solicitacao.titulo }}</h1>
+                        <div class="flex mt-2">
+                            <div class=" flex items-center text-white mt-[3px]">
+                                <img src="../assets/location.png" class="filtro size-[19px]">
+                                <span class="ml-2">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
 
-                            <div class="ml-8 flex items-center">
-                                <img src="../assets/comments.png" class="size-[19px] filtro">
-                                <span class="ml-2">{{ solicitacao.numComentarios }}</span>
+                                <div class="ml-8 flex items-center">
+                                    <img src="../assets/comments.png" class="size-[19px] filtro">
+                                    <span class="ml-2">{{ solicitacao.numComentarios }}</span>
+                                </div>
+
+                                <div class="ml-8 flex items-center">
+                                    <img src="../assets/heart.png" class="size-[25px] filtro">
+                                    <span class="ml-2">{{ solicitacao.numLikes }}</span>
+                                </div>
                             </div>
 
-                            <div class="ml-8 flex items-center">
-                                <img src="../assets/heart.png" class="size-[25px] filtro">
-                                <span class="ml-2">{{ solicitacao.numLikes }}</span>
-                            </div>
                         </div>
-
                     </div>
-                </div>
+                </RouterLink>
                 <div class="py-6 border-l-[1px] border-gray-500 flex items-center justify-end pl-4">
                     <span class="text-white font-semibold text-center w-full">
-                        {{ solicitacao.data_conclusao ? 'Concluído' : 'Aberto' }}
+                        {{ solicitacao.dataConclusao ? 'Concluído' : 'Aberto' }}
                     </span>
                 </div>
+
             </div>
         </div>
         <div v-else class="w-full">

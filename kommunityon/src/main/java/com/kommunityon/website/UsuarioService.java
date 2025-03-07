@@ -1,11 +1,14 @@
 package com.kommunityon.website;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UsuarioService {
@@ -37,6 +40,21 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario atualiza(Usuario novosDados){
+        Optional<Usuario> dadosAtuais = usuarioRepository.findById(novosDados.getId());
+
+        if(dadosAtuais.isPresent()){
+            Usuario dadosAtualizados = dadosAtuais.get();
+
+            dadosAtualizados.setTelefone(novosDados.getTelefone());
+            dadosAtualizados.setEmail(novosDados.getEmail());
+            dadosAtualizados.setNome(novosDados.getNome());
+            
+            return usuarioRepository.save(dadosAtualizados);
+        }
+        return null;
+    }
+
     public List<Usuario> usuarios(){
         return usuarioRepository.findAll();
     }
@@ -47,5 +65,33 @@ public class UsuarioService {
 
     public List<Long> solicitacoes(Long idUsuario){
         return usuarioLikeSolicitacaoRepository.findSolicitacaoIdsByUsuario(idUsuario);
+    }
+
+    public String uploadFoto(Long id, MultipartFile foto){
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+
+        if(usuarioEncontrado.isPresent()){
+            Usuario usuario = usuarioEncontrado.get();
+            try{
+                usuario.setFotoPerfil(foto.getBytes());
+                usuarioRepository.save(usuario);
+                return "Imagem salva com sucesso!";
+            } catch (IOException e) {
+                return "Erro ao processar a imagem: " + e;
+            }
+        } else {
+            return "Erro ao identificar usuário.";
+        }
+    }
+
+    public String getFoto(Long id){
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+
+        if(usuarioEncontrado.isPresent()){
+            Usuario usuario = usuarioEncontrado.get();
+            return Base64.getEncoder().encodeToString(usuario.getFotoPerfil());
+        }else{
+            return "";
+        }
     }
 }

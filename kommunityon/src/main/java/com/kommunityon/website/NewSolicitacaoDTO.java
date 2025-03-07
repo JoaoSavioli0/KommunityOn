@@ -6,6 +6,7 @@ public class NewSolicitacaoDTO {
     private Long idUsuario;
     private String bairro;
     private String descricao;
+    private Boolean anonimo;
 
     //Getters & Setters
     public String getTitulo() {
@@ -33,6 +34,14 @@ public class NewSolicitacaoDTO {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public Boolean getAnonimo() {
+        return anonimo;
+    }
+
+    public void setAnonimo(Boolean anonimo) {
+        this.anonimo = anonimo;
     }
     
 }
