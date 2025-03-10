@@ -1,5 +1,6 @@
 package com.kommunityon.website;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,17 +22,45 @@ import org.springframework.web.multipart.MultipartFile;
 public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Autowired
     SolicitacaoService solicitacaoService;
 
+    @Autowired
+    JwtService jwtService;
+
     @PostMapping("/login")
-    public ResponseEntity<Optional<Usuario>> login(@RequestBody LoginDTO loginDto){
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto){
         Optional<Usuario> usuarioLogado = usuarioService.login(loginDto);
         if(usuarioLogado.isPresent()){
-            return ResponseEntity.ok(usuarioLogado);
+            String token = jwtService.generateToken(loginDto.getCpfOuEmail());
+            HashMap<String, Object> response = new HashMap();
+            response.put("token", token);
+            response.put("usuario", usuarioLogado.get());
+            return ResponseEntity.ok(response);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> validaToken(@RequestHeader("Authorization") String token){
+        try {
+            String jwt = token.replace("Bearer ", "");
+    
+            String emailCpf = jwtService.validateTokenAndGetUsername(jwt);
+    
+            Usuario usuario = usuarioService.loginToken(emailCpf).get();
+    
+            if (usuario != null) {
+                return ResponseEntity.ok(usuario);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou expirado");
         }
     }
 

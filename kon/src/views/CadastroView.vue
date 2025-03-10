@@ -119,7 +119,7 @@
 
                         <div class="w-full relative mt-8">
                             <button @click.prevent="fazCadastro()"
-                                class="bg-gray-800 font-regular rounded-[10px] py-4 outline-none w-full text-white">Cadastrar</button>
+                                class="bg-gray-900 font-regular rounded-[10px] py-4 outline-none w-full text-white">Cadastrar</button>
                         </div>
                         <div class="w-full relative mt-6 flex">
                             <div class="h-[1px] bg-gray-300 w-full relative flex justify-center"><span
@@ -138,7 +138,7 @@
                 </div>
 
                 <div key="divAviso"
-                    class="mt-4 w-[400px] py-4 rounded-[30px] bg-gray-800 p-8 flex justify-center items-center transition-all duration-300"
+                    class="mt-4 w-[400px] py-4 rounded-[30px] bg-gray-900 p-8 flex justify-center items-center transition-all duration-300"
                     v-if="aviso != ''">
                     <p class="text-white">{{ aviso }}</p>
                 </div>

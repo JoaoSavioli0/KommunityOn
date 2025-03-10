@@ -36,6 +36,16 @@ public class UsuarioService {
         return Optional.empty();
     }
 
+    public Optional<Usuario> loginToken(String emailCpf){
+        String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+        if(Pattern.matches(EMAIL_REGEX, emailCpf)){
+            return usuarioRepository.findByEmail(emailCpf);
+        }else{
+            return usuarioRepository.findByCpf(emailCpf);
+        }
+    }
+
     public Usuario cadastro(Usuario usuario){
         return usuarioRepository.save(usuario);
     }

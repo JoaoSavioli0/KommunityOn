@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full pl-[140px]">
+    <div class="w-full pl-[180px]">
         <div class="flex flex-col items-start ">
             <h1 class="font-bold text-gray-800 text-2xl mt-2">Configurações</h1>
             <div class="w-full flex flex-col items-start mt-6">

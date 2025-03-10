@@ -3,7 +3,7 @@
         <div class="w-full">
             <router-link to="/home" class="p-0">
                 <button @click=""
-                    class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
+                    class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
                     <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
                     <span class="ml-2 text-xl">Voltar</span>
                 </button>
@@ -16,7 +16,7 @@
                 <h1 class="text-2xl font-semibold">Confirmar interação?</h1>
                 <p class="my-2">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
-                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaInteracaoBox = false, curteSolicitacao()">Confirmar</button>
                     <button
                         class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
@@ -30,7 +30,7 @@
                 class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
                 <h1 class="text-2xl font-semibold">{{ aviso }}</h1>
                 <div class="w-full flex justify-center mt-4">
-                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="avisoCurtirBox = false">Ok</button>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <h1 class="text-2xl font-semibold">Deseja excluir essa solicitação?</h1>
                 <p class="my-2">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
-                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaExcluirBox = false, excluiSolicitacao()">Confirmar</button>
                     <button
                         class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
@@ -57,7 +57,7 @@
                 <h1 class="text-2xl font-semibold">Deseja concluir essa solicitação?</h1>
                 <p class="my-2">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
-                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+                    <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaConcluirBox = false, concluiSolicitacao()">Confirmar</button>
                     <button
                         class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
@@ -67,7 +67,7 @@
         </div>
 
         <div class="w-full flex items-center mt-12 text-left">
-            <div class="rounded-full size-[40px] bg-gray-800 overflow-hidden">
+            <div class="rounded-full size-[40px] bg-gray-900 overflow-hidden">
                 <img v-if="imagemUsuario && !solicitacao.anonimo" :src="imagemUsuario"
                     class="h-full w-full object-cover ">
                 <img v-else src="../assets/user_body.png" class="filtro bottom-[-5px] relative">
@@ -101,7 +101,7 @@
 
         <div class="w-full flex mt-6">
             <button class="flex cursor-pointer" @click="confirmaInteracaoBox = true">
-                <div class="bg-gray-800 rounded-l-md pl-2 pr-4 h-[32px] w-fit flex items-center z-[40] relative">
+                <div class="bg-gray-900 rounded-l-md pl-2 pr-4 h-[32px] w-fit flex items-center z-[40] relative">
                     <img src="../assets/heart.png" class="filtro size-[20px]">
                     <span class="ml-2 text-gray-100 font-medium">Curtir</span>
                     <div class="absolute bg-white rotate-45 z-[50] size-[13px] end-[-7px] top-[9px] "></div>
@@ -114,12 +114,12 @@
                 </div>
             </button>
 
-            <button class="bg-gray-800 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4">
+            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4">
                 <img src="../assets/share.svg" class="filtro size-[20px]">
                 <span class="ml-2 text-gray-100 font-medium">Compartilhar</span>
             </button>
 
-            <button class="bg-gray-800 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4"
+            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4"
                 v-if="solicitacaoPropria" @click="confirmaExcluirBox = true">
                 <img src="../assets/trash.svg" class="filtro size-[20px]">
                 <span class="ml-2 text-gray-100 font-medium">Excluir</span>
@@ -127,7 +127,7 @@
 
             <div class="relative ml-4">
                 <button
-                    class="bg-gray-800 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center relative z-[50]"
+                    class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center relative z-[50]"
                     v-if="usuarioAdmin" @click="opcoesAdmin = !opcoesAdmin">
                     <img src="../assets/admin.svg" class="filtro size-[20px]">
                     <span class="ml-2 text-gray-100 font-medium">Admin</span>
@@ -154,7 +154,7 @@
                 class="min-h-[50px] max-h-[300px] rounded-md bg-gray-200 p-2 w-full focus:outline-none"
                 placeholder="Escreva um comentário"></textarea>
             <div class="w-full flex justify-start">
-                <button class="rounded-md bg-gray-800 text-gray-100 px-4 py-[4px] font-medium w-fit mt-2"
+                <button class="rounded-md bg-gray-900 text-gray-100 px-4 py-[4px] font-medium w-fit mt-2"
                     @click="enviaComentario()">Enviar</button>
             </div>
         </div>
@@ -164,7 +164,7 @@
                 v-for="comentario in comentarios">
                 <!-- Ícone à esquerda -->
                 <div class="flex-shrink-0">
-                    <div class="rounded-full size-[40px] bg-gray-800"></div>
+                    <div class="rounded-full size-[40px] bg-gray-900"></div>
                 </div>
                 <!-- Conteúdo à direita -->
                 <div class="ml-4 flex flex-col text-left flex-grow">
@@ -213,27 +213,16 @@ export default {
             imagemUsuario: null
         }
     },
-    setup() {
-        const userStore = useUserStore();
-        const router = useRouter();
-
-        watch(
-            () => userStore.usuario,
-            (novoUsuario) => {
-                if (!novoUsuario) {
-                    console.error("Usuário não encontrado na store.");
-                    router.push("/login");
-                }
-            },
-            { immediate: true } // Executa logo no início
-        );
-    },
     mounted() {
         const userStore = useUserStore()
-        this.usuario = userStore.usuario
+        userStore.reconectaSessao()
+        if(userStore.usuario==null){
+            this.$router.push("/login")
+        }else{
+            this.usuario = userStore.usuario
+        }
         this.carregaSolicitacao()
         this.usuarioAdmin = this.usuario.tipo === "ADM"
-
     },
     methods: {
         carregaImagem() {

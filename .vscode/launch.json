@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-KommunityonApplication<kommunityon>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.kommunityon.website.KommunityonApplication",
+            "projectName": "kommunityon",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

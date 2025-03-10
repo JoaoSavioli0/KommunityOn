@@ -2,7 +2,7 @@
     <div class="w-full">
         <router-link to="/home" class="p-0">
             <button @click=""
-                class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
+                class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
                 <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
                 <span class="ml-2 text-xl">Voltar</span>
             </button>
@@ -61,7 +61,7 @@
 
     <div v-else class="solicitacoes mt-8">
         <div v-if="solicitacoes.length > 0" class="flex-col flex gap-y-4">
-            <div class="w-full rounded-[20px] bg-gray-800 flex px-6 py-4 text-left justify-between items-center relative"
+            <div class="w-full rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative"
                 v-for="solicitacao in solicitacoes" :key="solicitacao.id">
                 <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
                     <div class="flex flex-col">
@@ -110,23 +110,6 @@ import { watch } from "vue";
 export default {
     name: "SolicitacoesUsuario",
     props: ['id'],
-    setup() {
-        const userStore = useUserStore();
-        const router = useRouter();
-
-        watch(
-            () => userStore.usuario,
-            (novoUsuario) => {
-                if (novoUsuario.id >= 1) {
-                    console.log("Usuário carregado:", novoUsuario);
-                } else {
-                    console.error("Usuário não encontrado na store.");
-                    router.push("/login");
-                }
-            },
-            { immediate: true } // Executa logo no início
-        );
-    },
     data() {
         return {
             solicitacoes: [],
@@ -135,14 +118,13 @@ export default {
         }
     },
     mounted() {
-        const userStore = useUserStore();
-        if (userStore.usuario != null) {
+        const userStore = useUserStore()
+        userStore.reconectaSessao()
+        if(userStore.usuario==null){
+            this.$router.push("/login")
+        }else{
             this.usuario = userStore.usuario
             this.carregaSolicitacoes()
-            console.log(userStore.usuario)
-        } else {
-            console.log("Usuário não encontrado no store.");
-            this.$router.push("/login")
         }
     },
     methods: {

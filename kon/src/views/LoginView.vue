@@ -26,7 +26,7 @@
                         </div>
                         <div class="w-full relative mt-8">
                             <button @click.prevent="fazLogin()"
-                                class="bg-gray-800 font-regular rounded-[10px] py-4 outline-none w-full text-white">Confirmar</button>
+                                class="bg-gray-900 font-regular rounded-[10px] py-4 outline-none w-full text-white">Confirmar</button>
                             <p class="text-sm text-gray-800 mt-2">Esqueceu sua senha? <span
                                     class="text-blue-600 font-medium cursor-pointer">Clique
                                     aqui</span></p>
@@ -48,7 +48,7 @@
                 </div>
 
                 <div key="divAviso"
-                    class="mt-4 w-[400px] py-4 rounded-[30px] bg-gray-800 p-8 flex justify-center items-center transition-all duration-300"
+                    class="mt-4 w-[400px] py-4 rounded-[30px] bg-gray-900 p-8 flex justify-center items-center transition-all duration-300"
                     v-if="aviso != ''">
                     <p class="text-white">{{ aviso }}</p>
                 </div>
@@ -65,10 +65,21 @@ export default {
     name: "Login",
     data() {
         return {
+            loginObj: {
+                cpfOuEmail: "",
+                senha: ""
+            },
             cpfOuEmail: '',
             senha: '',
             aviso: '',
             usuario: null
+        }
+    },
+    mounted(){
+        const userStore = useUserStore()
+        userStore.reconectaSessao()
+        if(userStore.usuario!=null){
+            this.$router.push("/home")
         }
     },
     methods: {
@@ -78,33 +89,15 @@ export default {
                 return;
             } else {
                 try {
-                    const response = await axios.post("http://localhost:8080/usuario/login", {
-                        cpfOuEmail: this.cpfOuEmail,
-                        senha: this.senha
-                    }, {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    })
-
-
-                    if (response && response.status == 200) {
-                        this.usuario = {
-                            nome: response.data.nome,
-                            cpf: response.data.cpf,
-                            email: response.data.email,
-                            senha: response.data.senha,
-                            telefone: response.data.telefone,
-                            tipo: response.data.tipo,
-                            id: response.data.id,
-                            profile: response.data.fotoPerfil
-                        }
-                        this.aviso = "Login realizado com sucesso!"
-                        const userStore = useUserStore()
-                        userStore.login(this.usuario)
+                    this.loginObj.cpfOuEmail = this.cpfOuEmail
+                    this.loginObj.senha = this.senha
+                    await useUserStore().login(this.loginObj)
+                    console.log("Usuario userstore: " + useUserStore().usuario)
+                    if (useUserStore().usuario != null){
                         this.$router.push("/home")
+                    }else{
+                        this.aviso = "Erro ao fazer login."
                     }
-
                 } catch (err) {
                     console.log(err)
                     if (err.response && err.response.status === 404) {

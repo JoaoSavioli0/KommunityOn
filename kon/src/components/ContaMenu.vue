@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full pl-[140px] h-max pb-20 z-[100]">
+    <div class="w-full pl-[190px] h-max pb-20 z-[100]">
         <div class="flex flex-col items-start ">
             <h1 class="font-bold text-gray-800 text-2xl mt-2">Conta</h1>
             <div class="w-full flex flex-col items-start mt-6">
@@ -130,7 +130,7 @@
                     <div class="flex flex-col items-center mt-4">
                         <span>Foto de perfil</span>
                         <div
-                            class="size-[70px] rounded-full bg-gray-800 mt-2 overflow-hidden flex justify-center items-center">
+                            class="size-[70px] rounded-full bg-gray-900 mt-2 overflow-hidden flex justify-center items-center">
                             <img v-if="imagemPreview && alterandoFoto" :src="imagemPreview" class="w-[70px] h-auto">
                             <img v-else :src="imagemUsuario" class="w-[70px] h-auto">
                         </div>

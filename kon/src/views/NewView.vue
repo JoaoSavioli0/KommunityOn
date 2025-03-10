@@ -3,7 +3,7 @@
     <div class="w-full">
         <router-link to="/home" class="p-0">
             <button @click=""
-                class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
+                class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
                 <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
                 <span class="ml-2 text-xl">Voltar</span>
             </button>
@@ -11,7 +11,7 @@
     </div>
 
     <div class="pt-6 pb-2 w-full" v-if="temSolicitacaoAberta">
-        <div class="w-full rounded-md bg-gray-800 p-4 flex-col text-gray-100">
+        <div class="w-full rounded-md bg-gray-900 p-4 flex-col text-gray-100">
             <h1 class="text-xl font-medium">Você já tem uma solicitação aberta!</h1>
             <div class="w-full py-2 flex justify-center">
                 <div class="w-[90%] h-[1px] bg-white/40"></div>
@@ -36,7 +36,7 @@
         </div>
 
         <div class="w-full mt-6 flex flex-col">
-            <div class="w-full rounded-full bg-gray-800 flex items-center px-[3px] py-[3px]">
+            <div class="w-full rounded-full bg-gray-900 flex items-center px-[3px] py-[3px]">
                 <input type="text" class="w-full px-[19px] bg-transparent focus:outline-none text-white"
                     placeholder="Bairro atingido" v-model="bairro">
                 <div class="w-[45px] h-[40px] bg-white rounded-full flex items-center justify-center">
@@ -62,7 +62,7 @@
             </div>
             <div class="w-full mt-4 flex justify-end">
                 <button @click.prevent="registraSolicitacao()"
-                    class="rounded-full text-white bg-[#2F2F2F] px-4 py-[4px]">Enviar</button>
+                    class="rounded-full text-white bg-gray-900 px-4 py-[4px]">Enviar</button>
             </div>
         </form>
 
@@ -87,8 +87,13 @@ export default {
         }
     },
     mounted() {
-        const userStore = useUserStore();
-        this.usuario = userStore.usuario;
+        const userStore = useUserStore()
+        userStore.reconectaSessao()
+        if(userStore.usuario==null){
+            this.$router.push("/login")
+        }else{
+            this.usuario = userStore.usuario
+        }
         this.verificaSolicitacaoAberta();
     },
     methods: {

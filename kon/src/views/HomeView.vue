@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-semibold">Confirmar interação?</h1>
         <p class="my-2">Essa ação não poderá ser revertida.</p>
         <div class="w-full flex justify-start mt-4">
-          <button class="py-2 w-[150px] text-center rounded-full bg-gray-800 text-white font-medium"
+          <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
             @click.prevent="confirmaInteracaoBox = false, curteSolicitacao(idSolicitacaoInteragir)">Confirmar</button>
           <button
             class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
@@ -38,19 +38,19 @@
     </div>
 
     <div
-      class="fixed w-[400px] py-4 rounded-full bg-gray-800 text-gray-100 bottom-[20px] border-2 border-gray-100 z-[200] animate__animated"
+      class="fixed w-[400px] py-4 rounded-full bg-gray-900 text-gray-100 bottom-[20px] border-2 border-gray-100 z-[200] animate__animated"
       :class="([avisoBox ? 'animate__fadeIn' : 'animate__fadeOut'])">
       {{ aviso }}
     </div>
 
     <div class="w-full flex justify-between">
       <button @click="logout()"
-        class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
+        class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
         <img src="../assets/exit.svg" class="filtro size-[20px]">
         <span class="ml-2 text-xl">Sair</span>
       </button>
       <button @click="menuBox = true"
-        class="bg-gray-800 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
+        class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
         <span class="text-xl">Menu</span>
         <img src="../assets/menu.svg" class="ml-2 filtro size-[20px]">
       </button>
@@ -66,7 +66,7 @@
       <RouterLink to="menu/conta" class="p-0 rounded-full">
         <div
           class="w-[120px] h-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
-          :class="[imagemUsuario ? 'bg-transparent' : 'bg-gray-800']">
+          :class="[imagemUsuario ? 'bg-transparent' : 'bg-gray-900']">
           <img v-if="imagemUsuario" :src="imagemUsuario" class="h-full w-full object-cover absolute">
           <img v-else src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
           <div
@@ -79,7 +79,7 @@
 
     <RouterLink to="/new" class="p-0 relative w-full">
       <button
-        class="w-full rounded-[15px] bg-gray-800 text-white h-[60px] overflow-hidden mt-8 text-xl font-medium novachamada-button flex justify-center items-center relative">
+        class="w-full rounded-[15px] bg-gray-900 text-white h-[60px] overflow-hidden mt-8 text-xl font-medium novachamada-button flex justify-center items-center relative">
         <span class="novachamada absolute transition-all duration-200">Nova solicitação</span>
         <span class="novachamada2 absolute transition-all duration-200 text-4xl">+</span>
       </button>
@@ -146,7 +146,7 @@
 
     <div class="solicitacoes mt-8 flex flex-col gap-y-4 w-full">
 
-      <div class="w-[97%] rounded-[20px] bg-gray-800 flex px-6 py-4 text-left justify-between items-center relative"
+      <div class="w-[97%] rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative"
         v-for="solicitacao in solicitacoesPesquisadas" :key="solicitacao.id">
         <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
           <div class="flex flex-col w-[80%]">
@@ -217,20 +217,12 @@ import { useRouter } from "vue-router"
 
 export default {
   name: 'HomeView',
-  setup() {
-    const userStore = useUserStore();
-    const router = useRouter();
-
-    watch(
-      () => userStore.usuario,
-      (novoUsuario) => {
-        if (!novoUsuario) {
-          console.error("Usuário não encontrado na store.");
-          router.push("/login");
-        }
-      },
-      { immediate: true } // Executa logo no início
-    );
+  mounted(){
+    const userStore = useUserStore()
+    userStore.reconectaSessao()
+    if(userStore.usuario==null){
+      this.$router.push("/login")
+    }
   },
   data() {
     return {

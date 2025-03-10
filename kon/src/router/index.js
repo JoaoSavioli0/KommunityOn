@@ -9,6 +9,7 @@ import SolicitacaoView from '@/views/SolicitacaoView.vue';
 import ContaMenu from '@/components/ContaMenu.vue';
 import SettingsMenu from '@/components/SettingsMenu.vue';
 import SuporteMenu from '@/components/SuporteMenu.vue';
+import { useUserStore } from '@/stores/userStore';
 
 const routes = [
   {
@@ -41,10 +42,10 @@ const routes = [
     path: '/menu',
     name: 'menu',
     component: MenuView,
-    children:[
-      {path: 'conta', component: ContaMenu},
-      {path: 'configuracoes', component: SettingsMenu},
-      {path: 'suporte', component: SuporteMenu}
+    children: [
+      { path: 'conta', component: ContaMenu },
+      { path: 'configuracoes', component: SettingsMenu },
+      { path: 'suporte', component: SuporteMenu }
     ]
   },
   {
@@ -66,6 +67,17 @@ const router = createRouter({
       // Rola para o topo (0, 0) na navegação normal
       return { left: 0, top: 0 };
     }
+  }
+});
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore()
+  await userStore.reconectaSessao(); // Verifica se o usuário está autenticado
+
+  if (to.meta.requiresAuth && !userStore.usuario) {
+    next("/login");
+  } else {
+    next();
   }
 });
 
