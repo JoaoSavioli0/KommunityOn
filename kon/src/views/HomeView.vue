@@ -59,7 +59,7 @@
     <div class="w-full flex items-center mt-8">
       <div class="flex flex-col">
         <h1 class="text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{ primeiroNome
-        }}</span></h1>
+            }}</span></h1>
         <p class="text-left text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na sua região!
         </p>
       </div>
@@ -217,10 +217,10 @@ import { useRouter } from "vue-router"
 
 export default {
   name: 'HomeView',
-  mounted(){
+  mounted() {
     const userStore = useUserStore()
     userStore.reconectaSessao()
-    if(userStore.usuario==null){
+    if (userStore.usuario == null) {
       this.$router.push("/login")
     }
   },
@@ -246,8 +246,7 @@ export default {
     }
   },
   mounted() {
-    const userStore = useUserStore()
-    this.usuario = userStore.usuario
+    this.usuario = useUserStore().usuario
     this.carregaSolicitacoes()
     this.carregaInteracoes()
     this.carregaMenu()

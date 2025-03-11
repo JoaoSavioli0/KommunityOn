@@ -216,9 +216,9 @@ export default {
     mounted() {
         const userStore = useUserStore()
         userStore.reconectaSessao()
-        if(userStore.usuario==null){
+        if (userStore.usuario == null) {
             this.$router.push("/login")
-        }else{
+        } else {
             this.usuario = userStore.usuario
         }
         this.carregaSolicitacao()
@@ -254,6 +254,7 @@ export default {
 
         async enviaComentario() {
             try {
+                if (!this.textoComentario) return
                 const response = await axios.post("http://localhost:8080/comentario/cadastro", {
                     idUsuario: this.usuario.id,
                     idSolicitacao: this.id,
