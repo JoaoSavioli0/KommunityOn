@@ -81,7 +81,16 @@
             </div>
         </div>
 
-        <div class="w-full mt-6 flex items-center" v-if="solicitacao.dataConclusao == null">
+        <div class="pt-4 w-full">
+            <div class="w-full flex gap-x-2">
+                <div class="rounded-full text-gray-100 bg-gray-900 px-2 py-[2px] text-sm" v-for="tag in tags"
+                    :key="tag.id_tag">
+                    {{ tag.nome }}
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full mt-4 flex items-center" v-if="solicitacao.dataConclusao == null">
             <img src="../assets/clock.svg" class="size-[23px] filtro-atencao">
             <span class="ml-2 filtro-atencao font-semibold">Não resolvida</span>
         </div>
@@ -210,19 +219,19 @@ export default {
             solicitacaoPropria: false,
             usuarioAdmin: false,
             opcoesAdmin: false,
-            imagemUsuario: null
+            imagemUsuario: null,
+            tags: []
         }
     },
     mounted() {
-        const userStore = useUserStore()
-        userStore.reconectaSessao()
-        if (userStore.usuario == null) {
+        useUserStore().reconectaSessao()
+        if (useUserStore().usuario == null) {
             this.$router.push("/login")
         } else {
-            this.usuario = userStore.usuario
+            this.usuario = useUserStore().usuario
+            this.carregaSolicitacao()
+            this.usuarioAdmin = this.usuario.tipo === "ADM"
         }
-        this.carregaSolicitacao()
-        this.usuarioAdmin = this.usuario.tipo === "ADM"
     },
     methods: {
         carregaImagem() {
@@ -238,6 +247,7 @@ export default {
                 const solicitacao = await axios.get(`http://localhost:8080/solicitacao/${this.id}`)
                 this.solicitacao = solicitacao.data
                 this.usuarioSolicitacao = this.solicitacao.usuario
+                this.carregaTags()
                 console.log("this.usuarioSolicitacao: " + this.usuarioSolicitacao.fotoPerfil)
                 this.solicitacaoPropria = this.usuarioSolicitacao.id == this.usuario.id
 
@@ -249,6 +259,16 @@ export default {
 
             } catch (error) {
                 console.error("Ocorreu um erro ao carregar a solicitação: " + error)
+            }
+        },
+
+        async carregaTags() {
+            try {
+                console.log(this.id)
+                this.tags = (await axios.get(`http://localhost:8080/solicitacao/tags/${this.id}`)).data
+                console.log(this.tags)
+            } catch (error) {
+                console.error("Erro ao carregar tags: " + error)
             }
         },
 

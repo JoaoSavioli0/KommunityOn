@@ -14,12 +14,7 @@ public class Usuario {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
     private String nome;
     private String cpf;
     private String email;
@@ -99,6 +94,12 @@ public class Usuario {
     }
     public void setFotoPerfil(byte[] fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }

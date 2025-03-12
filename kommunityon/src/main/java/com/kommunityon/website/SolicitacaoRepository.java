@@ -14,14 +14,19 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>{
-    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataConclusao, s.anonimo) FROM Solicitacao s INNER JOIN s.usuario u WHERE s.dataConclusao IS NULL ORDER BY s.numLikes desc")
+    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataConclusao, s.anonimo) " + 
+    "FROM Solicitacao s " + 
+    "INNER JOIN s.usuario u " + 
+    "WHERE s.dataConclusao IS NULL " + 
+    "ORDER BY s.numLikes desc")
     List<SolicitacaoDTO> findAllPorLike(); 
 
-    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataConclusao, s.anonimo) FROM Solicitacao s INNER JOIN s.usuario u WHERE s.dataConclusao IS NULL ORDER BY s.dataAbertura desc")
-    List<SolicitacaoDTO> findAllPorData();
-
-    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataConclusao, s.anonimo) FROM Solicitacao s INNER JOIN s.usuario u ORDER BY s.dataAbertura desc")
-    List<SolicitacaoDTO> findAllPorTodos();
+    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataConclusao, s.anonimo) " +
+       "FROM Solicitacao s " +
+       "INNER JOIN s.usuario u " +
+       "INNER JOIN SolicitacaoTag st ON st.solicitacaoId = s.id " +
+       "WHERE st.tag.id = :tagId")
+    List<SolicitacaoDTO> findAllPorTag(@Param("tagId") Long tagId);
     
     @Transactional
     @Modifying

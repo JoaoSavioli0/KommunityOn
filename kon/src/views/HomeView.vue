@@ -218,10 +218,15 @@ import { useRouter } from "vue-router"
 export default {
   name: 'HomeView',
   mounted() {
-    const userStore = useUserStore()
-    userStore.reconectaSessao()
-    if (userStore.usuario == null) {
+    useUserStore().reconectaSessao()
+    if (useUserStore().usuario == null) {
       this.$router.push("/login")
+    } else {
+      this.usuario = useUserStore().usuario
+      this.carregaSolicitacoes()
+      this.carregaInteracoes()
+      this.carregaMenu()
+      this.carregaImagem()
     }
   },
   data() {
@@ -230,7 +235,7 @@ export default {
       solicitacoes: [],
       solicitacoesPesquisadas: [],
       usuario: {},
-      filtro: 'por_like',
+      filtro: 0,
       carregando: true,
       aviso: '',
       avisoBox: false,
@@ -244,13 +249,6 @@ export default {
       pesquisa: '',
       imagemUsuario: null
     }
-  },
-  mounted() {
-    this.usuario = useUserStore().usuario
-    this.carregaSolicitacoes()
-    this.carregaInteracoes()
-    this.carregaMenu()
-    this.carregaImagem()
   },
   methods: {
     async carregaImagem() {

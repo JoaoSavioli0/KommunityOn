@@ -1,10 +1,12 @@
 package com.kommunityon.website;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/solicitacao")
 public class SolicitacaoController {
@@ -23,7 +27,7 @@ public class SolicitacaoController {
     SolicitacaoService solicitacaoService;
 
     @GetMapping("/solicitacoes/{filtro}")
-    public ResponseEntity<List<SolicitacaoDTO>> solicitacoes(@PathVariable String filtro){
+    public ResponseEntity<List<SolicitacaoDTO>> solicitacoes(@PathVariable int filtro){
         List<SolicitacaoDTO> solicitacoesCarregadas = solicitacaoService.solicitacoes(filtro);
         if(!solicitacoesCarregadas.isEmpty()){
             return ResponseEntity.ok(solicitacoesCarregadas);
@@ -50,6 +54,11 @@ public class SolicitacaoController {
         }else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @GetMapping("/tags/{id}")
+    public ResponseEntity<List<Tag>> tagsSolicitacao(@PathVariable Long id){
+        return ResponseEntity.ok(solicitacaoService.tags(id)); 
     }
 
     @GetMapping("/{id}")

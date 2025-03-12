@@ -2,12 +2,19 @@ package com.kommunityon.website;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.micrometer.core.instrument.Tags;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -24,18 +31,19 @@ public class SolicitacaoService {
     @Autowired
     ComentarioRepository comentarioRepository;
 
-    public List<SolicitacaoDTO> solicitacoes(String filtro){
-        switch(filtro){
-            case "por_data" -> {
-                return solicitacaoRepository.findAllPorData();
-            }
-            case "por_like" -> {
-                return solicitacaoRepository.findAllPorLike();
-            }
-            case "todos" -> {
-                return solicitacaoRepository.findAllPorTodos();
-            }
+    @Autowired
+    SolicitacaoTagRepository solicitacaoTagRepository;
+
+    @Autowired
+    TagRepository tagRepository;
+
+    public List<SolicitacaoDTO> solicitacoes(int filtro){
+        if(filtro == 0){
+            return solicitacaoRepository.findAllPorLike();
+        }else if(filtro<=8){
+            return solicitacaoRepository.findAllPorTag(Long.valueOf(filtro));
         }
+        
         return null;
     }
 
@@ -70,7 +78,81 @@ public class SolicitacaoService {
             solicitacao.setAnonimo(newSolicitacaoDTO.getAnonimo());
             solicitacao.setUsuario(usuario.get());
         }
-        return solicitacaoRepository.save(solicitacao);
+
+        Solicitacao solicitacaoCadastrada = solicitacaoRepository.save(solicitacao);
+
+        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(), solicitacaoCadastrada.getId());
+
+        return solicitacaoCadastrada;
+    }
+
+    public void defineTags(String descricao, String titulo, Long idSolicitacao){
+        Map<String, Integer> tags = Map.of(
+            "Trânsito", 1,
+            "Saúde", 2,
+            "Avenida", 3,
+            "Energia", 4,
+            "Inclusão", 5,
+            "Violência", 6,
+            "Entretenimento", 7,
+            "Serviços públicos", 8
+        );
+
+        List<String> palavrasTransito = Arrays.asList("trânsito", "transito", "carro", "moto", "caminhões", "caminhoes", "semaforo", "semáforo", "lombada", "acidente", "engarrafamento", "ciclovia", "bicicleta", "ruas", "avenidas");
+
+        List<String> palavrasSaude = Arrays.asList("hospital", "ubs", "uti", "saude", "saúde", "remedio", "remédio", "farmacia", "farmácia", "doente", "medico", "médico", "postinho", "vacina");
+
+        List<String> palavrasViasDeTransito = Arrays.asList("estrada", "rodovia", "pavimento", "faixa de pedestre", "sinalização", "sinalizacao", "sinal", "placa", "cruzamento", "via", "balsa", "túnel","tunel", "ponte", "avenida", "semáforo","semaforo", "mão única","mao unica", "mão dupla", "mao dupla", "dobradura", "faixa", "pedágio", "pedagio");
+
+        List<String> palavrasEnergia = Arrays.asList("energia", "luz", "elétrica", "eletrica", "iluminação","iluminacao", "rede elétrica", "rede eletrica", "gerador", "energia solar", "energia renovável", "energia renovavel", "eletricidade", "falta de energia", "instalação elétrica", "instalaçao eletrica", "fios", "transformador", "geração de energia", "gerador", "fornecimento de energia");
+
+        List<String> palavrasInclusao = Arrays.asList("acessibilidade", "inclusão", "inclusao", "deficiência", "deficiencia", "cadeirante", "deficiente", "surdo", "cego", "comunidade", "lgbt", "gay", "homossexual", "bissexual", "transsexual", "igualdade", "educação inclusiva", "mobilidade reduzida", "idioma", "linguagem de sinais", "diversidade", "exclusão social", "emprego inclusivo");
+
+        List<String> palavrasViolencia = Arrays.asList("violência", "violencia", "agressão", "agressao", "assalto", "furto", "roubo", "homicídio", "homicidio", "pedofilia", "assassinato", "bullying", "sequestro", "abuso", "abusador", "estupro", "estuprador", "agressor", "vítima", "vitima", "discriminação", "discriminaçao", "tráfico", "trafico", "criminoso", "ataque", "violência doméstica", "ameaça", "crime");
+
+        List<String> palavrasEntretenimento = Arrays.asList("cinema", "filme", "série", "serie", "música", "musica", "show", "evento", "teatro", "dança", "cultura", "livros", "entrevista", "esporte", "jogo", "diversão", "vídeo", "clipe", "artista", "comédia", "festival");
+
+        List<String> palavrasServicosPublicos = Arrays.asList("saneamento", "limpeza", "energia", "água", "agua", "esgoto", "coleta", "lixo", "tratamento de água", "desentupimento", "vigilância sanitária", "infraestrutura", "prefeitura", "postagem", "correios", "rua", "fiscalização", "taxi", "transporte público", "iluminação pública", "abastecimento", "onibus", "prefeito", "vereador", "vereadores", "seguranca", "segurança", "educacao", "educação", "educaçao", "crime");
+
+        ArrayList<Integer> tagsEncontradas = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(titulo);
+        sb.append(" ");
+        sb.append(descricao);
+
+        String textoCompleto = sb.toString().toLowerCase();
+
+        System.out.println(textoCompleto);
+
+        if(containsAny(textoCompleto, palavrasTransito)) tagsEncontradas.add(1);
+        if(containsAny(textoCompleto, palavrasSaude)) tagsEncontradas.add(2);
+        if(containsAny(textoCompleto, palavrasViasDeTransito)) tagsEncontradas.add(3);
+        if(containsAny(textoCompleto, palavrasEnergia)) tagsEncontradas.add(4);
+        if(containsAny(textoCompleto, palavrasInclusao)) tagsEncontradas.add(5);
+        if(containsAny(textoCompleto, palavrasViolencia)) tagsEncontradas.add(6);
+        if(containsAny(textoCompleto, palavrasEntretenimento)) tagsEncontradas.add(7);
+        if(containsAny(textoCompleto, palavrasServicosPublicos)) tagsEncontradas.add(8);
+
+        registraTags(tagsEncontradas, idSolicitacao);
+    }
+
+    public static boolean containsAny(String texto, List<String> chaves) {
+        return chaves.stream().anyMatch(texto::contains);
+    }
+
+    public void registraTags(ArrayList<Integer> tagIds, Long idSolicitacao){
+        for(int id : tagIds){
+            Tag tag = tagRepository.findById(Long.valueOf(id)).get();
+            solicitacaoTagRepository.save(new SolicitacaoTag(idSolicitacao, tag));
+        }
+    }
+
+    public List<Tag> tags(Long idSolicitacao){
+        List<SolicitacaoTag> tagsEncontradas = solicitacaoTagRepository.findBySolicitacaoId(idSolicitacao);
+        return tagsEncontradas.stream()
+                .map(SolicitacaoTag::getTag) 
+                .collect(Collectors.toList());
     }
 
     public String curtir(Long idUsuario, Long idSolicitacao){

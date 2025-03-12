@@ -118,12 +118,11 @@ export default {
         }
     },
     mounted() {
-        const userStore = useUserStore()
-        userStore.reconectaSessao()
-        if(userStore.usuario==null){
+        useUserStore().reconectaSessao()
+        if (useUserStore().usuario == null) {
             this.$router.push("/login")
-        }else{
-            this.usuario = userStore.usuario
+        } else {
+            this.usuario = useUserStore().usuario
             this.carregaSolicitacoes()
         }
     },
