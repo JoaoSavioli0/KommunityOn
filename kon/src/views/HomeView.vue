@@ -59,7 +59,7 @@
     <div class="w-full flex items-center mt-8">
       <div class="flex flex-col">
         <h1 class="text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{ primeiroNome
-            }}</span></h1>
+        }}</span></h1>
         <p class="text-left text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na sua região!
         </p>
       </div>
@@ -97,14 +97,28 @@
       <span class="font-medium text-gray-800 text-lg font-medium cursor-pointer">{{ solicitacoes.length }}</span>
     </div>
 
-    <div class="w-full mt-6">
+    <div class="w-full mt-6 relative">
       <div class="py-[6px] rounded-md border-[1.5px] border-gray-800 w-full flex justify-start">
         <input type="text" class="px-[12px] focus:outline-none w-full bg-transparent text-gray-700"
           placeholder="Pesquisar" v-model="pesquisa">
         <div class="border-l-[1.5px] border-zinc-400 px-[10px] flex justify-center">
-          <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza">
+          <button class="p-0" @click="filtrosOpen = !filtrosOpen">
+            <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza">
+          </button>
         </div>
       </div>
+
+      <div v-if="filtrosOpen" ref="filtrosBox"
+        class="absolute w-fit rounded-md bg-zinc-50 shadow-md px-4 py-2 end-0 z-[150] text-left">
+        <span class="font-bold text-zinc-800 text-sm">Tags</span>
+        <ul>
+          <li v-for="tag in tags" :key="tag.id" class="flex items-center mt-[5px]">
+            <input type="checkbox" :key="tag.id" :value="tag.id" v-model="filtros">
+            <span class="ml-2 text-xs font-medium">{{ tag.nome }}</span>
+          </li>
+        </ul>
+      </div>
+
     </div>
 
     <form class="w-full">
@@ -112,28 +126,28 @@
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" checked value="destaque" class="hidden peer" />
-          <div @click="mudaFiltro('por_like')"
+          <div @click="mudaFiltro(1)"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Destaques</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="proximo" class="hidden peer" />
-          <div @click="mudaFiltro('por_data')"
+          <div @click="mudaFiltro(2)"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Próximos</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="recente" class="hidden peer" />
-          <div @click="mudaFiltro('por_data')"
+          <div @click="mudaFiltro(3)"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Recentes</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="todos" class="hidden peer" />
-          <div @click="mudaFiltro('todos')"
+          <div @click="mudaFiltro(4)"
             class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Todos</div>
         </label>
@@ -149,23 +163,23 @@
       <div class="w-[97%] rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative"
         v-for="solicitacao in solicitacoesPesquisadas" :key="solicitacao.id">
         <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
-          <div class="flex flex-col w-[80%]">
-            <h1 class="text-white font-semibold text-2xl w-[80%]">{{ solicitacao.titulo }}</h1>
-            <p class="text-gray-300 line-clamp-4 w-[80%]">{{ solicitacao.descricao }}</p>
+          <div class="flex flex-col w-[80%] max-[600px]:w-[95%]">
+            <h1 class="text-white font-semibold text-2xl w-[80%] max-[600px]:text-lg">{{ solicitacao.titulo }}</h1>
+            <p class="text-gray-300 line-clamp-4 w-[80%] max-[600px]:text-xs">{{ solicitacao.descricao }}</p>
             <div class="flex mt-2">
               <div class=" flex items-center text-white mt-[3px]">
-                <img src="../assets/location.png" class="filtro size-[19px]">
-                <span class="ml-2">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
+                <img src="../assets/location.png" class="filtro size-[19px] max-[600px]:size-[13px]">
+                <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
 
-                <div class="ml-8 flex items-center">
-                  <img src="../assets/comments.png" class="size-[19px] filtro">
-                  <span class="ml-2">{{ solicitacao.numComentarios }}</span>
+                <div class="ml-8 flex items-center max-[600px]:ml-4">
+                  <img src="../assets/comments.png" class="size-[19px] max-[600px]:size-[13px] filtro">
+                  <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.numComentarios }}</span>
                 </div>
 
-                <div class="ml-8 flex items-center">
-                  <img src="../assets/clock.svg" class="size-[22px] filtro-atencao"
+                <div class="ml-8 flex items-center max-[600px]:ml-4">
+                  <img src="../assets/clock.svg" class="size-[22px] max-[600px]:size-[16px] filtro-atencao"
                     v-if="solicitacao.dataConclusao == null">
-                  <img src="../assets/success.svg" class="size-[22px] filtro-sucesso" v-else>
+                  <img src="../assets/success.svg" class="size-[22px] max-[600px]:size-[16px] filtro-sucesso" v-else>
                 </div>
               </div>
 
@@ -227,6 +241,8 @@ export default {
       this.carregaInteracoes()
       this.carregaMenu()
       this.carregaImagem()
+      this.carregaTags()
+      document.addEventListener("click", this.fechaJanelas())
     }
   },
   data() {
@@ -234,8 +250,8 @@ export default {
       exibindo: "",
       solicitacoes: [],
       solicitacoesPesquisadas: [],
+      solicitacoesOrdenadas: [],
       usuario: {},
-      filtro: 0,
       carregando: true,
       aviso: '',
       avisoBox: false,
@@ -247,16 +263,24 @@ export default {
       menuBox: false,
       itemsMenu: [],
       pesquisa: '',
-      imagemUsuario: null
+      imagemUsuario: null,
+      tags: [],
+      filtrosOpen: false,
+      filtros: [],
     }
   },
   methods: {
+    fechaJanelas(event) {
+      if (this.$refs.filtrosBox && !this.$refs.filtrosBox.contains(event.target)) {
+        this.filtrosOpen = false
+      }
+    },
     async carregaImagem() {
       this.imagemUsuario = null
       try {
         this.imagemUsuario = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
       } catch (error) {
-        console.log("Ocorreu um erro ao carregar a foto de usuário: " + error)
+        console.error("Ocorreu um erro ao carregar a foto de usuário: " + error)
       }
       if (this.imagemUsuario != null) {
         if (!this.imagemUsuario.data) return;
@@ -267,10 +291,15 @@ export default {
 
     async carregaSolicitacoes() {
       try {
-        const response = await axios.get(`http://localhost:8080/solicitacao/solicitacoes/${this.filtro}`);
-        this.solicitacoes = response.data;
+        const response = await axios.post(`http://localhost:8080/solicitacao/solicitacoes`, this.filtros, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+
+        this.solicitacoes = response.data
         this.solicitacoesPesquisadas = this.solicitacoes
-        console.log(this.solicitacoes)
+        this.solicitacoesOrdenadas = this.solicitacoes
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);
       } finally {
@@ -281,8 +310,6 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8080/usuario/interacoes/${this.usuario.id}`);
         this.curtidos = response.data
-        console.log("id: " + this.usuario.id)
-        console.log("Curtidos:" + this.curtidos)
       } catch (error) {
         console.error("Erro ao buscar interações do usuário: ", error);
       }
@@ -307,12 +334,52 @@ export default {
         { id: 2, title: "Configurações", link: `menu/configuracoes`, svg: require("@/assets/settings.svg") },
         { id: 3, title: "Suporte", link: `menu/suporte`, svg: require("@/assets/support.svg") }
       )
-      console.log(this.itemsMenu)
+    },
+    async carregaTags() {
+      try {
+        const response = await axios.post("http://localhost:8080/tag/all")
+        this.tags = response.data
+      } catch (error) {
+        console.error("Erro ao carregar filtros: " + error)
+      }
     },
     mudaFiltro(filtro) {
-      this.filtro = filtro;
-      this.carregaSolicitacoes();
+      switch (filtro) {
+        case 1: this.ordenaLike(); break;
+        case 3: this.ordenaData(); break;
+      }
     },
+
+    ordenaData() {
+      this.solicitacoesPesquisadas.sort((a, b) => {
+        // Ordena pela data (mais recente primeiro)
+        const dataA = new Date(a.dataAbertura);
+        const dataB = new Date(b.dataAbertura);
+
+        if (dataA > dataB) return -1;
+        if (dataA < dataB) return 1;
+
+        // Se as datas forem iguais, ordena pelo número de likes (mais likes primeiro)
+        return b.numLikes - a.numLikes;
+      });
+    },
+
+    ordenaLike() {
+      this.solicitacoesPesquisadas.sort((a, b) => {
+        // Ordena pela data (mais recente primeiro)
+        const likesA = a.numLikes
+        const likesB = b.numLikes
+        const dataA = new Date(a.dataAbertura);
+        const dataB = new Date(b.dataAbertura);
+
+        if (likesA > likesB) return -1;
+        if (likesA < likesB) return 1;
+
+        // Se as datas forem iguais, ordena pelo número de likes (mais likes primeiro)
+        return dataB - dataA;
+      });
+    },
+
     logout() {
       const userStore = useUserStore();
       userStore.logout();
@@ -357,6 +424,9 @@ export default {
       } else {
         this.solicitacoesPesquisadas = this.solicitacoes
       }
+    },
+    filtros() {
+      this.carregaSolicitacoes()
     }
   }
 }

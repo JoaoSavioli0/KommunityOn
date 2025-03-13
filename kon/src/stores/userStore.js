@@ -22,8 +22,6 @@ export const useUserStore = defineStore('usuario', {
         this.usuario = response.data.usuario
         this.token = response.data.token
 
-        console.log("usuario store:" + JSON.stringify(this.usuario, null, 2))
-
         localStorage.setItem("token", this.token)
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -39,7 +37,6 @@ export const useUserStore = defineStore('usuario', {
       delete axios.defaults.headers.common["Authorization"]
     },
     async reconectaSessao() {
-      console.log("inicio reconecta sessao: " + this.usuario)
       if (!this.token) return
 
       try {
@@ -52,7 +49,6 @@ export const useUserStore = defineStore('usuario', {
         console.error("Sua sessão está expirada, deslogando...")
         this.logout()
       }
-      console.log("final reconecta sessao: " + this.usuario)
     }
   },
 });

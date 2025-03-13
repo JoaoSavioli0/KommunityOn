@@ -4,17 +4,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.micrometer.core.instrument.Tags;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -37,14 +34,12 @@ public class SolicitacaoService {
     @Autowired
     TagRepository tagRepository;
 
-    public List<SolicitacaoDTO> solicitacoes(int filtro){
-        if(filtro == 0){
+    public List<SolicitacaoDTO> solicitacoes(List<Integer> tagId){
+        if(tagId.isEmpty()){
             return solicitacaoRepository.findAllPorLike();
-        }else if(filtro<=8){
-            return solicitacaoRepository.findAllPorTag(Long.valueOf(filtro));
+        }else{
+            return solicitacaoRepository.findAllPorTag(tagId);
         }
-        
-        return null;
     }
 
     public Optional<List<Solicitacao>> solicitacoesUsuario(Long id){

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class SolicitacaoDTO {
 
-    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int num_likes, int num_comentarios, LocalDateTime dataConclusao, Boolean anonimo){
+    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int num_likes, int num_comentarios, LocalDateTime dataAbertura, LocalDateTime dataConclusao, Boolean anonimo){
         this.id = id;
         this.titulo = titulo;
         this.idUsuario = idUsuario;
@@ -12,6 +12,7 @@ public class SolicitacaoDTO {
         this.descricao = descricao;
         this.numLikes = num_likes;
         this.numComentarios = num_comentarios;
+        this.dataAbertura = dataAbertura;
         this.dataConclusao = dataConclusao;
         this.anonimo = anonimo;
     }
@@ -26,7 +27,9 @@ public class SolicitacaoDTO {
     private int numComentarios;
     private LocalDateTime dataConclusao;
     private Boolean anonimo;
+    private LocalDateTime dataAbertura;
 
+    
     //Getters & Setters
     public String getTitulo() {
         return titulo;
@@ -70,7 +73,12 @@ public class SolicitacaoDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
+    public LocalDateTime getDataAbertura() {
+        return dataAbertura;
+    }
+    public void setDataAbertura(LocalDateTime dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
     public LocalDateTime getDataConclusao() {
         return dataConclusao;
     }
