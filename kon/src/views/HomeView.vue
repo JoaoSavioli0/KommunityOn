@@ -87,7 +87,7 @@
 
     <RouterLink :to="`/solicitacoes/${usuario.id}`" class="p-0 relative w-full">
       <button
-        class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden mt-4 text-xl font-medium flex justify-center items-center relative z-[50] bg-[#F0F4F9] hover:bg-gray-200 transition-all">
+        class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden mt-4 text-xl font-medium flex justify-center items-center relative z-[50] bg-zinc-50 hover:bg-gray-200 transition-all">
         <span class="absolute">Suas solicitações</span>
       </button>
     </RouterLink>
@@ -98,7 +98,7 @@
     </div>
 
     <div class="w-full mt-6 relative">
-      <div class="py-[6px] rounded-md border-[1.5px] border-gray-800 w-full flex justify-start">
+      <div class="py-[6px] rounded-md border-[1.5px] border-gray-800 bg-zinc-50 w-full flex justify-start">
         <input type="text" class="px-[12px] focus:outline-none w-full bg-transparent text-gray-700"
           placeholder="Pesquisar" v-model="pesquisa">
         <div class="border-l-[1.5px] border-zinc-400 px-[10px] flex justify-center">
@@ -109,7 +109,7 @@
       </div>
 
       <div v-if="filtrosOpen" ref="filtrosBox"
-        class="absolute w-fit rounded-md bg-zinc-50 shadow-md px-4 py-2 end-0 z-[150] text-left">
+        class="absolute w-fit rounded-md bg-zinc-50 shadow-md px-4 py-2 end-0 z-[350] text-left">
         <span class="font-bold text-zinc-800 text-sm">Tags</span>
         <ul>
           <li v-for="tag in tags" :key="tag.id" class="flex items-center mt-[5px]">
@@ -127,29 +127,29 @@
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" checked value="destaque" class="hidden peer" />
           <div @click="mudaFiltro(1)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Destaques</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="proximo" class="hidden peer" />
           <div @click="mudaFiltro(2)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Próximos</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="recente" class="hidden peer" />
           <div @click="mudaFiltro(3)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
             Recentes</div>
         </label>
 
         <label class="w-[22%]">
-          <input type="radio" name="option" v-model="exibindo" value="todos" class="hidden peer" />
+          <input type="radio" name="option" v-model="exibindo" value="concluidos" class="hidden peer" />
           <div @click="mudaFiltro(4)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
-            Todos</div>
+            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+            Concluídos</div>
         </label>
       </div>
     </form>
@@ -158,8 +158,15 @@
       <span class="loading loading-ring loading-lg"></span>
     </div>
 
-    <div class="solicitacoes mt-8 flex flex-col gap-y-4 w-full">
+    <!-- Cajo não tenha solicitações -->
+    <div v-if="solicitacoesPesquisadas.length == 0 && !carregando"
+      class="w-full text-center py-6 text-xl font-medium text-zinc-800">
+      <span>Não foram encontradas solicitações para a sua pesquisa!</span>
+    </div>
 
+    <!-- Solicitações -->
+    <div v-if="solicitacoesPesquisadas.length != 0 && !carregando"
+      class="solicitacoes mt-8 flex flex-col gap-y-4 w-full">
       <div class="w-[97%] rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative"
         v-for="solicitacao in solicitacoesPesquisadas" :key="solicitacao.id">
         <RouterLink :to="`/solicitacao/${solicitacao.id}`" class="p-0 relative w-full">
@@ -189,8 +196,6 @@
         <div class="border-l-[1px] border-gray-600 pl-6 flex justify-center items-center absolute end-[-35px]">
           <span class="text-white font-semibold mr-4">{{ solicitacao.numLikes }}</span>
           <div class="size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">
-            <!-- <img src="../assets/heart.png" "
-              class="filtro-gray-800 size-[48px] hover:scale-[1.15] translate-y-[2px] transition-all duration-300"> -->
             <div class="heart-container" title="Like" @click.prevent="botaoCurtirEvent(solicitacao.id)">
               <input type="checkbox" class="checkbox" :id="solicitacao.id" :checked="curtidos.includes(solicitacao.id)">
               <div class="svg-container">
@@ -284,7 +289,7 @@ export default {
       }
       if (this.imagemUsuario != null) {
         if (!this.imagemUsuario.data) return;
-        // Adiciona o prefixo correto para exibir no <img>
+        // adiciona o prefixo que precisa pra conseguir exibir no <img>
         this.imagemUsuario = `data:image/png;base64,${this.imagemUsuario.data}`;
       }
     },
@@ -300,6 +305,7 @@ export default {
         this.solicitacoes = response.data
         this.solicitacoesPesquisadas = this.solicitacoes
         this.solicitacoesOrdenadas = this.solicitacoes
+        this.mudaFiltro(1)
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);
       } finally {
@@ -347,26 +353,38 @@ export default {
       switch (filtro) {
         case 1: this.ordenaLike(); break;
         case 3: this.ordenaData(); break;
+        case 4: this.ordenaConcluido(); break;
       }
     },
 
     ordenaData() {
+      this.solicitacoesPesquisadas = this.solicitacoes
+      this.pesquisaSolicitacao()
       this.solicitacoesPesquisadas.sort((a, b) => {
-        // Ordena pela data (mais recente primeiro)
+        // ordena por data
         const dataA = new Date(a.dataAbertura);
         const dataB = new Date(b.dataAbertura);
 
         if (dataA > dataB) return -1;
         if (dataA < dataB) return 1;
 
-        // Se as datas forem iguais, ordena pelo número de likes (mais likes primeiro)
+        // se as datas forem iguais ordena pelos likes
         return b.numLikes - a.numLikes;
       });
     },
 
+    ordenaConcluido() {
+      this.solicitacoesPesquisadas = this.solicitacoes
+      this.pesquisaSolicitacao()
+      this.solicitacoesPesquisadas = this.solicitacoesPesquisadas.filter(solicitacao => solicitacao.dataConclusao != null)
+    },
+
     ordenaLike() {
+      this.solicitacoesPesquisadas = this.solicitacoes
+      this.pesquisaSolicitacao()
+
       this.solicitacoesPesquisadas.sort((a, b) => {
-        // Ordena pela data (mais recente primeiro)
+        // ordena por data
         const likesA = a.numLikes
         const likesB = b.numLikes
         const dataA = new Date(a.dataAbertura);
@@ -375,7 +393,7 @@ export default {
         if (likesA > likesB) return -1;
         if (likesA < likesB) return 1;
 
-        // Se as datas forem iguais, ordena pelo número de likes (mais likes primeiro)
+        // se as datas forem iguais ordena pelos likes
         return dataB - dataA;
       });
     },
@@ -390,18 +408,8 @@ export default {
         this.idSolicitacaoInteragir = id;
         this.confirmaInteracaoBox = true;
       }
-    }
-  },
-  computed: {
-    primeiroNome() {
-      if (!this.usuario || !this.usuario.nome) {
-        return "";
-      }
-      return this.usuario.nome.split(' ')[0];
-    }
-  },
-  watch: {
-    pesquisa() {
+    },
+    pesquisaSolicitacao() {
       if (this.pesquisa) {
         const removerAcentos = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
@@ -424,6 +432,19 @@ export default {
       } else {
         this.solicitacoesPesquisadas = this.solicitacoes
       }
+    }
+  },
+  computed: {
+    primeiroNome() {
+      if (!this.usuario || !this.usuario.nome) {
+        return "";
+      }
+      return this.usuario.nome.split(' ')[0];
+    }
+  },
+  watch: {
+    pesquisa() {
+      this.pesquisaSolicitacao()
     },
     filtros() {
       this.carregaSolicitacoes()

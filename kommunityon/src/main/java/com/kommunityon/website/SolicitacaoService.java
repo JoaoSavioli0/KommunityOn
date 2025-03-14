@@ -36,9 +36,19 @@ public class SolicitacaoService {
 
     public List<SolicitacaoDTO> solicitacoes(List<Integer> tagId){
         if(tagId.isEmpty()){
-            return solicitacaoRepository.findAllPorLike();
+            Optional<List<SolicitacaoDTO>> solicitacoes = solicitacaoRepository.findAllSemFiltro();
+            if(solicitacoes.isPresent()){
+                return solicitacoes.get();
+            }else{
+                return new ArrayList<>();
+            }
         }else{
-            return solicitacaoRepository.findAllPorTag(tagId);
+            Optional<List<SolicitacaoDTO>> solicitacoes = solicitacaoRepository.findAllPorTag(tagId);
+            if(solicitacoes.isPresent()){
+                return solicitacoes.get();
+            }else{
+                return new ArrayList<>();
+            }
         }
     }
 

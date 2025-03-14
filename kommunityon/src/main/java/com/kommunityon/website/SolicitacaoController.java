@@ -25,11 +25,7 @@ public class SolicitacaoController {
     @PostMapping("/solicitacoes")
     public ResponseEntity<List<SolicitacaoDTO>> solicitacoes(@RequestBody List<Integer> tagId){
         List<SolicitacaoDTO> solicitacoesCarregadas = solicitacaoService.solicitacoes(tagId);
-        if(!solicitacoesCarregadas.isEmpty()){
-            return ResponseEntity.ok(solicitacoesCarregadas);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.ok(solicitacoesCarregadas);
     }
 
     @GetMapping("/solicitacoes/usuario/{id}")
