@@ -102,8 +102,8 @@
         <input type="text" class="px-[12px] focus:outline-none w-full bg-transparent text-gray-700"
           placeholder="Pesquisar" v-model="pesquisa">
         <div class="border-l-[1.5px] border-zinc-400 px-[10px] flex justify-center">
-          <button class="p-0" @click="filtrosOpen = !filtrosOpen">
-            <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza">
+          <button class="p-0" @click="filtrosOpen = !filtrosOpen" ref="filtrosButton">
+            <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza" >
           </button>
         </div>
       </div>
@@ -247,7 +247,7 @@ export default {
       this.carregaMenu()
       this.carregaImagem()
       this.carregaTags()
-      document.addEventListener("click", this.fechaJanelas())
+      document.addEventListener("click", this.fechaJanelas)
     }
   },
   data() {
@@ -276,7 +276,7 @@ export default {
   },
   methods: {
     fechaJanelas(event) {
-      if (this.$refs.filtrosBox && !this.$refs.filtrosBox.contains(event.target)) {
+      if (this.$refs.filtrosBox && !this.$refs.filtrosBox.contains(event.target) && !this.$refs.filtrosButton.contains(event.target)) {
         this.filtrosOpen = false
       }
     },
@@ -352,6 +352,7 @@ export default {
     mudaFiltro(filtro) {
       switch (filtro) {
         case 1: this.ordenaLike(); break;
+        case 2:
         case 3: this.ordenaData(); break;
         case 4: this.ordenaConcluido(); break;
       }

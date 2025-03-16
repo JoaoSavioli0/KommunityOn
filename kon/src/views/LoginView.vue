@@ -92,7 +92,6 @@ export default {
                     this.loginObj.cpfOuEmail = this.cpfOuEmail
                     this.loginObj.senha = this.senha
                     await useUserStore().login(this.loginObj)
-                    console.log("Usuario userstore: " + useUserStore().usuario)
                     if (useUserStore().usuario != null){
                         this.$router.push("/home")
                     }else{
