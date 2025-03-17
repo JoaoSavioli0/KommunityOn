@@ -32,6 +32,18 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>{
        "INNER JOIN SolicitacaoTag st ON st.solicitacaoId = s.id " +
        "WHERE st.tag.id IN (:tagId)")
     Optional<List<SolicitacaoDTO>> findAllPorTag(@Param("tagId") List<Integer> tagId);
+
+    @Query("SELECT s " +
+       "FROM Solicitacao s " +
+       "WHERE s.usuario.id = :id")
+    Optional<List<Solicitacao>> findAllPorUsuario(@Param("id") Long id);
+
+    @Query("SELECT s " +
+       "FROM Solicitacao s " +
+       "INNER JOIN SolicitacaoTag st ON st.solicitacaoId = s.id " +
+       "WHERE st.tag.id IN (:tagId) " +
+       "AND s.usuario.id = :id")
+    Optional<List<Solicitacao>> findAllPorUsuarioComTag(@Param("id") Long id, @Param("tagId") List<Integer> tagId);
     
     @Transactional
     @Modifying

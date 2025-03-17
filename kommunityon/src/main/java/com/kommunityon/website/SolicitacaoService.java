@@ -52,9 +52,22 @@ public class SolicitacaoService {
         }
     }
 
-    public Optional<List<Solicitacao>> solicitacoesUsuario(Long id){
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return solicitacaoRepository.findByUsuario(usuario.get());
+    public List<Solicitacao> solicitacoesUsuario(Long id, List<Integer> tagId){
+        if(tagId.isEmpty()){
+            Optional<List<Solicitacao>> solicitacoes = solicitacaoRepository.findAllPorUsuario(id);
+            if(solicitacoes.isPresent()){
+                return solicitacoes.get();
+            }else{
+                return new ArrayList<>();
+            }
+        }else{
+            Optional<List<Solicitacao>> solicitacoes = solicitacaoRepository.findAllPorUsuarioComTag(id, tagId);
+            if(solicitacoes.isPresent()){
+                return solicitacoes.get();
+            }else{
+                return new ArrayList<>();
+            }
+        }
     }
 
     public Optional<Solicitacao> solicitacaoPorId(Long id){

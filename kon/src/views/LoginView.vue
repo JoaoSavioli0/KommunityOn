@@ -3,7 +3,7 @@
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center">
                 <div key="divLogin"
-                    class="w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    class="w-[300px] lg:w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
                     <div class="w-full">
                         <div class="w-full flex">
                             <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
@@ -75,10 +75,10 @@ export default {
             usuario: null
         }
     },
-    mounted(){
+    mounted() {
         const userStore = useUserStore()
         userStore.reconectaSessao()
-        if(userStore.usuario!=null){
+        if (userStore.usuario != null) {
             this.$router.push("/home")
         }
     },
@@ -92,9 +92,9 @@ export default {
                     this.loginObj.cpfOuEmail = this.cpfOuEmail
                     this.loginObj.senha = this.senha
                     await useUserStore().login(this.loginObj)
-                    if (useUserStore().usuario != null){
+                    if (useUserStore().usuario != null) {
                         this.$router.push("/home")
-                    }else{
+                    } else {
                         this.aviso = "Erro ao fazer login."
                     }
                 } catch (err) {

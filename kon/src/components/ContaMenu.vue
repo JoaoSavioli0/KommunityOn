@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full pl-[190px] h-max pb-20 z-[100]">
+    <div class="w-full lg:pl-[190px] h-max pb-20 z-[100]">
         <div class="flex flex-col items-start ">
             <h1 class="font-bold text-gray-800 text-2xl mt-2">Conta</h1>
             <div class="w-full flex flex-col items-start mt-6">
@@ -155,6 +155,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="w-full text-left w-full relative mt-8">
+                    <h2 class="text-md font-medium text-gray-700 bg-gray-100 pr-[15px] z-[50] relative w-fit">
+                        Segurança e privacidade</h2>
+                    <div class="absolute h-[1px] w-full bg-gray-400 top-[50%] z-[40]"></div>
+                </div>
+
+                <div class="w-full max-w-full flex flex-wrap gap-2 mt-4">
+                    <button class="w-full rounded-md bg-gray-300 text-red-600 py-[3px] font-medium">Alterar
+                        senha</button>
                 </div>
 
             </div>

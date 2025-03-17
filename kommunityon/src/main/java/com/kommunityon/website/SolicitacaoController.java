@@ -28,14 +28,10 @@ public class SolicitacaoController {
         return ResponseEntity.ok(solicitacoesCarregadas);
     }
 
-    @GetMapping("/solicitacoes/usuario/{id}")
-    public ResponseEntity<List<Solicitacao>> solicitacoesUsuario(@PathVariable Long id){
-        Optional<List<Solicitacao>> solicitacoesCarregadas = solicitacaoService.solicitacoesUsuario(id);
-        if(solicitacoesCarregadas.isPresent()){
-            return ResponseEntity.ok(solicitacoesCarregadas.get());
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @PostMapping("/solicitacoes/usuario/{id}")
+    public ResponseEntity<List<Solicitacao>> solicitacoesUsuario(@PathVariable Long id, @RequestBody List<Integer> tagId){
+        List<Solicitacao> solicitacoesCarregadas = solicitacaoService.solicitacoesUsuario(id, tagId);
+        return ResponseEntity.ok(solicitacoesCarregadas);
     }
 
     @PostMapping("/new")

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex justify-center flex-col items-center pb-20">
+  <div class="relative flex justify-center flex-col items-center">
     <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
       <div
         class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
@@ -38,9 +38,9 @@
     </div>
 
     <div
-      class="fixed w-[400px] py-4 rounded-full bg-gray-900 text-gray-100 bottom-[20px] border-2 border-gray-100 z-[200] animate__animated"
-      :class="([avisoBox ? 'animate__fadeIn' : 'animate__fadeOut'])">
-      {{ aviso }}
+      class="fixed w-[300px] lg:w-[400px] py-4 rounded-full bg-gray-900 text-gray-100 bottom-[20px] border-2 border-gray-100 z-[200] animate__animated"
+      :class="([aviso ? 'animate__fadeIn' : 'animate__fadeOut'])">
+      {{ avisoTxt }}
     </div>
 
     <div class="w-full flex justify-between">
@@ -58,14 +58,16 @@
 
     <div class="w-full flex items-center mt-8">
       <div class="flex flex-col">
-        <h1 class="text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{ primeiroNome
-        }}</span></h1>
-        <p class="text-left text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na sua região!
+        <h1 class="text-3xl lg:text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{
+          primeiroNome
+            }}</span></h1>
+        <p class="text-left text-md lg:text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na
+          sua região!
         </p>
       </div>
       <RouterLink to="menu/conta" class="p-0 rounded-full">
         <div
-          class="w-[120px] h-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
+          class="size-[90px] lg:size-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
           :class="[imagemUsuario ? 'bg-transparent' : 'bg-gray-900']">
           <img v-if="imagemUsuario" :src="imagemUsuario" class="h-full w-full object-cover absolute">
           <img v-else src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
@@ -103,7 +105,7 @@
           placeholder="Pesquisar" v-model="pesquisa">
         <div class="border-l-[1.5px] border-zinc-400 px-[10px] flex justify-center">
           <button class="p-0" @click="filtrosOpen = !filtrosOpen" ref="filtrosButton">
-            <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza" >
+            <img src="../assets/equalizer.png" class="w-[25px] h-auto filtro-cinza">
           </button>
         </div>
       </div>
@@ -126,29 +128,29 @@
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" checked value="destaque" class="hidden peer" />
-          <div @click="mudaFiltro(1)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+          <div @click="filtro = 1"
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
             Destaques</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="proximo" class="hidden peer" />
-          <div @click="mudaFiltro(2)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+          <div @click="filtro = 2"
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
             Próximos</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="recente" class="hidden peer" />
-          <div @click="mudaFiltro(3)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+          <div @click="filtro = 3"
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
             Recentes</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="concluidos" class="hidden peer" />
-          <div @click="mudaFiltro(4)"
-            class="cursor-pointer py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white">
+          <div @click="filtro = 4"
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
             Concluídos</div>
         </label>
       </div>
@@ -193,9 +195,11 @@
             </div>
           </div>
         </RouterLink>
-        <div class="border-l-[1px] border-gray-600 pl-6 flex justify-center items-center absolute end-[-35px]">
+        <div
+          class="border-l-[1px] border-gray-600 pl-6 flex justify-center items-center absolute end-[-23px] lg:end-[-35px]">
           <span class="text-white font-semibold mr-4">{{ solicitacao.numLikes }}</span>
-          <div class="size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">
+          <div
+            class="size-[50px] lg:size-[70px] rounded-full bg-[#F0F4F9] flex items-center justify-center cursor-pointer">
             <div class="heart-container" title="Like" @click.prevent="botaoCurtirEvent(solicitacao.id)">
               <input type="checkbox" class="checkbox" :id="solicitacao.id" :checked="curtidos.includes(solicitacao.id)">
               <div class="svg-container">
@@ -255,11 +259,10 @@ export default {
       exibindo: "",
       solicitacoes: [],
       solicitacoesPesquisadas: [],
-      solicitacoesOrdenadas: [],
       usuario: {},
       carregando: true,
       aviso: '',
-      avisoBox: false,
+      avisoTxt: '',
       avisoBoxTimeOutExec: false,
       curtidos: [],
       like: false,
@@ -272,6 +275,7 @@ export default {
       tags: [],
       filtrosOpen: false,
       filtros: [],
+      filtro: 1,
     }
   },
   methods: {
@@ -303,9 +307,8 @@ export default {
         })
 
         this.solicitacoes = response.data
-        this.solicitacoesPesquisadas = this.solicitacoes
-        this.solicitacoesOrdenadas = this.solicitacoes
-        this.mudaFiltro(1)
+        this.solicitacoesPesquisadas = [...this.solicitacoes]
+        this.filtro = 1
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);
       } finally {
@@ -328,10 +331,13 @@ export default {
           this.carregaSolicitacoes();
         } else {
           this.aviso = response.data
-          this.avisoBox = true
         }
       } catch (error) {
         this.aviso = error
+      }
+      if (this.aviso) {
+        this.avisoTxt = this.aviso
+        setTimeout(() => { this.aviso = '' }, 4000);
       }
     },
     carregaMenu() {
@@ -360,7 +366,7 @@ export default {
 
     ordenaData() {
       this.solicitacoesPesquisadas = this.solicitacoes
-      this.pesquisaSolicitacao()
+      if (this.pesquisa) { this.pesquisaSolicitacao() }
       this.solicitacoesPesquisadas.sort((a, b) => {
         // ordena por data
         const dataA = new Date(a.dataAbertura);
@@ -376,13 +382,13 @@ export default {
 
     ordenaConcluido() {
       this.solicitacoesPesquisadas = this.solicitacoes
-      this.pesquisaSolicitacao()
+      if (this.pesquisa) { this.pesquisaSolicitacao() }
       this.solicitacoesPesquisadas = this.solicitacoesPesquisadas.filter(solicitacao => solicitacao.dataConclusao != null)
     },
 
     ordenaLike() {
       this.solicitacoesPesquisadas = this.solicitacoes
-      this.pesquisaSolicitacao()
+      if (this.pesquisa) { this.pesquisaSolicitacao() }
 
       this.solicitacoesPesquisadas.sort((a, b) => {
         // ordena por data
@@ -416,7 +422,7 @@ export default {
 
         const pesquisaNormalizada = removerAcentos(this.pesquisa);
 
-        this.solicitacoesPesquisadas = this.solicitacoes.filter((s) => {
+        this.solicitacoesPesquisadas = this.solicitacoesPesquisadas.filter((s) => {
           const tituloNormalizado = removerAcentos(s.titulo);
           const descricaoNormalizada = removerAcentos(s.descricao);
           const bairroNormalizado = removerAcentos(s.bairro);
@@ -431,7 +437,7 @@ export default {
           );
         });
       } else {
-        this.solicitacoesPesquisadas = this.solicitacoes
+        this.mudaFiltro(this.filtro)
       }
     }
   },
@@ -449,6 +455,9 @@ export default {
     },
     filtros() {
       this.carregaSolicitacoes()
+    },
+    filtro() {
+      this.mudaFiltro(this.filtro)
     }
   }
 }
@@ -481,6 +490,13 @@ export default {
 
 .novachamada-button:hover .novachamada2 {
   transform: translateY(0px);
+}
+
+@media screen and (max-width:640px) {
+  .heart-container {
+    width: 33px !important;
+    height: 33px !important;
+  }
 }
 
 .heart-container {

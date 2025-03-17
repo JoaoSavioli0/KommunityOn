@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex justify-center flex-col items-center pb-20">
+    <div class="relative flex justify-center flex-col items-center w-full">
         <div class="w-full">
             <router-link to="/home" class="p-0">
                 <button @click=""
@@ -10,11 +10,12 @@
             </router-link>
         </div>
 
-        <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
+
+        <div class="fixed h-screen w-full bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
             <div
-                class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
-                <h1 class="text-2xl font-semibold">Confirmar interação?</h1>
-                <p class="my-2">Essa ação não poderá ser revertida.</p>
+                class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+                <h1 class="text-xl lg:text-2xl font-semibold text-start lg:text-center">Confirmar interação?</h1>
+                <p class="my-2 text-start lg:text-center">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
                     <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaInteracaoBox = false, curteSolicitacao()">Confirmar</button>
@@ -27,8 +28,8 @@
 
         <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="avisoCurtirBox">
             <div
-                class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
-                <h1 class="text-2xl font-semibold">{{ aviso }}</h1>
+                class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+                <h1 class="text-xl lg:text-2xl font-semibold">{{ aviso }}</h1>
                 <div class="w-full flex justify-center mt-4">
                     <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="avisoCurtirBox = false">Ok</button>
@@ -38,9 +39,10 @@
 
         <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaExcluirBox">
             <div
-                class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
-                <h1 class="text-2xl font-semibold">Deseja excluir essa solicitação?</h1>
-                <p class="my-2">Essa ação não poderá ser revertida.</p>
+                class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+                <h1 class="text-xl lg:text-2xl font-semibold text-start lg:text-center">Deseja excluir essa solicitação?
+                </h1>
+                <p class="my-2 text-start lg:text-center">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
                     <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaExcluirBox = false, excluiSolicitacao()">Confirmar</button>
@@ -53,9 +55,10 @@
 
         <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaConcluirBox">
             <div
-                class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
-                <h1 class="text-2xl font-semibold">Deseja concluir essa solicitação?</h1>
-                <p class="my-2">Essa ação não poderá ser revertida.</p>
+                class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+                <h1 class="text-xl lg:text-2xl font-semibold text-start lg:text-center">Deseja concluir essa
+                    solicitação?</h1>
+                <p class="my-2 text-start lg:text-center">Essa ação não poderá ser revertida.</p>
                 <div class="w-full flex justify-start mt-4">
                     <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
                         @click.prevent="confirmaConcluirBox = false, concluiSolicitacao()">Confirmar</button>
@@ -66,7 +69,7 @@
             </div>
         </div>
 
-        <div class="w-full flex items-center mt-12 text-left">
+        <div class="w-full flex items-center mt-12 text-left ">
             <div class="rounded-full size-[40px] bg-gray-900 overflow-hidden">
                 <img v-if="imagemUsuario && !solicitacao.anonimo" :src="imagemUsuario"
                     class="h-full w-full object-cover ">
@@ -100,19 +103,19 @@
         </div>
 
         <div class="w-full mt-2 text-left">
-            <h1 class="font-semibold text-4xl">{{ solicitacao.titulo }}</h1>
-            <h2 class="text-gray-600 text-2xl font-medium">Em {{ solicitacao.bairro }}</h2>
+            <h1 class="font-semibold text-3xl lg:text-4xl">{{ solicitacao.titulo }}</h1>
+            <h2 class="text-gray-600 text-xl lg:text-2xl font-medium">Em {{ solicitacao.bairro }}</h2>
         </div>
 
         <div class="mt-4 font-lg text-justify font-medium w-full">
             {{ solicitacao.descricao }}
         </div>
 
-        <div class="w-full flex mt-6">
+        <div class="w-full flex mt-6 flex-wrap gap-x-4 gap-y-2">
             <button class="flex cursor-pointer" @click="confirmaInteracaoBox = true">
                 <div class="bg-gray-900 rounded-l-md pl-2 pr-4 h-[32px] w-fit flex items-center z-[40] relative">
                     <img src="../assets/heart.png" class="filtro size-[20px]">
-                    <span class="ml-2 text-gray-100 font-medium">Curtir</span>
+                    <span class="ml-2 text-gray-100 font-medium">{{ solicitacaoCurtida ? 'curtido' : 'curtir' }}</span>
                     <div class="absolute bg-white rotate-45 z-[50] size-[13px] end-[-7px] top-[9px] "></div>
                 </div>
 
@@ -123,18 +126,18 @@
                 </div>
             </button>
 
-            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4">
+            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center">
                 <img src="../assets/share.svg" class="filtro size-[20px]">
                 <span class="ml-2 text-gray-100 font-medium">Compartilhar</span>
             </button>
 
-            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center ml-4"
+            <button class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center"
                 v-if="solicitacaoPropria" @click="confirmaExcluirBox = true">
                 <img src="../assets/trash.svg" class="filtro size-[20px]">
                 <span class="ml-2 text-gray-100 font-medium">Excluir</span>
             </button>
 
-            <div class="relative ml-4">
+            <div class="relative">
                 <button
                     class="bg-gray-900 rounded-md text-white px-2 h-[32px] w-fit flex items-center justify-center relative z-[50]"
                     v-if="usuarioAdmin" @click="opcoesAdmin = !opcoesAdmin">
@@ -220,7 +223,8 @@ export default {
             usuarioAdmin: false,
             opcoesAdmin: false,
             imagemUsuario: null,
-            tags: []
+            tags: [],
+            curtidos: [],
         }
     },
     mounted() {
@@ -230,6 +234,7 @@ export default {
         } else {
             this.usuario = useUserStore().usuario
             this.carregaSolicitacao()
+            this.carregaInteracoes()
             this.usuarioAdmin = this.usuario.tipo === "ADM"
         }
     },
@@ -259,6 +264,15 @@ export default {
 
             } catch (error) {
                 console.error("Ocorreu um erro ao carregar a solicitação: " + error)
+            }
+        },
+
+        async carregaInteracoes() {
+            try {
+                const response = await axios.get(`http://localhost:8080/usuario/interacoes/${this.usuario.id}`);
+                this.curtidos = response.data
+            } catch (error) {
+                console.error("Erro ao buscar interações do usuário: ", error);
             }
         },
 
@@ -311,6 +325,7 @@ export default {
                     this.aviso = response.data
                     this.avisoCurtirBox = true
                 }
+                this.carregaInteracoes()
             } catch (error) {
                 console.error("Erro ao curtir solicitação: " + error)
             }
@@ -332,6 +347,11 @@ export default {
             } catch (error) {
                 console.log("Erro ao concluir solicitação: " + error)
             }
+        }
+    },
+    computed: {
+        solicitacaoCurtida() {
+            return this.curtidos.includes(Number(this.id));
         }
     }
 }

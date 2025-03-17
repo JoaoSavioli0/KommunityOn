@@ -1,9 +1,9 @@
 <template>
-  <div class="flex justify-center items-center h-full w-full bg-[#F0F4F9]">
-  <div class="w-[600px] pt-[100px] bg-[#F0F4F9] min-h-screen">
-    <router-view />
+  <div class="h-screen w-full py-8 lg:py-20 bg-[#F0F4F9]">
+    <div class="lg:px-[500px] bg-[#F0F4F9] flex justify-center items-center  px-4 lg:px-0">
+      <router-view />
+    </div>
   </div>
-</div>
 </template>
 
 <style>
