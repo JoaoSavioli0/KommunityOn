@@ -6,24 +6,29 @@ public class NewSolicitacaoDTO {
     private Long idUsuario;
     private String bairro;
     private String descricao;
-    private Boolean anonimo;
+    private int anonimo;
 
-    //Getters & Setters
+    // Getters & Setters
     public String getTitulo() {
         return titulo;
     }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
     public String getBairro() {
         return bairro;
     }
+
     public void setBairro(String bairro) {
         this.bairro = bairro;
     }
+
     public String getDescricao() {
         return descricao;
     }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -36,12 +41,12 @@ public class NewSolicitacaoDTO {
         this.idUsuario = idUsuario;
     }
 
-    public Boolean getAnonimo() {
+    public int getAnonimo() {
         return anonimo;
     }
 
-    public void setAnonimo(Boolean anonimo) {
+    public void setAnonimo(int anonimo) {
         this.anonimo = anonimo;
     }
-    
+
 }

@@ -17,9 +17,14 @@ public class CodigoRecuperacaoController {
 
     @Autowired
     CodigoRecuperacaoService codigoRecuperacaoService;
-    
+
     @GetMapping("/envia_codigo")
-    ResponseEntity<?> enviaCodigo(@RequestParam("cpfOuEmail") String cpfOuEmail){
+    ResponseEntity<?> enviaCodigo(@RequestParam("cpfOuEmail") String cpfOuEmail) {
         CodigoRecuperacao codigo = codigoRecuperacaoService.geraCodigo(cpfOuEmail);
+        if (codigo != null) {
+            return ResponseEntity.ok(codigo);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

@@ -44,7 +44,7 @@
                         <img src="../assets/check.png" class="filtro2 size-[30px]">
                     </div>
                 </div>
-                <div class="flex items-center ml-4 mt-2"><input type="checkbox" v-model="esconderNome"
+                <div class="flex items-center ml-4 mt-2"><input type="checkbox" v-model="anonimoCheckBox"
                         class="h-[18px] w-[18px]"><span class="ml-2 font-normal text-lg">Ocultar
                         nome</span>
                 </div>
@@ -83,7 +83,8 @@ export default {
             titulo: '',
             bairro: '',
             descricao: '',
-            esconderNome: false,
+            anonimoCheckBox: false,
+            esconderNome: 0,
             temSolicitacaoAberta: false,
         }
     },
@@ -102,7 +103,8 @@ export default {
                 return
             }
             try {
-                console.log("esconderNome: " + this.esconderNome)
+                console.log("idUsuario: " + this.usuario.id)
+                console.log("anonimo: " + this.esconderNome)
                 const response = await axios.post("http://localhost:8080/solicitacao/new", {
                     titulo: this.titulo,
                     bairro: this.bairro,
@@ -131,6 +133,12 @@ export default {
             } catch (e) {
                 console.error("Ocorreu um erro ao verificar se o usuário possui solicitação aberta: " + e)
             }
+        }
+    },
+    watch:{
+        anonimoCheckBox(){
+            this.anonimoCheckBox ? this.esconderNome = 1 : this.esconderNome = 0
+            console.log(this.esconderNome)
         }
     }
 }

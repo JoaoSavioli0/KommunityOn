@@ -9,30 +9,31 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="SOLICITACAO_TAG")
+@Table(name = "SOLICITACAO_TAG")
 @IdClass(SolicitacaoTagPK.class)
 public class SolicitacaoTag {
     @Id
-    @Column(name="ID_SOLICITACAO")
+    @Column(name = "ID_SOLICITACAO")
     private Long solicitacaoId;
 
     @Id
     @Column(name = "ID_TAG")
-    private Long tagId;  // Manter como Long para corresponder a SolicitaçãoTagPK
+    private Long tagId; // Manter como Long para corresponder a SolicitaçãoTagPK
 
     @ManyToOne
     @JoinColumn(name = "ID_TAG", insertable = false, updatable = false)
-    private Tag tag;  // Relacionamento separado
+    private Tag tag; // Relacionamento separado
 
-    public SolicitacaoTag(Long solicitacaoId, Tag tag){
+    public SolicitacaoTag(Long solicitacaoId, Tag tag) {
         this.solicitacaoId = solicitacaoId;
         this.tag = tag;
+        this.tagId = tag.getId();
     }
 
     public SolicitacaoTag() {
     }
 
-    //Getters e Setters
+    // Getters e Setters
     public Long getSolicitacaoId() {
         return solicitacaoId;
     }
@@ -57,5 +58,4 @@ public class SolicitacaoTag {
         this.tagId = tagId;
     }
 
-    
 }

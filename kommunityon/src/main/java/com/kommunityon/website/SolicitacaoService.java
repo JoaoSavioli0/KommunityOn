@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,62 +33,62 @@ public class SolicitacaoService {
     @Autowired
     TagRepository tagRepository;
 
-    public List<SolicitacaoDTO> solicitacoes(List<Integer> tagId){
-        if(tagId.isEmpty()){
+    public List<SolicitacaoDTO> solicitacoes(List<Integer> tagId) {
+        if (tagId.isEmpty()) {
             Optional<List<SolicitacaoDTO>> solicitacoes = solicitacaoRepository.findAllSemFiltro();
-            if(solicitacoes.isPresent()){
+            if (solicitacoes.isPresent()) {
                 return solicitacoes.get();
-            }else{
+            } else {
                 return new ArrayList<>();
             }
-        }else{
+        } else {
             Optional<List<SolicitacaoDTO>> solicitacoes = solicitacaoRepository.findAllPorTag(tagId);
-            if(solicitacoes.isPresent()){
+            if (solicitacoes.isPresent()) {
                 return solicitacoes.get();
-            }else{
+            } else {
                 return new ArrayList<>();
             }
         }
     }
 
-    public List<Solicitacao> solicitacoesUsuario(Long id, List<Integer> tagId){
-        if(tagId.isEmpty()){
+    public List<Solicitacao> solicitacoesUsuario(Long id, List<Integer> tagId) {
+        if (tagId.isEmpty()) {
             Optional<List<Solicitacao>> solicitacoes = solicitacaoRepository.findAllPorUsuario(id);
-            if(solicitacoes.isPresent()){
+            if (solicitacoes.isPresent()) {
                 return solicitacoes.get();
-            }else{
+            } else {
                 return new ArrayList<>();
             }
-        }else{
+        } else {
             Optional<List<Solicitacao>> solicitacoes = solicitacaoRepository.findAllPorUsuarioComTag(id, tagId);
-            if(solicitacoes.isPresent()){
+            if (solicitacoes.isPresent()) {
                 return solicitacoes.get();
-            }else{
+            } else {
                 return new ArrayList<>();
             }
         }
     }
 
-    public Optional<Solicitacao> solicitacaoPorId(Long id){
+    public Optional<Solicitacao> solicitacaoPorId(Long id) {
         Optional<Solicitacao> solicitacao = solicitacaoRepository.findById(id);
         return solicitacao;
     }
 
-    public void atualizarNumComentarios(int numComentarios, Long id){
+    public void atualizarNumComentarios(int numComentarios, Long id) {
         solicitacaoRepository.incrementaComentario(numComentarios, id);
     }
 
-    public Solicitacao registrar(NewSolicitacaoDTO newSolicitacaoDTO){
+    public Solicitacao registrar(NewSolicitacaoDTO newSolicitacaoDTO) {
         Optional<Long> solicitacaoAberta = solicitacaoAberta(newSolicitacaoDTO.getIdUsuario());
 
-        if(solicitacaoAberta.isPresent()){
+        if (solicitacaoAberta.isPresent()) {
             return null;
         }
 
-        Optional<Usuario> usuario = usuarioRepository.findById(newSolicitacaoDTO.getIdUsuario());      
+        Optional<Usuario> usuario = usuarioRepository.findById(newSolicitacaoDTO.getIdUsuario());
         Solicitacao solicitacao = new Solicitacao();
 
-        if(usuario.isPresent()){
+        if (usuario.isPresent()) {
             solicitacao.setBairro(newSolicitacaoDTO.getBairro());
             solicitacao.setDescricao(newSolicitacaoDTO.getDescricao());
             solicitacao.setTitulo(newSolicitacaoDTO.getTitulo());
@@ -99,38 +98,50 @@ public class SolicitacaoService {
 
         Solicitacao solicitacaoCadastrada = solicitacaoRepository.save(solicitacao);
 
-        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(), solicitacaoCadastrada.getId());
+        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(),
+                solicitacaoCadastrada.getId());
 
         return solicitacaoCadastrada;
     }
 
-    public void defineTags(String descricao, String titulo, Long idSolicitacao){
-        Map<String, Integer> tags = Map.of(
-            "Trânsito", 1,
-            "Saúde", 2,
-            "Avenida", 3,
-            "Energia", 4,
-            "Inclusão", 5,
-            "Violência", 6,
-            "Entretenimento", 7,
-            "Serviços públicos", 8
-        );
+    public void defineTags(String descricao, String titulo, Long idSolicitacao) {
 
-        List<String> palavrasTransito = Arrays.asList("trânsito", "transito", "carro", "moto", "caminhões", "caminhoes", "semaforo", "semáforo", "lombada", "acidente", "engarrafamento", "ciclovia", "bicicleta", "ruas", "avenidas");
+        List<String> palavrasTransito = Arrays.asList("trânsito", "transito", "carro", "moto", "caminhões", "caminhoes",
+                "semaforo", "semáforo", "lombada", "acidente", "engarrafamento", "ciclovia", "bicicleta", "ruas",
+                "avenidas");
 
-        List<String> palavrasSaude = Arrays.asList("hospital", "ubs", "uti", "saude", "saúde", "remedio", "remédio", "farmacia", "farmácia", "doente", "medico", "médico", "postinho", "vacina");
+        List<String> palavrasSaude = Arrays.asList("hospital", "ubs", "uti", "saude", "saúde", "remedio", "remédio",
+                "farmacia", "farmácia", "doente", "medico", "médico", "postinho", "vacina");
 
-        List<String> palavrasViasDeTransito = Arrays.asList("estrada", "rodovia", "pavimento", "faixa de pedestre", "sinalização", "sinalizacao", "sinal", "placa", "cruzamento", "via", "balsa", "túnel","tunel", "ponte", "avenida", "semáforo","semaforo", "mão única","mao unica", "mão dupla", "mao dupla", "dobradura", "faixa", "pedágio", "pedagio");
+        List<String> palavrasViasDeTransito = Arrays.asList("estrada", "rodovia", "pavimento", "faixa de pedestre",
+                "sinalização", "sinalizacao", "sinal", "placa", "cruzamento", "via", "balsa", "túnel", "tunel", "ponte",
+                "avenida", "semáforo", "semaforo", "mão única", "mao unica", "mão dupla", "mao dupla", "dobradura",
+                "faixa", "pedágio", "pedagio");
 
-        List<String> palavrasEnergia = Arrays.asList("energia", "luz", "elétrica", "eletrica", "iluminação","iluminacao", "rede elétrica", "rede eletrica", "gerador", "energia solar", "energia renovável", "energia renovavel", "eletricidade", "falta de energia", "instalação elétrica", "instalaçao eletrica", "fios", "transformador", "geração de energia", "gerador", "fornecimento de energia");
+        List<String> palavrasEnergia = Arrays.asList("energia", "luz", "elétrica", "eletrica", "iluminação",
+                "iluminacao", "rede elétrica", "rede eletrica", "gerador", "energia solar", "energia renovável",
+                "energia renovavel", "eletricidade", "falta de energia", "instalação elétrica", "instalaçao eletrica",
+                "fios", "transformador", "geração de energia", "gerador", "fornecimento de energia");
 
-        List<String> palavrasInclusao = Arrays.asList("acessibilidade", "inclusão", "inclusao", "deficiência", "deficiencia", "cadeirante", "deficiente", "surdo", "cego", "comunidade", "lgbt", "gay", "homossexual", "bissexual", "transsexual", "igualdade", "educação inclusiva", "mobilidade reduzida", "idioma", "linguagem de sinais", "diversidade", "exclusão social", "emprego inclusivo");
+        List<String> palavrasInclusao = Arrays.asList("acessibilidade", "inclusão", "inclusao", "deficiência",
+                "deficiencia", "cadeirante", "deficiente", "surdo", "cego", "comunidade", "lgbt", "gay", "homossexual",
+                "bissexual", "transsexual", "igualdade", "educação inclusiva", "mobilidade reduzida", "idioma",
+                "linguagem de sinais", "diversidade", "exclusão social", "emprego inclusivo");
 
-        List<String> palavrasViolencia = Arrays.asList("violência", "violencia", "agressão", "agressao", "assalto", "furto", "roubo", "homicídio", "homicidio", "pedofilia", "assassinato", "bullying", "sequestro", "abuso", "abusador", "estupro", "estuprador", "agressor", "vítima", "vitima", "discriminação", "discriminaçao", "tráfico", "trafico", "criminoso", "ataque", "violência doméstica", "ameaça", "crime");
+        List<String> palavrasViolencia = Arrays.asList("violência", "violencia", "agressão", "agressao", "assalto",
+                "furto", "roubo", "homicídio", "homicidio", "pedofilia", "assassinato", "bullying", "sequestro",
+                "abuso", "abusador", "estupro", "estuprador", "agressor", "vítima", "vitima", "discriminação",
+                "discriminaçao", "tráfico", "trafico", "criminoso", "ataque", "violência doméstica", "ameaça", "crime");
 
-        List<String> palavrasEntretenimento = Arrays.asList("cinema", "filme", "série", "serie", "música", "musica", "show", "evento", "teatro", "dança", "cultura", "livros", "entrevista", "esporte", "jogo", "diversão", "vídeo", "clipe", "artista", "comédia", "festival");
+        List<String> palavrasEntretenimento = Arrays.asList("cinema", "filme", "série", "serie", "música", "musica",
+                "show", "evento", "teatro", "dança", "cultura", "livros", "entrevista", "esporte", "jogo", "diversão",
+                "vídeo", "clipe", "artista", "comédia", "festival");
 
-        List<String> palavrasServicosPublicos = Arrays.asList("saneamento", "limpeza", "energia", "água", "agua", "esgoto", "coleta", "lixo", "tratamento de água", "desentupimento", "vigilância sanitária", "infraestrutura", "prefeitura", "postagem", "correios", "rua", "fiscalização", "taxi", "transporte público", "iluminação pública", "abastecimento", "onibus", "prefeito", "vereador", "vereadores", "seguranca", "segurança", "educacao", "educação", "educaçao", "crime");
+        List<String> palavrasServicosPublicos = Arrays.asList("saneamento", "limpeza", "energia", "água", "agua",
+                "esgoto", "coleta", "lixo", "tratamento de água", "desentupimento", "vigilância sanitária",
+                "infraestrutura", "prefeitura", "postagem", "correios", "rua", "fiscalização", "taxi",
+                "transporte público", "iluminação pública", "abastecimento", "onibus", "prefeito", "vereador",
+                "vereadores", "seguranca", "segurança", "educacao", "educação", "educaçao", "crime");
 
         ArrayList<Integer> tagsEncontradas = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -143,14 +154,22 @@ public class SolicitacaoService {
 
         System.out.println(textoCompleto);
 
-        if(containsAny(textoCompleto, palavrasTransito)) tagsEncontradas.add(1);
-        if(containsAny(textoCompleto, palavrasSaude)) tagsEncontradas.add(2);
-        if(containsAny(textoCompleto, palavrasViasDeTransito)) tagsEncontradas.add(3);
-        if(containsAny(textoCompleto, palavrasEnergia)) tagsEncontradas.add(4);
-        if(containsAny(textoCompleto, palavrasInclusao)) tagsEncontradas.add(5);
-        if(containsAny(textoCompleto, palavrasViolencia)) tagsEncontradas.add(6);
-        if(containsAny(textoCompleto, palavrasEntretenimento)) tagsEncontradas.add(7);
-        if(containsAny(textoCompleto, palavrasServicosPublicos)) tagsEncontradas.add(8);
+        if (containsAny(textoCompleto, palavrasTransito))
+            tagsEncontradas.add(1);
+        if (containsAny(textoCompleto, palavrasSaude))
+            tagsEncontradas.add(2);
+        if (containsAny(textoCompleto, palavrasViasDeTransito))
+            tagsEncontradas.add(3);
+        if (containsAny(textoCompleto, palavrasEnergia))
+            tagsEncontradas.add(4);
+        if (containsAny(textoCompleto, palavrasInclusao))
+            tagsEncontradas.add(5);
+        if (containsAny(textoCompleto, palavrasViolencia))
+            tagsEncontradas.add(6);
+        if (containsAny(textoCompleto, palavrasEntretenimento))
+            tagsEncontradas.add(7);
+        if (containsAny(textoCompleto, palavrasServicosPublicos))
+            tagsEncontradas.add(8);
 
         registraTags(tagsEncontradas, idSolicitacao);
     }
@@ -159,71 +178,79 @@ public class SolicitacaoService {
         return chaves.stream().anyMatch(texto::contains);
     }
 
-    public void registraTags(ArrayList<Integer> tagIds, Long idSolicitacao){
-        for(int id : tagIds){
+    public void registraTags(ArrayList<Integer> tagIds, Long idSolicitacao) {
+        for (int id : tagIds) {
             Tag tag = tagRepository.findById(Long.valueOf(id)).get();
             solicitacaoTagRepository.save(new SolicitacaoTag(idSolicitacao, tag));
         }
     }
 
-    public List<Tag> tags(Long idSolicitacao){
+    public List<Tag> tags(Long idSolicitacao) {
         List<SolicitacaoTag> tagsEncontradas = solicitacaoTagRepository.findBySolicitacaoId(idSolicitacao);
         return tagsEncontradas.stream()
-                .map(SolicitacaoTag::getTag) 
+                .map(SolicitacaoTag::getTag)
                 .collect(Collectors.toList());
     }
 
-    public String curtir(Long idUsuario, Long idSolicitacao){
+    public String curtir(Long idUsuario, Long idSolicitacao) {
         Optional<Usuario> encontraUsuario = usuarioRepository.findById(idUsuario);
         Optional<Solicitacao> encontraSolicitacao = solicitacaoRepository.findById(idSolicitacao);
 
-        if(encontraUsuario.isPresent() && encontraSolicitacao.isPresent()){
+        if (encontraUsuario.isPresent() && encontraSolicitacao.isPresent()) {
 
             Usuario usuario = encontraUsuario.get();
             Solicitacao solicitacao = encontraSolicitacao.get();
 
-            if(solicitacao.getUsuario().getId().equals(idUsuario)){
+            if (solicitacao.getUsuario().getId().equals(idUsuario)) {
                 return "Você não pode curtir a própria solicitação!";
             }
 
-            if(solicitacao.getDataConclusao() != null){
+            if (solicitacao.getDataConclusao() != null) {
                 return "Você não pode curtir solicitações concluídas!";
             }
 
-            List<Long> solicitacoesInteragidas = usuarioLikeSolicitacaoRepository.findSolicitacaoIdsByUsuario(idUsuario);
-            
-            for(Long id : solicitacoesInteragidas){
-                if(id.equals(idSolicitacao)){
+            List<Long> solicitacoesInteragidas = usuarioLikeSolicitacaoRepository
+                    .findSolicitacaoIdsByUsuario(idUsuario);
+
+            for (Long id : solicitacoesInteragidas) {
+                if (id.equals(idSolicitacao)) {
                     return "Você já curtiu essa solicitação!";
                 }
             }
 
             LocalDateTime dataInteracao1 = usuario.getDataInteracao1();
             LocalDateTime dataInteracao2 = usuario.getDataInteracao2();
-            LocalDateTime dataAtual = LocalDateTime.now(); 
+            LocalDateTime dataAtual = LocalDateTime.now();
 
-            Long tempoDecorridoInteracao1 = (dataInteracao1 != null) ? ChronoUnit.DAYS.between(dataInteracao1, dataAtual) : Long.MAX_VALUE;
-            Long tempoDecorridoInteracao2 = (dataInteracao2 != null) ? ChronoUnit.DAYS.between(dataInteracao2, dataAtual) : Long.MAX_VALUE;
+            Long tempoDecorridoInteracao1 = (dataInteracao1 != null)
+                    ? ChronoUnit.DAYS.between(dataInteracao1, dataAtual)
+                    : Long.MAX_VALUE;
+            Long tempoDecorridoInteracao2 = (dataInteracao2 != null)
+                    ? ChronoUnit.DAYS.between(dataInteracao2, dataAtual)
+                    : Long.MAX_VALUE;
 
-            if(dataInteracao1 == null || tempoDecorridoInteracao1 >= 7){
+            if (dataInteracao1 == null || tempoDecorridoInteracao1 >= 7) {
                 usuarioRepository.atualizarDataInteracao1(idUsuario, dataAtual);
                 solicitacaoRepository.incrementaLike(idSolicitacao);
                 salvaInteracao(usuario, solicitacao);
                 return "Sucesso! Sua curtida foi cadastrada no dia: " + dataAtual.toLocalDate();
-            }else if(dataInteracao2 == null || tempoDecorridoInteracao2 >= 7){
+            } else if (dataInteracao2 == null || tempoDecorridoInteracao2 >= 7) {
                 usuarioRepository.atualizarDataInteracao2(idUsuario, dataAtual);
                 solicitacaoRepository.incrementaLike(idSolicitacao);
                 salvaInteracao(usuario, solicitacao);
                 return "Sucesso! Sua curtida foi cadastrada no dia: " + dataAtual.toLocalDate();
             }
 
-            return "Você não tem interações disponíveis, espere " + (7-((tempoDecorridoInteracao1 > tempoDecorridoInteracao2) ? tempoDecorridoInteracao1 : tempoDecorridoInteracao2)) + " dias para interagir novamente.";
+            return "Você não tem interações disponíveis, espere "
+                    + (7 - ((tempoDecorridoInteracao1 > tempoDecorridoInteracao2) ? tempoDecorridoInteracao1
+                            : tempoDecorridoInteracao2))
+                    + " dias para interagir novamente.";
         }
 
         return "Ocorreu um erro ao interagir com a solicitação.";
     }
 
-    public void salvaInteracao(Usuario usuario, Solicitacao solicitacao){
+    public void salvaInteracao(Usuario usuario, Solicitacao solicitacao) {
         UsuarioLikeSolicitacao usuarioLikeSolicitacao = new UsuarioLikeSolicitacao();
         usuarioLikeSolicitacao.setUsuario(usuario);
         usuarioLikeSolicitacao.setSolicitacao(solicitacao);
@@ -231,19 +258,19 @@ public class SolicitacaoService {
     }
 
     @Transactional
-    public void excluiSolicitacao(Long id){
+    public void excluiSolicitacao(Long id) {
         usuarioLikeSolicitacaoRepository.deleteBySolicitacaoId(id);
         comentarioRepository.deleteBySolicitacaoId(id);
         solicitacaoRepository.deleteById(id);
     }
 
     @Transactional
-    public void concluiSolictacao(Long id){
+    public void concluiSolictacao(Long id) {
         LocalDateTime dataConclusao = LocalDateTime.now();
         solicitacaoRepository.concluiSolicitacao(dataConclusao, id);
     }
 
-    public Optional<Long> solicitacaoAberta(Long idUsuario){
+    public Optional<Long> solicitacaoAberta(Long idUsuario) {
         return solicitacaoRepository.verificaSolicitacaoAberta(idUsuario);
     }
 }
