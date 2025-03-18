@@ -164,8 +164,11 @@
                 </div>
 
                 <div class="w-full max-w-full flex flex-wrap gap-2 mt-4">
-                    <button class="w-full rounded-md bg-gray-300 text-red-600 py-[3px] font-medium">Alterar
-                        senha</button>
+                    <RouterLink to="/alterar_senha" class="p-0 w-full">
+                        <button class="w-full rounded-md bg-gray-300 text-red-600 py-[3px] font-medium">
+                            Alterar senha
+                        </button>
+                    </RouterLink>
                 </div>
 
             </div>

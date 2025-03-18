@@ -131,6 +131,17 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/senha/alteracao")
+    public ResponseEntity<?> alteraSenha(@RequestParam String novaSenha, @RequestParam Long id){
+        int response = usuarioRepository.atualizaSenha(novaSenha, id);
+
+        if(response > 0){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/foto-perfil/{id}")
     public ResponseEntity<String> getFotoPerfil(@PathVariable Long id){
         String imagemBase64 = usuarioService.getFoto(id);

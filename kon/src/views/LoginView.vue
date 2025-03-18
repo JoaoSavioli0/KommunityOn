@@ -1,9 +1,9 @@
 <template>
     <section class="w-full h-full bg-[#F0F4F9]">
         <div class="w-full h-full flex justify-center items-center flex-col">
-            <transition-group name="move" tag="div" class="flex flex-col items-center">
+            <transition-group name="move" tag="div" class="flex flex-col items-center w-full">
                 <div key="divLogin"
-                    class="w-[300px] lg:w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    class="w-full lg:w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
                     <div class="w-full">
                         <div class="w-full flex">
                             <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
@@ -48,7 +48,7 @@
                 </div>
 
                 <div key="divAviso"
-                    class="mt-4 w-[400px] py-4 rounded-[30px] bg-gray-900 p-8 flex justify-center items-center transition-all duration-300"
+                    class="mt-4 w-[90%] lg:w-[400px] py-4 rounded-[30px] bg-gray-900 p-8 flex justify-center items-center transition-all duration-300"
                     v-if="aviso != ''">
                     <p class="text-white">{{ aviso }}</p>
                 </div>

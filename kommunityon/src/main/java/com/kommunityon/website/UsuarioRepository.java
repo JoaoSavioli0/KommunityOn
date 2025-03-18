@@ -26,5 +26,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     @Query("UPDATE Usuario u SET u.dataInteracao2 = :data WHERE u.id = :id")
     int atualizarDataInteracao2(@Param("id") Long id, @Param("data") LocalDateTime data); 
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Usuario u SET u.senha = :senha WHERE u.id = :id")
+    int atualizaSenha(@Param("senha") String senha, @Param("id") Long id);
     
 }

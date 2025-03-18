@@ -10,6 +10,7 @@ import ContaMenu from '@/components/ContaMenu.vue';
 import SettingsMenu from '@/components/SettingsMenu.vue';
 import SuporteMenu from '@/components/SuporteMenu.vue';
 import { useUserStore } from '@/stores/userStore';
+import NewSenhaView from '@/views/NewSenhaView.vue';
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     component: SolicitacaoView,
     props: true
   },
+  {
+    path: '/alterar_senha',
+    name: 'alterar_senha',
+    component: NewSenhaView,
+  }
 ]
 
 const router = createRouter({
@@ -74,10 +80,12 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   await userStore.reconectaSessao(); // Verifica se o usuário está autenticado
 
-  if (to.meta.requiresAuth && !userStore.usuario) {
+  if ((to.meta.requiresAuth && !userStore.usuario) || (!userStore.usuario && to.path === '/')) {
     next("/login");
-  } else {
-    next();
+  } else if((userStore.usuario && to.path === '/')) {
+    next("/home");
+  } else{
+    next()
   }
 });
 
