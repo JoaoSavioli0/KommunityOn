@@ -102,13 +102,10 @@ export default {
                     if (useUserStore().usuario != null) {
                         this.$router.push("/home")
                     } else {
-                        this.aviso = "Erro ao fazer login."
+                        this.aviso = "Usuário ou senha incorreta."
                     }
                 } catch (err) {
                     console.log(err)
-                    if (err.response && err.response.status === 404) {
-                        this.aviso = "Senha incorreta."
-                    }
                 }
             }
             setTimeout(() => { this.aviso = '' }, 4000);

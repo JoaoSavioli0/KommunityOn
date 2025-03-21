@@ -55,7 +55,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - senha.length
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="w-full">
@@ -258,7 +258,7 @@ export default {
             }
 
             try {
-                const novoUsuario = await axios.post("http://localhost:8080/usuario/cadastro", {
+                const novoUsuario = await axios.post("http://localhost:5000/usuario/cadastro", {
                     nome: this.nome,
                     email: this.email,
                     cpf: cpfNumeros,
@@ -272,7 +272,7 @@ export default {
 
                 console.log(novoUsuario.data.id)
 
-                const usuarioEndereco = await axios.post("http://localhost:8080/endereco/cadastro", {
+                const usuarioEndereco = await axios.post("http://localhost:5000/endereco/cadastro", {
                     uf: this.uf,
                     bairro: this.bairro,
                     cidade: this.cidade,

@@ -34,7 +34,7 @@ export default {
     methods: {
         async carregaEndereco() {
             try {
-                const endereco = await axios.get(`http://localhost:8080/endereco/${this.usuario.id}`)
+                const endereco = await axios.get(`http://localhost:5000/endereco/${this.usuario.id}`)
                 this.endereco = endereco.data
             } catch (error) {
                 console.log("Erro ao buscar endereço de usuário" + error)

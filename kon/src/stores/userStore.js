@@ -9,7 +9,7 @@ export const useUserStore = defineStore('usuario', {
   actions: {
     async login(usuarioData) {
       try {
-        const response = await axios.post("http://localhost:8080/usuario/login", {
+        const response = await axios.post("http://localhost:5000/usuario/login", {
           cpfOuEmail: usuarioData.cpfOuEmail,
           senha: usuarioData.senha
         },
@@ -40,7 +40,7 @@ export const useUserStore = defineStore('usuario', {
       if (!this.token) return
 
       try {
-        const response = await axios.get("http://localhost:8080/usuario/me", {
+        const response = await axios.get("http://localhost:5000/usuario/me", {
           headers: { Authorization: `Bearer ${this.token}` },
         })
 

@@ -231,7 +231,7 @@ export default {
         async excluiImagem() {
             if (this.imagemUsuario) {
                 try {
-                    const response = await axios.get(`http://localhost:8080/usuario/excluir_foto/${this.usuario.id}`)
+                    const response = await axios.get(`http://localhost:5000/usuario/excluir_foto/${this.usuario.id}`)
 
                     if (response.data != 0) {
                         this.imagemPreview = null
@@ -250,7 +250,7 @@ export default {
             this.profileUsuario = null
 
             try {
-                const response = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+                const response = await axios.get(`http://localhost:5000/usuario/foto-perfil/${this.usuario.id}`)
                 console.log(response.data)
                 if (response.data != "sem foto") {
                     // Adiciona o prefixo correto para exibir no <img>
@@ -268,7 +268,7 @@ export default {
         async carregaDados() {
             //Endereco
             try {
-                const response = await axios.get(`http://localhost:8080/endereco/${this.usuario.id}`)
+                const response = await axios.get(`http://localhost:5000/endereco/${this.usuario.id}`)
                 this.endereco = response.data
 
                 this.cidadeAtualizado = this.endereco.cidade
@@ -279,7 +279,7 @@ export default {
 
             //Usuario
             try {
-                const response = await axios.get(`http://localhost:8080/usuario/${this.usuario.id}`)
+                const response = await axios.get(`http://localhost:5000/usuario/${this.usuario.id}`)
                 this.usuarioAtualizado = response.data
                 console.log("Telefone recebido bd: " + this.usuarioAtualizado.telefone)
 
@@ -311,7 +311,7 @@ export default {
                 const formData = new FormData()
                 formData.append("file", this.imagemUpada)
                 try {
-                    const response = await axios.post(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}/nova`,
+                    const response = await axios.post(`http://localhost:5000/usuario/foto-perfil/${this.usuario.id}/nova`,
                         formData,
                         {
                             headers: { "Content-Type": "multipart/form-data" }
@@ -345,7 +345,7 @@ export default {
             usuarioAtualizado.telefone = this.telefoneAtualizado
 
             try {
-                await axios.post(`http://localhost:8080/usuario/atualiza/${this.usuario.id}`, {
+                await axios.post(`http://localhost:5000/usuario/atualiza/${this.usuario.id}`, {
                     id: this.usuario.id,
                     nome: usuarioAtualizado.nome,
                     email: usuarioAtualizado.email,
@@ -374,7 +374,7 @@ export default {
 
         async salvarAlteracoesEndereco() {
             try {
-                await axios.post(`http://localhost:8080/endereco/cadastro`, {
+                await axios.post(`http://localhost:5000/endereco/cadastro`, {
                     bairro: this.bairroAtualizado,
                     cidade: this.cidadeAtualizado,
                     uf: this.endereco.uf,

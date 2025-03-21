@@ -1,6 +1,7 @@
 package com.kommunityon.website;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,8 +61,8 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>{
     @Query("UPDATE Solicitacao s SET s.dataConclusao = :data WHERE s.id = :id")
     int concluiSolicitacao(@Param("data") LocalDateTime data, @Param("id") Long id);
 
-    @Query("SELECT s.id FROM Solicitacao s WHERE s.dataConclusao IS NULL AND s.usuario.id = :id")
-    Optional<Long> verificaSolicitacaoAberta(@Param("id") Long id);
+    @Query("SELECT s FROM Solicitacao s WHERE s.dataConclusao IS NULL AND s.usuario.id = :id")
+    Optional<ArrayList<Solicitacao>> verificaSolicitacaoAberta(@Param("id") Long id);
 
     Optional<List<Solicitacao>> findByUsuario(Usuario usuario);
 }

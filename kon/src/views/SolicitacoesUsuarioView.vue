@@ -170,7 +170,7 @@ export default {
         },
         async carregaSolicitacoes() {
             try {
-                const response = await axios.post(`http://localhost:8080/solicitacao/solicitacoes/usuario/${this.id}`, this.filtros, {
+                const response = await axios.post(`http://localhost:5000/solicitacao/solicitacoes/usuario/${this.id}`, this.filtros, {
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -226,7 +226,7 @@ export default {
         },
         async carregaTags() {
             try {
-                const response = await axios.post("http://localhost:8080/tag/all")
+                const response = await axios.post("http://localhost:5000/tag/all")
                 this.tags = response.data
             } catch (error) {
                 console.error("Erro ao carregar filtros: " + error)

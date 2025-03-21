@@ -1,5 +1,6 @@
 package com.kommunityon.website;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -113,12 +114,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/solicitacaoaberta/{idUsuario}")
-    public ResponseEntity<Boolean> verificaSolicitacaoAberta(@PathVariable Long idUsuario){
-        if(solicitacaoService.solicitacaoAberta(idUsuario).isPresent()){
-            return ResponseEntity.ok(true); //Tem solicitação aberta 
-        }else{
-            return ResponseEntity.ok(false); //Não tem solicitação aberta 
-        }
+    public ResponseEntity<ArrayList<Solicitacao>> verificaSolicitacaoAberta(@PathVariable Long idUsuario){
+        ArrayList<Solicitacao> solicitacoesAbertas = solicitacaoService.solicitacaoAberta(idUsuario);
+        return ResponseEntity.ok(solicitacoesAbertas); 
     }
 
     @GetMapping("/interacoes/{idUsuario}")

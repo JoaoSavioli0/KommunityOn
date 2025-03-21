@@ -79,9 +79,10 @@ public class SolicitacaoService {
     }
 
     public Solicitacao registrar(NewSolicitacaoDTO newSolicitacaoDTO) {
-        Optional<Long> solicitacaoAberta = solicitacaoAberta(newSolicitacaoDTO.getIdUsuario());
+        ArrayList<Solicitacao> solicitacoesAbertas = solicitacaoAberta(newSolicitacaoDTO.getIdUsuario());
+        Boolean existeSolicitacaoComLikesInsuficientes = solicitacoesAbertas.stream().anyMatch(s -> s.getNumLikes() < 20);
 
-        if (solicitacaoAberta.isPresent()) {
+        if (existeSolicitacaoComLikesInsuficientes) {
             return null;
         }
 
@@ -98,8 +99,7 @@ public class SolicitacaoService {
 
         Solicitacao solicitacaoCadastrada = solicitacaoRepository.save(solicitacao);
 
-        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(),
-                solicitacaoCadastrada.getId());
+        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(), solicitacaoCadastrada.getId());
 
         return solicitacaoCadastrada;
     }
@@ -270,7 +270,7 @@ public class SolicitacaoService {
         solicitacaoRepository.concluiSolicitacao(dataConclusao, id);
     }
 
-    public Optional<Long> solicitacaoAberta(Long idUsuario) {
-        return solicitacaoRepository.verificaSolicitacaoAberta(idUsuario);
+    public ArrayList<Solicitacao> solicitacaoAberta(Long idUsuario) {
+        return solicitacaoRepository.verificaSolicitacaoAberta(idUsuario).get();
     }
 }

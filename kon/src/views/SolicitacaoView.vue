@@ -260,7 +260,7 @@ export default {
         },
         async carregaSolicitacao() {
             try {
-                const solicitacao = await axios.get(`http://localhost:8080/solicitacao/${this.id}`)
+                const solicitacao = await axios.get(`http://localhost:5000/solicitacao/${this.id}`)
                 this.solicitacao = solicitacao.data
                 this.usuarioSolicitacao = this.solicitacao.usuario
                 this.carregaTags()
@@ -270,7 +270,7 @@ export default {
                 this.carregaImagem()
                 this.carregaComentarios()
 
-                const endereco = await axios.get(`http://localhost:8080/endereco/${this.usuarioSolicitacao.id}`)
+                const endereco = await axios.get(`http://localhost:5000/endereco/${this.usuarioSolicitacao.id}`)
                 this.endereco = endereco.data
 
             } catch (error) {
@@ -280,7 +280,7 @@ export default {
 
         async carregaInteracoes() {
             try {
-                const response = await axios.get(`http://localhost:8080/usuario/interacoes/${this.usuario.id}`);
+                const response = await axios.get(`http://localhost:5000/usuario/interacoes/${this.usuario.id}`);
                 this.curtidos = response.data
             } catch (error) {
                 console.error("Erro ao buscar interações do usuário: ", error);
@@ -290,7 +290,7 @@ export default {
         async carregaTags() {
             try {
                 console.log(this.id)
-                this.tags = (await axios.get(`http://localhost:8080/solicitacao/tags/${this.id}`)).data
+                this.tags = (await axios.get(`http://localhost:5000/solicitacao/tags/${this.id}`)).data
                 console.log(this.tags)
             } catch (error) {
                 console.error("Erro ao carregar tags: " + error)
@@ -300,7 +300,7 @@ export default {
         async enviaComentario() {
             try {
                 if (!this.textoComentario) return
-                const response = await axios.post("http://localhost:8080/comentario/cadastro", {
+                const response = await axios.post("http://localhost:5000/comentario/cadastro", {
                     idUsuario: this.usuario.id,
                     idSolicitacao: this.id,
                     texto: this.textoComentario
@@ -320,7 +320,7 @@ export default {
 
         async carregaComentarios() {
             try {
-                const comentarios = await axios.get(`http://localhost:8080/comentario/solicitacao/${this.id}`)
+                const comentarios = await axios.get(`http://localhost:5000/comentario/solicitacao/${this.id}`)
                 this.comentarios = comentarios.data
             } catch (error) {
                 console.error("Erro ao carregar comentários: " + error)
@@ -329,7 +329,7 @@ export default {
 
         async curteSolicitacao() {
             try {
-                const response = await axios.get(`http://localhost:8080/usuario/curtir/${this.usuario.id}/${this.id}`);
+                const response = await axios.get(`http://localhost:5000/usuario/curtir/${this.usuario.id}/${this.id}`);
                 if (response.data.includes("Sucesso")) {
                     this.solicitacao.numLikes++;
                 } else {
@@ -344,7 +344,7 @@ export default {
 
         async excluiSolicitacao() {
             try {
-                await axios.delete(`http://localhost:8080/solicitacao/exclui/${this.id}`)
+                await axios.delete(`http://localhost:5000/solicitacao/exclui/${this.id}`)
                 this.$router.push("/home")
             } catch (error) {
                 console.log("Erro ao deletar a solicitação: " + error)
@@ -353,7 +353,7 @@ export default {
 
         async concluiSolicitacao() {
             try {
-                await axios.patch(`http://localhost:8080/solicitacao/conclui/${this.id}`)
+                await axios.patch(`http://localhost:5000/solicitacao/conclui/${this.id}`)
                     .then(() => console.log("Solicitação concluída com sucesso!"))
             } catch (error) {
                 console.log("Erro ao concluir solicitação: " + error)

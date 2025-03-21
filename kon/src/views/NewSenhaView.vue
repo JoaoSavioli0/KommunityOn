@@ -69,7 +69,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - novaSenha.length
-                                }}</span>
+                                    }}</span>
 
                             </div>
                         </div>
@@ -194,7 +194,7 @@ export default {
                 try {
                     console.log(this.novaSenha)
                     console.log(this.usuario.id)
-                    const response = await axios.post(`http://localhost:8080/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.usuario.id}`)
+                    const response = await axios.post(`http://localhost:5000/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.usuario.id}`)
                     this.resetaForm()
                     this.$refs.dialog.showModal()
                 } catch (error) {

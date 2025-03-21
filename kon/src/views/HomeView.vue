@@ -69,7 +69,7 @@
       <div class="flex flex-col">
         <h1 class="text-3xl lg:text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{
           primeiroNome
-            }}</span></h1>
+        }}</span></h1>
         <p class="text-left text-md lg:text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais chamados na
           sua região!
         </p>
@@ -302,7 +302,7 @@ export default {
     async carregaImagem() {
       this.imagemUsuario = null
       try {
-        const response = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+        const response = await axios.get(`http://localhost:5000/usuario/foto-perfil/${this.usuario.id}`)
 
         if (response.data != "sem foto") {
           this.imagemUsuario = `data:image/png;base64,${response.data}`;
@@ -315,7 +315,7 @@ export default {
 
     async carregaSolicitacoes() {
       try {
-        const response = await axios.post(`http://localhost:8080/solicitacao/solicitacoes`, this.filtros, {
+        const response = await axios.post(`http://localhost:5000/solicitacao/solicitacoes`, this.filtros, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -336,7 +336,7 @@ export default {
     },
     async carregaInteracoes() {
       try {
-        const response = await axios.get(`http://localhost:8080/usuario/interacoes/${this.usuario.id}`);
+        const response = await axios.get(`http://localhost:5000/usuario/interacoes/${this.usuario.id}`);
         this.curtidos = response.data
       } catch (error) {
         console.error("Erro ao buscar interações do usuário: ", error);
@@ -344,7 +344,7 @@ export default {
     },
     async curteSolicitacao(idSolicitacao) {
       try {
-        const response = await axios.get(`http://localhost:8080/usuario/curtir/${this.usuario.id}/${idSolicitacao}`);
+        const response = await axios.get(`http://localhost:5000/usuario/curtir/${this.usuario.id}/${idSolicitacao}`);
         if (response.data.includes("Sucesso")) {
           this.curtidos.push(idSolicitacao)
           this.carregaSolicitacoes();
@@ -365,7 +365,7 @@ export default {
     },
     async carregaTags() {
       try {
-        const response = await axios.post("http://localhost:8080/tag/all")
+        const response = await axios.post("http://localhost:5000/tag/all")
         this.tags = response.data
       } catch (error) {
         console.error("Erro ao carregar filtros: " + error)

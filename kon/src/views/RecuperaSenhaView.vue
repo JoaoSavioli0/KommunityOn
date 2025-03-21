@@ -103,7 +103,7 @@
                                 class="border-[2px] border-gray-800 rounded-[10px] py-2 px-4 outline-none w-full">
                         </div>
                         <span v-if="avisoCodigo" class="mt-[2px] text-red-500 text-sm text-start">{{ avisoCodigo
-                        }}</span>
+                            }}</span>
 
                         <button class="w-full rounded-lg bg-gray-900 text-zinc-50 h-[50px] mt-12 font-medium"
                             @click="validaCodigo()">
@@ -153,7 +153,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - novaSenha.length
-                                    }}</span>
+                                }}</span>
 
                             </div>
                         </div>
@@ -269,7 +269,7 @@ export default {
         async enviaCodigo(tipo) {
             tipo == 1 ? this.carregandoEnvioEmail = true : this.carregandoEnvioTelefone = true
             try {
-                const response = await axios.post(`http://localhost:8080/recuperacao/envia_codigo`, {
+                const response = await axios.post(`http://localhost:5000/recuperacao/envia_codigo`, {
                     cpfOuEmail: this.cpfOuEmail
                 })
 
@@ -288,7 +288,7 @@ export default {
         async validaCodigo() {
             this.carregandoVerificacao = true;
             try {
-                const response = await axios.post(`http://localhost:8080/recuperacao/verifica_codigo`, {
+                const response = await axios.post(`http://localhost:5000/recuperacao/verifica_codigo`, {
                     cpfOuEmail: this.cpfOuEmail,
                     codigo: this.codigo
                 })
@@ -319,7 +319,7 @@ export default {
             try {
                 console.log(this.novaSenha)
                 console.log(this.idUsuario)
-                const response = await axios.post(`http://localhost:8080/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.idUsuario}`)
+                const response = await axios.post(`http://localhost:5000/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.idUsuario}`)
                 this.$refs.dialog.showModal()
             } catch (error) {
                 this.aviso = "Erro: " + error
