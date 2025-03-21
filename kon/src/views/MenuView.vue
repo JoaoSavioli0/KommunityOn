@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="w-full relative z-[150]">
+    <div class="w-full lg:w-[550px] relative z-[150]">
         <div class="lg:hidden w-full relative flex justify-between">
             <router-link to="/home" class="p-0 z-[150]">
                 <button @click=""

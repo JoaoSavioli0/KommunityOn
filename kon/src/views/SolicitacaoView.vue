@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex justify-center flex-col items-center w-full">
+    <div class="relative flex justify-center flex-col items-center w-full lg:w-[550px]">
         <div class="w-full">
             <router-link to="/home" class="p-0">
                 <button @click=""
@@ -10,7 +10,7 @@
             </router-link>
         </div>
 
-
+        <!-- Aviso confirma interacao -->
         <div class="fixed h-screen w-full bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
             <div
                 class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
@@ -26,6 +26,7 @@
             </div>
         </div>
 
+        <!-- bloqueia interacao aviso -->
         <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="avisoCurtirBox">
             <div
                 class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
@@ -156,6 +157,8 @@
             </div>
         </div>
 
+
+        <!-- Comentários -->
         <div class="w-full text-left flex justify-between mt-12 flex items-center">
             <h1 class="text-2xl font-semibold">Comentários</h1>
             <h1 class="text-2xl font-semibold font-medium">{{ solicitacao.numComentarios }}</h1>
@@ -174,11 +177,16 @@
         <div class="w-full mt-12">
             <div class="w-full flex items-start mb-[15px] py-4 px-2 border-b-[1px] border-gray-300 rounded-lg"
                 v-for="comentario in comentarios">
-                <!-- Ícone à esquerda -->
+                <!-- Ícone -->
                 <div class="flex-shrink-0">
-                    <div class="rounded-full size-[40px] bg-gray-900"></div>
+                    <div class="rounded-full size-[40px] bg-gray-900 overflow-hidden">
+                        <img v-if="carregaImagemComentario(comentario.usuario.fotoPerfil)"
+                            :src="carregaImagemComentario(comentario.usuario.fotoPerfil)"
+                            class="h-full w-full object-cover">
+                        <img v-else src="../assets/user_body.png" class="filtro bottom-[-5px] relative">
+                    </div>
                 </div>
-                <!-- Conteúdo à direita -->
+                <!-- Comentario -->
                 <div class="ml-4 flex flex-col text-left flex-grow">
                     <h1 class="font-semibold text-lg">{{ comentario.usuario.nome }}</h1>
                     <div class="w-full overflow-hidden">
@@ -241,11 +249,14 @@ export default {
     methods: {
         carregaImagem() {
             const profileUsuario = this.usuarioSolicitacao.fotoPerfil; // Base64 retornado do backend
-            console.log("profileUsuario: " + profileUsuario)
             if (!profileUsuario) return;
 
             // Adiciona o prefixo correto para exibir no <img>
             this.imagemUsuario = `data:image/png;base64,${profileUsuario}`;
+        },
+        carregaImagemComentario(fotoPerfil) {
+            if (!fotoPerfil) return false;
+            return `data:image/png;base64,${fotoPerfil}`
         },
         async carregaSolicitacao() {
             try {
@@ -353,6 +364,7 @@ export default {
         solicitacaoCurtida() {
             return this.curtidos.includes(Number(this.id));
         }
+
     }
 }
 </script>

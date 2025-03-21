@@ -3,12 +3,17 @@
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center">
                 <div key="divLogin"
-                    class="w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    class="w-[450px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    <div class="w-full flex">
+                        <router-link to="/login" class="p-0 z-[150]">
+                            <button @click=""
+                                class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer ml-auto">
+                                <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
+                                <span class="ml-2 text-xl">Login</span>
+                            </button>
+                        </router-link>
+                    </div>
                     <div class="w-full">
-                        <div class="w-full flex">
-                            <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
-                                    class="font-semibold">ON</span></h1>
-                        </div>
                         <div class="w-full my-4 pl-[1px] text-left">
                             <h1 class="text-2xl font-semibold"><span class="font-normal">Faça seu</span> Cadastro</h1>
                         </div>
@@ -125,15 +130,18 @@
                             <div class="h-[1px] bg-gray-300 w-full relative flex justify-center"><span
                                     class="absolute top-[-12px] bg-white px-2 font-medium">Ou</span></div>
                         </div>
-                        <RouterLink to="/login" class="p-0">
-                            <div class="w-full relative mt-8">
-                                <button
-                                    class="border-2 text-gray-800 border-gray-800 font-regular rounded-[10px] py-6 outline-none w-full transition-all duration-300 overflow-hidden relative cadastrese-button flex justify-center items-center">
-                                    <span class="cadastrese absolute transition-all duration-300">Fazer login</span>
-                                    <span class="cadastrese2 absolute transition-all duration-300">Fazer login</span>
-                                </button>
-                            </div>
-                        </RouterLink>
+                        <div class="w-full pt-8">
+                            <RouterLink to="/login" class="p-0">
+                                <div class="w-full relative">
+                                    <button
+                                        class="border-2 text-gray-800 border-gray-800 font-regular rounded-[10px] py-6 outline-none w-full transition-all duration-300 overflow-hidden relative cadastrese-button flex justify-center items-center">
+                                        <span class="cadastrese absolute transition-all duration-300">Fazer login</span>
+                                        <span class="cadastrese2 absolute transition-all duration-300">Fazer
+                                            login</span>
+                                    </button>
+                                </div>
+                            </RouterLink>
+                        </div>
                     </div>
                 </div>
 

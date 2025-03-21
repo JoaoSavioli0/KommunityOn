@@ -1,10 +1,12 @@
 <template>
-  <div class="relative flex justify-center flex-col items-center">
+  <div class="relative flex w-full lg:w-[550px] justify-center flex-col items-center">
+
+    <!-- Aviso confirma interação -->
     <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
       <div
-        class="flex items-start flex-col fixed w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
-        <h1 class="text-2xl font-semibold">Confirmar interação?</h1>
-        <p class="my-2">Essa ação não poderá ser revertida.</p>
+        class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+        <h1 class="text-xl lg:text-2xl font-semibold text-start">Confirmar interação?</h1>
+        <p class="my-2 text-start">Essa ação não poderá ser revertida.</p>
         <div class="w-full flex justify-start mt-4">
           <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
             @click.prevent="confirmaInteracaoBox = false, curteSolicitacao(idSolicitacaoInteragir)">Confirmar</button>
@@ -15,6 +17,19 @@
       </div>
     </div>
 
+    <!-- Aviso interacao bloqueada -->
+    <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="interacaoBloq">
+      <div
+        class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+        <p class="my-2 text-center font-semibold text-lg">{{ avisoTxt }}</p>
+        <div class="w-full flex justify-center mt-4">
+          <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
+            @click.prevent="interacaoBloq = false, avisoTxt = ''">Ok</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu -->
     <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="menuBox">
       <div
         class="flex items-start flex-col fixed w-[300px] rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-8 py-6">
@@ -37,12 +52,6 @@
       </div>
     </div>
 
-    <div
-      class="fixed w-[300px] lg:w-[400px] py-4 rounded-full bg-gray-900 text-gray-100 bottom-[20px] border-2 border-gray-100 z-[200] animate__animated"
-      :class="([aviso ? 'animate__fadeIn' : 'animate__fadeOut'])">
-      {{ avisoTxt }}
-    </div>
-
     <div class="w-full flex justify-between">
       <button @click="logout()"
         class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
@@ -56,7 +65,7 @@
       </button>
     </div>
 
-    <div class="w-full flex items-center mt-8">
+    <div class="w-full flex items-center justify-between mt-8">
       <div class="flex flex-col">
         <h1 class="text-3xl lg:text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{
           primeiroNome
@@ -68,7 +77,7 @@
       <RouterLink to="menu/conta" class="p-0 rounded-full">
         <div
           class="size-[90px] lg:size-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
-          :class="[imagemUsuario ? 'bg-transparent' : 'bg-gray-900']">
+          :class="imagemUsuario ? 'bg-transparent' : 'bg-gray-900'">
           <img v-if="imagemUsuario" :src="imagemUsuario" class="h-full w-full object-cover absolute">
           <img v-else src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
           <div
@@ -79,24 +88,28 @@
       </RouterLink>
     </div>
 
-    <RouterLink to="/new" class="p-0 relative w-full">
-      <button
-        class="w-full rounded-[15px] bg-gray-900 text-white h-[60px] overflow-hidden mt-8 text-xl font-medium novachamada-button flex justify-center items-center relative">
-        <span class="novachamada absolute transition-all duration-200">Nova solicitação</span>
-        <span class="novachamada2 absolute transition-all duration-200 text-4xl">+</span>
-      </button>
-    </RouterLink>
+    <div class="mt-8 relative w-full">
+      <RouterLink to="/new" class="p-0 relative w-full">
+        <button
+          class="w-full rounded-[15px] bg-gray-900 text-white h-[60px] overflow-hidden text-xl font-medium novachamada-button flex justify-center items-center relative">
+          <span class="novachamada absolute transition-all duration-200">Nova solicitação</span>
+          <span class="novachamada2 absolute transition-all duration-200 text-4xl">+</span>
+        </button>
+      </RouterLink>
+    </div>
 
-    <RouterLink :to="`/solicitacoes/${usuario.id}`" class="p-0 relative w-full">
-      <button
-        class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden mt-4 text-xl font-medium flex justify-center items-center relative z-[50] bg-zinc-50 hover:bg-gray-200 transition-all">
-        <span class="absolute">Suas solicitações</span>
-      </button>
-    </RouterLink>
+    <div class="w-full relative mt-4">
+      <RouterLink :to="`/solicitacoes/${usuario.id}`" class="p-0 relative w-full">
+        <button
+          class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden text-xl font-medium flex justify-center items-center relative z-[50] bg-zinc-50 hover:bg-gray-200 transition-all">
+          <span class="absolute">Suas solicitações</span>
+        </button>
+      </RouterLink>
+    </div>
 
     <div class="w-full flex justify-between mt-8 items-center">
       <span class="font-semibold text-xl text-gray-800">Solicitações</span>
-      <span class="font-medium text-gray-800 text-lg font-medium cursor-pointer">{{ solicitacoes.length }}</span>
+      <span class="font-medium text-gray-800 text-lg font-medium cursor-pointer">{{ quantSolicitacoes }}</span>
     </div>
 
     <div class="w-full mt-6 relative">
@@ -129,28 +142,28 @@
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" checked value="destaque" class="hidden peer" />
           <div @click="filtro = 1"
-            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-lg text-xs">
             Destaques</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="proximo" class="hidden peer" />
           <div @click="filtro = 2"
-            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-lg text-xs">
             Próximos</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="recente" class="hidden peer" />
           <div @click="filtro = 3"
-            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-lg text-xs">
             Recentes</div>
         </label>
 
         <label class="w-[22%]">
           <input type="radio" name="option" v-model="exibindo" value="concluidos" class="hidden peer" />
           <div @click="filtro = 4"
-            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-md text-xs">
+            class="cursor-pointer py-[4px] lg:py-[2px] rounded-full bg-gray-200 border-[1px] border-gray-400 text-gray-400 peer-checked:bg-gray-800 peer-checked:text-white lg:text-lg text-xs">
             Concluídos</div>
         </label>
       </div>
@@ -276,6 +289,8 @@ export default {
       filtrosOpen: false,
       filtros: [],
       filtro: 1,
+      quantSolicitacoes: 0,
+      interacaoBloq: false
     }
   },
   methods: {
@@ -287,15 +302,15 @@ export default {
     async carregaImagem() {
       this.imagemUsuario = null
       try {
-        this.imagemUsuario = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+        const response = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+
+        if (response.data != "sem foto") {
+          this.imagemUsuario = `data:image/png;base64,${response.data}`;
+        }
       } catch (error) {
         console.error("Ocorreu um erro ao carregar a foto de usuário: " + error)
       }
-      if (this.imagemUsuario != null) {
-        if (!this.imagemUsuario.data) return;
-        // adiciona o prefixo que precisa pra conseguir exibir no <img>
-        this.imagemUsuario = `data:image/png;base64,${this.imagemUsuario.data}`;
-      }
+
     },
 
     async carregaSolicitacoes() {
@@ -305,6 +320,10 @@ export default {
             "Content-Type": "application/json",
           },
         })
+
+        if (!this.quantSolicitacoes) {
+          this.quantSolicitacoes = response.data.length
+        }
 
         this.solicitacoes = response.data
         this.solicitacoesPesquisadas = [...this.solicitacoes]
@@ -330,14 +349,11 @@ export default {
           this.curtidos.push(idSolicitacao)
           this.carregaSolicitacoes();
         } else {
-          this.aviso = response.data
+          this.avisoTxt = response.data
+          this.interacaoBloq = true
         }
       } catch (error) {
-        this.aviso = error
-      }
-      if (this.aviso) {
-        this.avisoTxt = this.aviso
-        setTimeout(() => { this.aviso = '' }, 4000);
+        console.error("Erro ao curtir solicitação: " + error)
       }
     },
     carregaMenu() {
@@ -365,7 +381,7 @@ export default {
     },
 
     ordenaData() {
-      this.solicitacoesPesquisadas = this.solicitacoes
+      this.solicitacoesPesquisadas = [...this.solicitacoes]
       if (this.pesquisa) { this.pesquisaSolicitacao() }
       this.solicitacoesPesquisadas.sort((a, b) => {
         // ordena por data
@@ -381,13 +397,13 @@ export default {
     },
 
     ordenaConcluido() {
-      this.solicitacoesPesquisadas = this.solicitacoes
+      this.solicitacoesPesquisadas = [...this.solicitacoes]
       if (this.pesquisa) { this.pesquisaSolicitacao() }
       this.solicitacoesPesquisadas = this.solicitacoesPesquisadas.filter(solicitacao => solicitacao.dataConclusao != null)
     },
 
     ordenaLike() {
-      this.solicitacoesPesquisadas = this.solicitacoes
+      this.solicitacoesPesquisadas = [...this.solicitacoes]
       if (this.pesquisa) { this.pesquisaSolicitacao() }
 
       this.solicitacoesPesquisadas.sort((a, b) => {

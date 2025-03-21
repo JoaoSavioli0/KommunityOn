@@ -1,5 +1,8 @@
 package com.kommunityon.website;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,12 +18,23 @@ public class CodigoRecuperacao {
 
     private String codigo;
 
-    @JoinColumn
     @ManyToOne
+    @JoinColumn(name="ID_USUARIO", nullable=false)
     private Usuario usuario;
 
+    @Column(insertable = false, updatable = false)
+    private LocalDateTime emissao;
 
+    
     //Getters e Setters
+    public LocalDateTime getEmissao() {
+        return emissao;
+    }
+
+    public void setEmissao(LocalDateTime emissao) {
+        this.emissao = emissao;
+    }
+
     public Long getId() {
         return id;
     }

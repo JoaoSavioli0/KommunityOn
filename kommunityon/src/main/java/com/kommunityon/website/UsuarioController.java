@@ -107,6 +107,11 @@ public class UsuarioController {
         return ResponseEntity.ok(msg);
     }
 
+    @GetMapping("/excluir_foto/{id}")
+    public ResponseEntity<Integer> excluiImagem(@PathVariable Long id){
+        return ResponseEntity.ok(usuarioRepository.removeImagem(id));
+    }
+
     @GetMapping("/solicitacaoaberta/{idUsuario}")
     public ResponseEntity<Boolean> verificaSolicitacaoAberta(@PathVariable Long idUsuario){
         if(solicitacaoService.solicitacaoAberta(idUsuario).isPresent()){
@@ -133,6 +138,7 @@ public class UsuarioController {
 
     @PostMapping("/senha/alteracao")
     public ResponseEntity<?> alteraSenha(@RequestParam String novaSenha, @RequestParam Long id){
+        System.out.println(id);
         int response = usuarioRepository.atualizaSenha(novaSenha, id);
 
         if(response > 0){
@@ -146,8 +152,8 @@ public class UsuarioController {
     public ResponseEntity<String> getFotoPerfil(@PathVariable Long id){
         String imagemBase64 = usuarioService.getFoto(id);
 
-        if(imagemBase64.contains("não encontrado")){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if(imagemBase64.contains("sem foto")){
+            return ResponseEntity.ok(imagemBase64);
         } else {
             return ResponseEntity.ok(imagemBase64);
         }

@@ -31,4 +31,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     @Query("UPDATE Usuario u SET u.senha = :senha WHERE u.id = :id")
     int atualizaSenha(@Param("senha") String senha, @Param("id") Long id);
     
+    @Transactional
+    @Modifying
+    @Query("UPDATE Usuario u SET u.fotoPerfil = NULL WHERE u.id = :id")
+    int removeImagem(@Param("id") Long id);
 }

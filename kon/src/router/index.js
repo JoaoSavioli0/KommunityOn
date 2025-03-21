@@ -11,6 +11,7 @@ import SettingsMenu from '@/components/SettingsMenu.vue';
 import SuporteMenu from '@/components/SuporteMenu.vue';
 import { useUserStore } from '@/stores/userStore';
 import NewSenhaView from '@/views/NewSenhaView.vue';
+import RecuperaSenhaView from '@/views/RecuperaSenhaView.vue';
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
     path: '/alterar_senha',
     name: 'alterar_senha',
     component: NewSenhaView,
+  },
+  {
+    path: '/recupera_senha',
+    name: 'recupera_senha',
+    component: RecuperaSenhaView,
   }
 ]
 

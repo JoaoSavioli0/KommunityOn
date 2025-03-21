@@ -131,7 +131,10 @@
                         <span>Foto de perfil</span>
                         <div
                             class="size-[70px] rounded-full bg-gray-900 mt-2 overflow-hidden flex justify-center items-center">
-                            <img v-if="imagemPreview && alterandoFoto" :src="imagemPreview" class="w-[70px] h-auto">
+                            <img v-if="semImagem && !(imagemPreview && alterandoFoto)" src="../assets/user_body.png"
+                                class="filtro bottom-[-9px] relative">
+                            <img v-else-if="imagemPreview && alterandoFoto" :src="imagemPreview"
+                                class="w-[70px] h-auto">
                             <img v-else :src="imagemUsuario" class="w-[70px] h-auto">
                         </div>
                         <div class="flex flex-col items-start">
@@ -147,7 +150,13 @@
 
                                 <button
                                     class="w-[100px] py-[2px] rounded-md bg-gray-300 text-gray-800 font-medium text-sm cursor-pointer flex mt-2 justify-center disabled:cursor-default disabled:text-gray-500"
-                                    :disabled="!imagemPreview" @click="salvarFoto()">Salvar</button>
+                                    v-if="imagemPreview" @click="salvarFoto()">Salvar</button>
+
+                                <button
+                                    class="w-[100px] py-[2px] rounded-md bg-gray-300 text-red-500 font-medium text-sm cursor-pointer flex mt-2 justify-center disabled:cursor-default disabled:text-gray-500"
+                                    v-else @click="excluiImagem()" :disabled="!imagemUsuario"><img
+                                        src="../assets/trash_outlined.svg" class="w-[16px] h-auto"> <span
+                                        class="ml-[4px]">Excluir</span></button>
 
                                 <button
                                     class="w-[100px] py-[2px] rounded-md bg-transparent border-[2px] border-gray-300 text-gray-800 font-medium text-sm cursor-pointer flex mt-2 justify-center"
@@ -207,7 +216,9 @@ export default {
             cidadeAtualizado: null,
             bairroAtualizado: null,
             telefoneAtualizado: null,
-            profileUsuario: null
+            profileUsuario: null,
+
+            semImagem: false
         }
     },
     mounted() {
@@ -217,18 +228,41 @@ export default {
         this.carregaImagem()
     },
     methods: {
+        async excluiImagem() {
+            if (this.imagemUsuario) {
+                try {
+                    const response = await axios.get(`http://localhost:8080/usuario/excluir_foto/${this.usuario.id}`)
+
+                    if (response.data != 0) {
+                        this.imagemPreview = null
+                        this.alterandoFoto = false
+                        this.imagemUpada = null
+                    }
+
+                    this.carregaImagem()
+
+                } catch (error) {
+                    console.log("Erro ao remover imagem de usuário: " + error)
+                }
+            }
+        },
         async carregaImagem() {
             this.profileUsuario = null
+
             try {
-                this.profileUsuario = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+                const response = await axios.get(`http://localhost:8080/usuario/foto-perfil/${this.usuario.id}`)
+                console.log(response.data)
+                if (response.data != "sem foto") {
+                    // Adiciona o prefixo correto para exibir no <img>
+                    this.imagemUsuario = `data:image/png;base64,${response.data}`;
+                    this.semImagem = false
+                } else {
+                    this.semImagem = true
+                }
             } catch (error) {
                 console.log("Ocorreu um erro ao carregar a foto de usuário: " + error)
             }
-            if (this.profileUsuario != null) {
-                if (!this.profileUsuario.data) return;
-                // Adiciona o prefixo correto para exibir no <img>
-                this.imagemUsuario = `data:image/png;base64,${this.profileUsuario.data}`;
-            }
+
         },
 
         async carregaDados() {
@@ -286,7 +320,6 @@ export default {
 
                     this.carregaImagem()
 
-                    alert(response.data)
                 } catch (error) {
                     console.error("Erro ao salvar imagem: " + error)
                 }

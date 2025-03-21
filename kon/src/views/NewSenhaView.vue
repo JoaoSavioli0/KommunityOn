@@ -13,10 +13,10 @@
             </div>
         </dialog>
 
-        <div class="w-full h-full flex justify-center items-center flex-col">
+        <div class="w-full w-[550px] h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col w-full items-center">
                 <div key="divLogin"
-                    class="w-full lg:w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    class="w-full lg:w-[450px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
                     <div class="w-full">
                         <div class="w-full flex">
                             <router-link to="/menu/conta" class="p-0 z-[150]">
@@ -115,9 +115,13 @@
                         <div class="w-full relative mt-8">
                             <button @click.prevent="alteraSenha()"
                                 class="bg-gray-900 font-regular rounded-[10px] py-4 outline-none w-full text-white">Alterar</button>
-                            <p class="text-sm text-gray-800 mt-2">Esqueceu sua senha? <span
-                                    class="text-blue-600 font-medium cursor-pointer">Clique
-                                    aqui</span></p>
+                            <p class="text-sm text-gray-800 mt-2">Esqueceu sua senha?
+                                <router-link to="/recupera_senha">
+                                    <span class="text-blue-600 font-medium cursor-pointer">
+                                        Clique aqui
+                                    </span>
+                                </router-link>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -149,7 +153,7 @@ export default {
             senhaVisivel: false,
             senhaConfirmVisivel: false,
             senhaAtualVisivel: false,
-            usuario: null,
+            usuario: {},
             dialogOpen: false
         }
     },

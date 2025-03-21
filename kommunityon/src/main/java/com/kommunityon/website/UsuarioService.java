@@ -39,14 +39,18 @@ public class UsuarioService {
     public Optional<Usuario> usuarioPorCpfOuEmail(String cpfOuEmail){
         String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Optional<Usuario> usuario;
+        System.out.println("cpf ou email: " + cpfOuEmail);
 
         if(Pattern.matches(EMAIL_REGEX, cpfOuEmail)){
             usuario = usuarioRepository.findByEmail(cpfOuEmail);
         }else{
+            cpfOuEmail = cpfOuEmail.replaceAll("\\D", "");
+            System.out.println("Procurou por cpf: " + cpfOuEmail);
             usuario = usuarioRepository.findByCpf(cpfOuEmail);
         }
 
         if(usuario.isPresent()){
+            System.out.println("Achou");
             return usuario;
         }
         return Optional.empty();
@@ -115,9 +119,10 @@ public class UsuarioService {
 
         if(usuarioEncontrado.isPresent()){
             Usuario usuario = usuarioEncontrado.get();
+            if(usuario.getFotoPerfil()!=null)
             return Base64.getEncoder().encodeToString(usuario.getFotoPerfil());
-        }else{
-            return "";
         }
+        return "sem foto";
+        
     }
 }

@@ -3,7 +3,7 @@
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center w-full">
                 <div key="divLogin"
-                    class="w-full lg:w-[400px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
+                    class="w-full lg:w-[450px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
                     <div class="w-full">
                         <div class="w-full flex">
                             <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
@@ -27,23 +27,30 @@
                         <div class="w-full relative mt-8">
                             <button @click.prevent="fazLogin()"
                                 class="bg-gray-900 font-regular rounded-[10px] py-4 outline-none w-full text-white">Confirmar</button>
-                            <p class="text-sm text-gray-800 mt-2">Esqueceu sua senha? <span
-                                    class="text-blue-600 font-medium cursor-pointer">Clique
-                                    aqui</span></p>
+                            <p class="text-sm text-gray-800 mt-2">Esqueceu sua senha?
+                                <router-link to="/recupera_senha">
+                                    <span class="text-blue-600 font-medium cursor-pointer">
+                                        Clique aqui
+                                    </span>
+                                </router-link>
+                            </p>
                         </div>
                         <div class="w-full relative mt-6 flex">
                             <div class="h-[1px] bg-gray-300 w-full relative flex justify-center"><span
                                     class="absolute top-[-12px] bg-white px-2 font-medium">Ou</span></div>
                         </div>
-                        <router-link to="/cadastro" class="p-0">
-                            <div class="w-full relative mt-8">
-                                <button
-                                    class="border-2 text-gray-800 border-gray-800 font-regular rounded-[10px] py-6 outline-none w-full transition-all duration-300 overflow-hidden relative cadastrese-button flex justify-center items-center">
-                                    <span class="cadastrese absolute transition-all duration-300">Cadastre-se</span>
-                                    <span class="cadastrese2 absolute transition-all duration-300">Cadastre-se</span>
-                                </button>
-                            </div>
-                        </router-link>
+                        <div class="w-full pt-8">
+                            <router-link to="/cadastro" class="p-0">
+                                <div class="w-full relative">
+                                    <button
+                                        class="border-2 text-gray-800 border-gray-800 font-regular rounded-[10px] py-6 outline-none w-full transition-all duration-300 overflow-hidden relative cadastrese-button flex justify-center items-center">
+                                        <span class="cadastrese absolute transition-all duration-300">Cadastre-se</span>
+                                        <span
+                                            class="cadastrese2 absolute transition-all duration-300">Cadastre-se</span>
+                                    </button>
+                                </div>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
 
