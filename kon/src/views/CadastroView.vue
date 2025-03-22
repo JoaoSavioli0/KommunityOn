@@ -270,8 +270,6 @@ export default {
                     },
                 })
 
-                console.log(novoUsuario.data.id)
-
                 const usuarioEndereco = await axios.post("http://localhost:5000/endereco/cadastro", {
                     uf: this.uf,
                     bairro: this.bairro,

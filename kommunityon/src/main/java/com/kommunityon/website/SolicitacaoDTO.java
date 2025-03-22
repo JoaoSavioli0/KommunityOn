@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class SolicitacaoDTO {
 
-    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int num_likes,
-            int num_comentarios, LocalDateTime dataAbertura, LocalDateTime dataConclusao, int anonimo) {
+    public SolicitacaoDTO(Long id, String titulo, Long idUsuario, String bairro, String descricao, int numLikes,
+            Long numComentarios, LocalDateTime dataAbertura, LocalDateTime dataConclusao, int anonimo) {
         this.id = id;
         this.titulo = titulo;
         this.idUsuario = idUsuario;
         this.bairro = bairro;
         this.descricao = descricao;
-        this.numLikes = num_likes;
-        this.numComentarios = num_comentarios;
+        this.numLikes = numLikes;
+        this.numComentarios = numComentarios;
         this.dataAbertura = dataAbertura;
         this.dataConclusao = dataConclusao;
         this.anonimo = anonimo;
@@ -25,7 +25,7 @@ public class SolicitacaoDTO {
     private String bairro;
     private String descricao;
     private int numLikes;
-    private int numComentarios;
+    private Long numComentarios;
     private LocalDateTime dataConclusao;
     private int anonimo;
     private LocalDateTime dataAbertura;
@@ -71,11 +71,11 @@ public class SolicitacaoDTO {
         this.numLikes = num_likes;
     }
 
-    public int getNumComentarios() {
+    public Long getNumComentarios() {
         return numComentarios;
     }
 
-    public void setNumComentarios(int num_comentarios) {
+    public void setNumComentarios(Long num_comentarios) {
         this.numComentarios = num_comentarios;
     }
 

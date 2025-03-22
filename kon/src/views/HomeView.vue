@@ -191,7 +191,7 @@
             <div class="flex mt-2">
               <div class=" flex items-center text-white mt-[3px]">
                 <img src="../assets/location.png" class="filtro size-[19px] max-[600px]:size-[13px]">
-                <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.bairro }}, {{ solicitacao.cidade }}</span>
+                <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.bairro }}</span>
 
                 <div class="ml-8 flex items-center max-[600px]:ml-4">
                   <img src="../assets/comments.png" class="size-[19px] max-[600px]:size-[13px] filtro">
@@ -327,6 +327,7 @@ export default {
 
         this.solicitacoes = response.data
         this.solicitacoesPesquisadas = [...this.solicitacoes]
+        console.log(this.solicitacoesPesquisadas)
         this.filtro = 1
       } catch (error) {
         console.error("Erro ao buscar solicitações: ", error);

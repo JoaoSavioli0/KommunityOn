@@ -317,8 +317,6 @@ export default {
             }
             this.carregandoAlteracao = true
             try {
-                console.log(this.novaSenha)
-                console.log(this.idUsuario)
                 const response = await axios.post(`http://localhost:5000/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.idUsuario}`)
                 this.$refs.dialog.showModal()
             } catch (error) {

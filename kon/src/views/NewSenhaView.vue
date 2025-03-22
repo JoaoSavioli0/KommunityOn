@@ -192,8 +192,6 @@ export default {
                 return
             } else {
                 try {
-                    console.log(this.novaSenha)
-                    console.log(this.usuario.id)
                     const response = await axios.post(`http://localhost:5000/usuario/senha/alteracao?novaSenha=${this.novaSenha}&id=${this.usuario.id}`)
                     this.resetaForm()
                     this.$refs.dialog.showModal()

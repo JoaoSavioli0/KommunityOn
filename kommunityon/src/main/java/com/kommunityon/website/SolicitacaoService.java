@@ -51,6 +51,7 @@ public class SolicitacaoService {
         }
     }
 
+
     public List<Solicitacao> solicitacoesUsuario(Long id, List<Integer> tagId) {
         if (tagId.isEmpty()) {
             Optional<List<Solicitacao>> solicitacoes = solicitacaoRepository.findAllPorUsuario(id);

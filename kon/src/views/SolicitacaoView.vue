@@ -161,7 +161,7 @@
         <!-- Comentários -->
         <div class="w-full text-left flex justify-between mt-12 flex items-center">
             <h1 class="text-2xl font-semibold">Comentários</h1>
-            <h1 class="text-2xl font-semibold font-medium">{{ solicitacao.numComentarios }}</h1>
+            <h1 class="text-2xl font-semibold font-medium">{{ comentarios.length }}</h1>
         </div>
 
         <div class="w-full mt-6">
@@ -289,9 +289,7 @@ export default {
 
         async carregaTags() {
             try {
-                console.log(this.id)
                 this.tags = (await axios.get(`http://localhost:5000/solicitacao/tags/${this.id}`)).data
-                console.log(this.tags)
             } catch (error) {
                 console.error("Erro ao carregar tags: " + error)
             }

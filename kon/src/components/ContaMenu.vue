@@ -251,7 +251,6 @@ export default {
 
             try {
                 const response = await axios.get(`http://localhost:5000/usuario/foto-perfil/${this.usuario.id}`)
-                console.log(response.data)
                 if (response.data != "sem foto") {
                     // Adiciona o prefixo correto para exibir no <img>
                     this.imagemUsuario = `data:image/png;base64,${response.data}`;

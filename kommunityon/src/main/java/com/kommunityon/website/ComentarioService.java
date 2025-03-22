@@ -34,15 +34,16 @@ public class ComentarioService {
         Optional<Solicitacao> solicitacaoComentario = solicitacaoService.solicitacaoPorId(comentarioDTO.getIdSolicitacao());
 
         if(usuarioComentario.isPresent() && solicitacaoComentario.isPresent()){
+            System.out.println("Entrou");
             Comentario novoComentario = new Comentario();
             novoComentario.setSolicitacao(solicitacaoComentario.get());
             novoComentario.setUsuario(usuarioComentario.get());
             novoComentario.setTexto(comentarioDTO.getTexto());
 
-            int numComentarios = comentarioRepository.findBySolicitacao(solicitacaoComentario.get()).get().size();
+            int numComentarios = comentarioRepository.findBySolicitacao(solicitacaoComentario.get()).get().size() + 1;
 
             solicitacaoService.atualizarNumComentarios(numComentarios, comentarioDTO.getIdSolicitacao());
-            System.out.println(numComentarios);
+
             return comentarioRepository.save(novoComentario);
         }else{
             return null;

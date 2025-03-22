@@ -133,8 +133,6 @@ export default {
             if (this.verificaErroTitulo() || this.verificaErroBairro() || this.verificaErroDescricao()) return;
 
             try {
-                console.log("idUsuario: " + this.usuario.id)
-                console.log("anonimo: " + this.esconderNome)
                 const response = await axios.post("http://localhost:5000/solicitacao/new", {
                     titulo: this.titulo,
                     bairro: this.bairro,
@@ -146,7 +144,6 @@ export default {
                         "Content-Type": "application/json",
                     },
                 });
-                console.log(response)
                 if (response.status == 200) {
                     this.$router.push("/home")
                 }
@@ -160,8 +157,6 @@ export default {
                 const response = await axios.get(`http://localhost:5000/usuario/solicitacaoaberta/${this.usuario.id}`);
                 this.solicitacoesAbertas = response.data
                 this.bloqueiaAbertura = this.solicitacoesAbertas.some(s => s.numLikes < 20);
-                console.log("solicitacoes: " + this.solicitacoesAbertas)
-                console.log("bloqueiaabertura: " + this.bloqueiaAbertura)
             } catch (e) {
                 console.error("Ocorreu um erro ao verificar se o usuário possui solicitação aberta: " + e)
             }
@@ -194,7 +189,6 @@ export default {
     watch: {
         anonimoCheckBox() {
             this.anonimoCheckBox ? this.esconderNome = 1 : this.esconderNome = 0
-            console.log(this.esconderNome)
         }
     }
 }

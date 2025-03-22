@@ -238,7 +238,6 @@ export default {
             this.pesquisaSolicitacao()
         },
         filtros() {
-            console.log(this.filtros)
             this.carregaSolicitacoes()
         },
         filtro() {

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/solicitacao")
@@ -22,11 +24,26 @@ public class SolicitacaoController {
     @Autowired
     SolicitacaoService solicitacaoService;
 
+    @Autowired
+    ComentarioRepository comentarioRepository;
+
     @PostMapping("/solicitacoes")
     public ResponseEntity<List<SolicitacaoDTO>> solicitacoes(@RequestBody List<Integer> tagId){
         List<SolicitacaoDTO> solicitacoesCarregadas = solicitacaoService.solicitacoes(tagId);
         return ResponseEntity.ok(solicitacoesCarregadas);
     }
+
+    @GetMapping("/comentarios/{id}")
+    public ResponseEntity<Integer> comentariosSolicitacao(@RequestParam Long id) {
+        Optional<Solicitacao> solicitacaoOptional = solicitacaoService.solicitacaoPorId(id);
+        if(solicitacaoOptional.isPresent()){
+            Optional<List<Comentario>> comentariosOptional = comentarioRepository.findBySolicitacao(solicitacaoOptional.get());
+            return ResponseEntity.ok(comentariosOptional.get().size());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    
 
     @PostMapping("/solicitacoes/usuario/{id}")
     public ResponseEntity<List<Solicitacao>> solicitacoesUsuario(@PathVariable Long id, @RequestBody List<Integer> tagId){

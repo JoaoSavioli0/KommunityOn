@@ -15,23 +15,27 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>{
-    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataAbertura, s.dataConclusao, s.anonimo) " +
+   @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, " +
+       "(SELECT COUNT(c) FROM Comentario c WHERE c.solicitacao.id = s.id), " +
+       "s.dataAbertura, s.dataConclusao, s.anonimo) " +
        "FROM Solicitacao s " +
-       "INNER JOIN s.usuario u " +
+       "LEFT JOIN s.usuario u " +
        "LEFT JOIN SolicitacaoTag st ON s.id = st.solicitacaoId " +
        "WHERE st.id IS NULL")
-    Optional<List<SolicitacaoDTO>> findAllSemTag(); 
+Optional<List<SolicitacaoDTO>> findAllSemTag();
 
-    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataAbertura, s.dataConclusao, s.anonimo) " +
-       "FROM Solicitacao s " +
-       "INNER JOIN s.usuario u")
+    @Query("SELECT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, " + 
+      "(SELECT COUNT(c) FROM Comentario c WHERE c.solicitacao.id = s.id), s.dataAbertura, s.dataConclusao, s.anonimo) " +
+      "FROM Solicitacao s " +
+      "INNER JOIN s.usuario u")
     Optional<List<SolicitacaoDTO>> findAllSemFiltro(); 
 
-    @Query("SELECT DISTINCT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes, s.numComentarios, s.dataAbertura, s.dataConclusao, s.anonimo) " +
-       "FROM Solicitacao s " +
-       "INNER JOIN s.usuario u " +
-       "INNER JOIN SolicitacaoTag st ON st.solicitacaoId = s.id " +
-       "WHERE st.tag.id IN (:tagId)")
+    @Query("SELECT DISTINCT new com.kommunityon.website.SolicitacaoDTO(s.id, s.titulo, u.id, s.bairro, s.descricao, s.numLikes," +
+      "(SELECT COUNT(c) FROM Comentario c WHERE c.solicitacao.id = s.id), s.dataAbertura, s.dataConclusao, s.anonimo) " +
+      "FROM Solicitacao s " +
+      "INNER JOIN s.usuario u " +
+      "INNER JOIN SolicitacaoTag st ON st.solicitacaoId = s.id " +
+      "WHERE st.tag.id IN (:tagId)")
     Optional<List<SolicitacaoDTO>> findAllPorTag(@Param("tagId") List<Integer> tagId);
 
     @Query("SELECT s " +
