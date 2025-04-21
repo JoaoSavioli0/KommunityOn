@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kommunityon.website.dtos.LoginDTO;
+import com.kommunityon.website.dtos.NovaBiografiaDTO;
 import com.kommunityon.website.entities.Solicitacao;
 import com.kommunityon.website.entities.Usuario;
 import com.kommunityon.website.repositories.UsuarioRepository;
@@ -141,6 +142,12 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
         }
     }
+
+    @PostMapping("/biografia/nova")
+    public ResponseEntity<?> atualizaBiografia(@RequestBody NovaBiografiaDTO novaBiografia) {
+        return ResponseEntity.ok(usuarioService.atualizaBiografia(novaBiografia.getNovaBiografia(), novaBiografia.getId()));
+    }
+    
 
     @PostMapping("/senha/alteracao")
     public ResponseEntity<?> alteraSenha(@RequestParam String novaSenha, @RequestParam Long id){

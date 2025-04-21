@@ -47,6 +47,12 @@ public class SolicitacaoService {
     @Autowired
     TagRepository tagRepository;
 
+    @Autowired
+    ConquistaService conquistaService;
+
+    @Autowired
+    EcopointService ecopointService;
+
     public List<SolicitacaoDTO> solicitacoes(List<Integer> tagId) {
         if (tagId.isEmpty()) {
             Optional<List<SolicitacaoDTO>> solicitacoes = solicitacaoRepository.findAllSemFiltro();
@@ -64,7 +70,6 @@ public class SolicitacaoService {
             }
         }
     }
-
 
     public List<SolicitacaoDTO> solicitacoesUsuario(Long id, List<Integer> tagId) {
         if (tagId.isEmpty()) {
@@ -114,12 +119,14 @@ public class SolicitacaoService {
 
         Solicitacao solicitacaoCadastrada = solicitacaoRepository.save(solicitacao);
 
-        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(), solicitacaoCadastrada.getId());
+        conquistaService.verificaConquista_1Solicitacao(usuario.get());
+
+        defineTags(solicitacaoCadastrada.getDescricao(), solicitacaoCadastrada.getTitulo(), solicitacaoCadastrada.getId(), usuario.get());
 
         return solicitacaoCadastrada;
     }
 
-    public void defineTags(String descricao, String titulo, Long idSolicitacao) {
+    public void defineTags(String descricao, String titulo, Long idSolicitacao, Usuario usuario) {
 
         List<String> palavrasTransito = Arrays.asList("trânsito", "transito", "carro", "moto", "caminhões", "caminhoes",
                 "semaforo", "semáforo", "lombada", "acidente", "engarrafamento", "ciclovia", "bicicleta", "ruas",
@@ -158,6 +165,17 @@ public class SolicitacaoService {
                 "transporte público", "iluminação pública", "abastecimento", "onibus", "prefeito", "vereador",
                 "vereadores", "seguranca", "segurança", "educacao", "educação", "educaçao", "crime");
 
+        List<String> palavrasSustentabilidadeEnergetica = Arrays.asList(
+            "energia renovável", "energias renováveis", "renovaveis", "energia solar", "painel solar", "painéis solares",
+            "energia eólica", "turbina eólica", "eolica", "energia limpa", "energia sustentável", "sustentavel", "sustentabilidade energética",
+            "eficiência energética", "economia de energia", "conservação de energia", "placa solar", "fotovoltaica",
+            "energia fotovoltaica", "energia verde", "biomassa", "biogás", "biogas", "biocombustível", "hidrelétrica", "hidreletrica",
+            "recursos renováveis", "energia do vento", "geração distribuída", "pegada de carbono", "neutralidade de carbono",
+            "emissões de carbono", "aquecimento global", "meio ambiente", "preservação ambiental", "impacto ambiental",
+            "mudanças climáticas", "descarbonização", "energia limpa e renovável", "inovação energética",
+            "matriz energética sustentável"
+        );
+
         ArrayList<Integer> tagsEncontradas = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
@@ -185,6 +203,12 @@ public class SolicitacaoService {
             tagsEncontradas.add(7);
         if (containsAny(textoCompleto, palavrasServicosPublicos))
             tagsEncontradas.add(8);
+        if (containsAny(textoCompleto, palavrasSustentabilidadeEnergetica))
+            tagsEncontradas.add(9);
+
+        if(tagsEncontradas.contains(9)){
+            ecopointService.adicionaPontos(10, usuario);
+        }
 
         registraTags(tagsEncontradas, idSolicitacao);
     }
@@ -247,12 +271,33 @@ public class SolicitacaoService {
             if (dataInteracao1 == null || tempoDecorridoInteracao1 >= 7) {
                 usuarioRepository.atualizarDataInteracao1(idUsuario, dataAtual);
                 solicitacaoRepository.incrementaLike(idSolicitacao);
-                salvaInteracao(usuario, solicitacao);
+
+                salvaInteracao(usuario, solicitacaoRepository.findById(idSolicitacao).get());
+
+                if(solicitacaoRepository.findById(idSolicitacao).get().getNumLikes() >= 10){
+                    System.out.println("\n\nentrou\n\n");
+                    conquistaService.verificaConquista_10Likes(solicitacao);
+                }
+
+                if(tags(idSolicitacao).stream().map(Tag::getId).anyMatch(id -> id.equals(Long.valueOf(9)))){
+                    ecopointService.adicionaPontos(4, usuario);
+                }
+
                 return "Sucesso! Sua curtida foi cadastrada no dia: " + dataAtual.toLocalDate();
             } else if (dataInteracao2 == null || tempoDecorridoInteracao2 >= 7) {
                 usuarioRepository.atualizarDataInteracao2(idUsuario, dataAtual);
                 solicitacaoRepository.incrementaLike(idSolicitacao);
-                salvaInteracao(usuario, solicitacao);
+
+                salvaInteracao(usuario, solicitacaoRepository.findById(idSolicitacao).get());
+
+                if(solicitacaoRepository.findById(idSolicitacao).get().getNumLikes() >= 10){
+                    conquistaService.verificaConquista_10Likes(solicitacao);
+                }
+
+                if(tags(idSolicitacao).stream().map(Tag::getId).anyMatch(id -> id.equals(Long.valueOf(9)))){
+                    ecopointService.adicionaPontos(4, usuario);
+                }
+
                 return "Sucesso! Sua curtida foi cadastrada no dia: " + dataAtual.toLocalDate();
             }
 

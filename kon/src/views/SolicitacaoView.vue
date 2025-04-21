@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex justify-center flex-col items-center w-full lg:w-[550px]">
+    <div class="relative flex justify-center flex-col items-center w-full lg:w-[550px] py-8 lg:py-20">
         <div class="w-full">
             <router-link to="/home" class="p-0">
                 <button @click=""
@@ -101,6 +101,14 @@
         <div class="w-full mt-6 flex items-center" v-else>
             <img src="../assets/success.svg" class="size-[23px] filtro-sucesso">
             <span class="ml-2 filtro-sucesso font-semibold">Resolvida</span>
+        </div>
+
+        <div class="flex w-full justify-start">
+            <div class="w-max mt-2 flex items-center pr-2 rounded-lg bg-lime-500 text-[#F0F4F9]"
+                v-if="tags.find(t => t.id == 9)">
+                <img src="../assets/sustainable.svg" class="w-[30px] h-auto filtro-branco">
+                <span class="ml-[2px] text-lg font-medium">Sustentável</span>
+            </div>
         </div>
 
         <div class="w-full mt-2 text-left">
@@ -232,6 +240,7 @@ export default {
             opcoesAdmin: false,
             imagemUsuario: null,
             tags: [],
+            sustentavel: false,
             curtidos: [],
         }
     },
@@ -264,7 +273,6 @@ export default {
                 this.solicitacao = solicitacao.data
                 this.usuarioSolicitacao = this.solicitacao.usuario
                 this.carregaTags()
-                console.log("this.usuarioSolicitacao: " + this.usuarioSolicitacao.fotoPerfil)
                 this.solicitacaoPropria = this.usuarioSolicitacao.id == this.usuario.id
 
                 this.carregaImagem()
@@ -378,5 +386,9 @@ export default {
 
 .filtro-sucesso {
     filter: brightness(0) saturate(100%) invert(79%) sepia(93%) saturate(562%) hue-rotate(55deg) brightness(86%) contrast(88%);
+}
+
+.filtro-branco {
+    filter: brightness(0) saturate(100%) invert(97%) sepia(5%) saturate(393%) hue-rotate(182deg) brightness(100%) contrast(96%);
 }
 </style>

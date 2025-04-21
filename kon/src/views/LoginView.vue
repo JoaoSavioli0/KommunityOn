@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full h-full bg-[#F0F4F9]">
+    <section class="w-full h-screen bg-[#F0F4F9]">
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center w-full">
                 <div key="divLogin"

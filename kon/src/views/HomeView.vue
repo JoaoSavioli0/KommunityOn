@@ -1,6 +1,15 @@
 <template>
-  <div class="relative flex w-full lg:w-[550px] justify-center flex-col items-center">
+  <div class="relative flex w-full lg:w-[550px] justify-center flex-col items-center py-8 lg:py-20">
 
+    <div class="fixed z-[200] lg:w-[550px] flex justify-start px-4 bottom-[15px]">
+      <router-link to="/ecoshop" class="p-0">
+        <button
+          class=" bottom-[30px] px-4 py-2 bg-white/80 backdrop-blur-sm rounded-xl border-[1px] border-zinc-400 shadow-md font-bold flex items-center text-lg">
+          <img src="../assets/sustainable.svg" class="filtro-verde size-[30px] -ml-2">
+          <span class="text-lime-600">e<span class="text-gray-800">Kon</span></span>
+        </button>
+      </router-link>
+    </div>
     <!-- Aviso confirma interação -->
     <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
       <div
@@ -74,7 +83,7 @@
           sua região!
         </p>
       </div>
-      <RouterLink to="menu/conta" class="p-0 rounded-full">
+      <RouterLink :to="`/usuario/${usuario.id}`" class="p-0 rounded-full">
         <div
           class="size-[90px] lg:size-[120px] rounded-full shadow-md overflow-hidden relative flex-shrink-0 group cursor-pointer"
           :class="imagemUsuario ? 'bg-transparent' : 'bg-gray-900'">
@@ -82,7 +91,7 @@
           <img v-else src="../assets/user_body.png" class="filtro absolute bottom-[-15px]">
           <div
             class="absolute w-full h-full bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-200 flex justify-center items-center pointer-events-none">
-            <img src="../assets/pencil.svg" class="size-[70px] filtro opacity-80">
+            <img src="../assets/user.svg" class="size-[70px] filtro opacity-80">
           </div>
         </div>
       </RouterLink>
@@ -99,12 +108,26 @@
     </div>
 
     <div class="w-full relative mt-4">
-      <RouterLink :to="`/solicitacoes/${usuario.id}`" class="p-0 relative w-full">
+      <RouterLink :to="`/usuario/${usuario.id}`" class="p-0 relative w-full">
         <button
           class="w-full rounded-[15px] border-gray-800 border-2 text-gray-800 h-[50px] overflow-hidden text-xl font-medium flex justify-center items-center relative z-[50] bg-zinc-50 hover:bg-gray-200 transition-all">
-          <span class="absolute">Suas solicitações</span>
+          <span class="absolute">Seu perfil</span>
         </button>
       </RouterLink>
+    </div>
+
+    <div class="w-full mt-4 rounded-[15px] flex bg-lime-600 py-4 pr-4 text-left">
+      <div class="flex shrink-0 pl-2 pr-4">
+        <img src="../assets/sustainable.svg" class="w-[100px] h-auto filtro-branco">
+      </div>
+      <div class="grow-1 flex flex-col justify-center text-zinc-50">
+        <h1 class="font-semibold text-2xl">Mês da Sustentabilidade</h1>
+        <p>No Mês da Sustentabilidade, envie sugestões sustentáveis ou interaja com elas para ganhar pontos. Pontos
+          podem ser
+          trocados na nossa <router-link to="/ecoshop" class="p-0"><span
+              class="font-semibold underline cursor-pointer">loja
+              sustentável</span></router-link> .</p>
+      </div>
     </div>
 
     <div class="w-full flex justify-between mt-8 items-center">
@@ -495,6 +518,14 @@ export default {
 
 .filtro-cinza {
   filter: brightness(0) saturate(100%)
+}
+
+.filtro-verde {
+  filter: brightness(0) saturate(100%) invert(71%) sepia(41%) saturate(7052%) hue-rotate(49deg) brightness(93%) contrast(90%);
+}
+
+.filtro-branco {
+  filter: brightness(0) saturate(100%) invert(92%) sepia(0%) saturate(7107%) hue-rotate(191deg) brightness(107%) contrast(96%);
 }
 
 .novachamada2 {

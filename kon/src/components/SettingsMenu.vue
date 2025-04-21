@@ -1,7 +1,7 @@
 <template>
     <div class="w-full lg:pl-[190px]">
-        <div class="flex flex-col items-start ">
-            <h1 class="font-bold text-gray-800 text-2xl mt-2">Configurações</h1>
+        <div class=" flex flex-col items-start ">
+            <h1 class=" font-bold text-gray-800 text-2xl mt-2">Configurações</h1>
             <div class="w-full bg-gray-900 text-zinc-50 mt-6 px-2 py-4 rounded-md">
                 <span>Nessa página serão exibidas as opções de configuração de preferências do
                     usuário.</span>
