@@ -90,6 +90,18 @@ public class UsuarioService {
         return null;
     }
 
+    public boolean atualizaBiografia(String novaBiografia, Long id){
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if(usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+            usuario.setBiografia(novaBiografia);
+            usuarioRepository.save(usuario);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public List<Usuario> usuarios(){
         return usuarioRepository.findAll();
     }

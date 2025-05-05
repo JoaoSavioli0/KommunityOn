@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full lg:w-[550px]">
+    <div class="w-full lg:w-[550px] py-8 lg:py-20">
         <div class="w-full">
             <router-link to="/home" class="p-0">
                 <button @click=""

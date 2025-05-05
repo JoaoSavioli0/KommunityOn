@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kommunityon.website.repositories.ComentarioRepository;
-import com.kommunityon.website.entities.Comentario;
-import com.kommunityon.website.entities.Usuario;
-import com.kommunityon.website.entities.Solicitacao;
 import com.kommunityon.website.dtos.NewComentarioDTO;
+import com.kommunityon.website.entities.Comentario;
+import com.kommunityon.website.entities.Solicitacao;
+import com.kommunityon.website.entities.Usuario;
+import com.kommunityon.website.repositories.ComentarioRepository;
 
 @Service
 public class ComentarioService {
@@ -22,6 +22,9 @@ public class ComentarioService {
 
     @Autowired
     SolicitacaoService solicitacaoService;
+
+    @Autowired
+    ConquistaService conquistaService;
 
     public Optional<Comentario> porId(Long id){
         return comentarioRepository.findById(id);
@@ -40,7 +43,6 @@ public class ComentarioService {
         Optional<Solicitacao> solicitacaoComentario = solicitacaoService.solicitacaoPorId(comentarioDTO.getIdSolicitacao());
 
         if(usuarioComentario.isPresent() && solicitacaoComentario.isPresent()){
-            System.out.println("Entrou");
             Comentario novoComentario = new Comentario();
             novoComentario.setSolicitacao(solicitacaoComentario.get());
             novoComentario.setUsuario(usuarioComentario.get());
@@ -49,6 +51,10 @@ public class ComentarioService {
             int numComentarios = comentarioRepository.findBySolicitacao(solicitacaoComentario.get()).get().size() + 1;
 
             solicitacaoService.atualizarNumComentarios(numComentarios, comentarioDTO.getIdSolicitacao());
+
+            int numComentariosUsuario = porUsuario(usuarioComentario.get()).isPresent() ? porUsuario(usuarioComentario.get()).get().size() : 0;
+
+            conquistaService.verificaConquista_5Comentarios(usuarioComentario.get(), numComentariosUsuario);
 
             return comentarioRepository.save(novoComentario);
         }else{

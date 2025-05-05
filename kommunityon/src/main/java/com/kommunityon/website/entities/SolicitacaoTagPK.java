@@ -11,6 +11,7 @@ public class SolicitacaoTagPK implements Serializable{
     @Column(name="ID_TAG")
     private Long tagId;
 
+    
     //Getters e Setters
     public Long getSolicitacaoId() {
         return solicitacaoId;

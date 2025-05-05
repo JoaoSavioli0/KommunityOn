@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full h-full bg-[#F0F4F9] pb-20">
+    <section class="w-full h-screen bg-[#F0F4F9] pb-20 ">
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center">
                 <div key="divLogin"
@@ -55,7 +55,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - senha.length
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="w-full">

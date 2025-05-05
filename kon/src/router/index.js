@@ -12,6 +12,9 @@ import SuporteMenu from '@/components/SuporteMenu.vue';
 import { useUserStore } from '@/stores/userStore';
 import NewSenhaView from '@/views/NewSenhaView.vue';
 import RecuperaSenhaView from '@/views/RecuperaSenhaView.vue';
+import UserView from '@/views/UserView.vue';
+import EcoShopView from '@/views/EcoShopView.vue';
+import RecompensasUsuarioView from '@/views/RecompensasUsuarioView.vue';
 
 const routes = [
   {
@@ -65,6 +68,22 @@ const routes = [
     path: '/recupera_senha',
     name: 'recupera_senha',
     component: RecuperaSenhaView,
+  },
+  {
+    path: '/usuario/:id',
+    name: 'usuario',
+    component: UserView,
+    props: true
+  },
+  {
+    path: '/ecoshop',
+    name: 'ecoshop',
+    component: EcoShopView
+  },
+  {
+    path: '/recompensas',
+    name: 'recompensas',
+    component: RecompensasUsuarioView
   }
 ]
 

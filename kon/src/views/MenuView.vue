@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="menuBox">
+    <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0 py-8 lg:py-20" v-if="menuBox">
         <div
             class="flex items-start flex-col fixed w-[300px] rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-8 py-6">
             <div class="w-full flex justify-between">
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="w-full lg:w-[550px] relative z-[150]">
+    <div class="w-full lg:w-[550px] relative z-[150] py-8 lg:py-20">
         <div class="lg:hidden w-full relative flex justify-between">
             <router-link to="/home" class="p-0 z-[150]">
                 <button @click=""
