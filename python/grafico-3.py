@@ -1,10 +1,10 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import mysql.connector
+import pymysql
 
 # Conexão com o MySQL
-conn = mysql.connector.connect(
+conn = pymysql.connect(
     host='localhost',
     user='root',
     password='1234',
@@ -25,6 +25,8 @@ ORDER BY ocorrencias DESC;
 """
 
 df = pd.read_sql(query, conn)
+
+conn.close()
 
 # Pivotar para heatmap
 pivot_df = df.pivot(index='bairro', columns='tag', values='ocorrencias').fillna(0)

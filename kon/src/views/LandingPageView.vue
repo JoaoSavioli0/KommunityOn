@@ -3,7 +3,7 @@
         <div class="w-full max-h-screen bg-zinc-100 flex items-center overflow-hidden relative">
             <div class="w-full h-[100px] absolute bottom-0 start-0 gradiente-baixo z-30"></div>
             <div class="w-full h-[100px] absolute top-0 start-0 gradiente-cima z-30"></div>
-            <div class="w-[45%] h-full text-start px-40 z-40">
+            <div class="w-[45%] h-full text-start min-[1800px]:px-40 px-32 z-40">
                 <div class="titulo w-full">
                     <h1 class="font-medium text-[80px] leading-none">Kommunity<span class="font-bold">On</span></h1>
                     <span class="text-gray-600 text-2xl font-regular w-full text-start mt-2 ml-[5px]">Porque a cidade é
@@ -46,7 +46,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
 
@@ -107,7 +107,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
 
@@ -196,7 +196,7 @@
                 <img src="../assets/screenshot-3.jpg" class="w-[320px] h-auto rounded-lg shadow-lg z-30">
             </div>
             <div class="w-full mt-32 px-40"><button
-                    class="w-full bg-white shadow-md h-[65px] cursor-pointer rounded-lg text-3xl font-semibold ">Acesse
+                    class="w-full bg-white shadow-md h-[65px] cursor-pointer rounded-lg min-[1800px]:text-3xl text-xl font-semibold m">Acesse
                     já</button>
             </div>
         </div>
