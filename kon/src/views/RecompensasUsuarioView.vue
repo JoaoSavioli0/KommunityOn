@@ -31,7 +31,7 @@
 
             <router-link to="/ecoshop" class="p-0">
                 <button
-                    class="px-[15px] h-[50px] rounded-xl border border-lime-600 text-lime-600 bg-zinc-50 font-semibold">
+                    class="px-[15px] h-[50px] rounded-xl border border-lime-600 bg-transparent text-lime-600 bg-zinc-50 font-semibold">
                     Loja de recompensas
                 </button>
             </router-link>

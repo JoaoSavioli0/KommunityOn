@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col overflow-x-hidden">
         <div class="w-full max-h-screen bg-zinc-100 flex items-center overflow-hidden relative">
             <div class="w-full h-[100px] absolute bottom-0 start-0 gradiente-baixo z-30"></div>
             <div class="w-full h-[100px] absolute top-0 start-0 gradiente-cima z-30"></div>
@@ -46,7 +46,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
 
@@ -107,7 +107,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
 
