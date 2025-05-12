@@ -49,12 +49,10 @@
             </div>
 
             <div class="w-full mt-6 flex flex-col">
-                <div class="w-full rounded-full bg-gray-900 flex items-center px-[3px] py-[3px]">
-                    <input type="text" class="w-full px-[19px] bg-transparent focus:outline-none text-white"
+                <div class="w-full rounded-lg bg-gray-900 flex items-center h-[50px]">
+                    <input type="text" class="w-full px-4 bg-transparent focus:outline-none text-white"
                         placeholder="Bairro atingido" v-model="bairro">
-                    <div class="w-[45px] h-[40px] bg-white rounded-full flex items-center justify-center">
-                        <img src="../assets/check.png" class="filtro2 size-[30px]">
-                    </div>
+
                 </div>
 
                 <span v-if="erroBairro" class="text-500 mt-[3px] text-start">Digite um bairro válido</span>
@@ -62,25 +60,31 @@
             </div>
 
             <form>
-                <div class="w-full flex flex-col text-left mt-6 relative">
-                    <span class="text-md lg:text-xl font-medium px-2">Título</span>
-                    <input type="text" class="border-2 rounded-md bg-zinc-50 px-[15px] lg:py-4 py-2"
-                        :class="erroTitulo ? 'border-red-500' : 'border-gray-800'" v-model="titulo">
+                <div class="w-full flex flex-col text-left mt-6 px-4 py-2 relative bg-gray-900 rounded-lg">
+                    <span class="text-gray-400">Título</span>
+                    <input type="text" class="bg-transparent outline-none py-2 text-zinc-50"
+                        :class="erroTitulo ? 'border-2 border-red-500' : ''" v-model="titulo">
                     <span v-if="erroTitulo" class="mt-[3px] text-red-500 text-start">Digite um título válido</span>
                 </div>
 
-                <div class="w-full  flex flex-col text-left mt-6 relative">
-                    <span class="text-md lg:text-xl font-medium px-2 ">Descrição</span>
-                    <textarea type="text" class="border-2 border-gray-800 rounded-md bg-zinc-50 px-[15px] py-4"
-                        :class="erroDescricao ? 'border-red-500' : 'border-gray-800'" v-model="descricao"></textarea>
+                <div class="w-full flex flex-col text-left mt-6 px-4 py-2 relative bg-gray-900 rounded-lg">
+                    <span class="text-gray-400">Descrição</span>
+                    <textarea type="text" class="bg-transparent outline-none py-2 text-zinc-50"
+                        :class="erroDescricao ? 'border-2 border-red-500' : ''" v-model="descricao"></textarea>
                     <span v-if="erroDescricao" class="mt-[3px] text-red-500 text-start">Digite uma descrição
-                        válido</span>
+                        válida</span>
                 </div>
-                <div class="flex items-center mt-4 ml-2"><input type="checkbox" v-model="anonimoCheckBox"
-                        class="h-[18px] w-[18px]"><span class="ml-2 font-medium text-md">Ocultar
-                        nome</span>
-                </div>
-                <div class="w-full mt-2 flex justify-end">
+
+
+                <div class="w-full mt-6 flex justify-between items-center">
+                    <button @click.prevent="anonimoCheckBox = !anonimoCheckBox"
+                        class="py-1 px-2 w-[140px] bg-gray-900 rounded-full py-1 relative">
+                        <span class="text-md text-zinc-50">{{ anonimoCheckBox ?
+                            'Exibir nome' :
+                            'Ocultar nome' }}</span>
+                        <span class="font-sm italic absolute bottom-[-25px] start-[5px] whitespace-nowrap">
+                            {{ anonimoCheckBox ? 'Seu nome não será exibido' : 'Seu nome será exibido' }}</span>
+                    </button>
                     <button @click.prevent="registraSolicitacao()"
                         class="rounded-full text-white bg-gray-900 px-4 py-[4px]">Enviar</button>
                 </div>

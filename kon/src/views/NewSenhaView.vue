@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full h-full bg-[#F0F4F9] py-8 lg:py-20">
+    <section class="w-full bg-[#F0F4F9] h-screen flex items-center justify-center">
 
         <dialog id="my_modal_1" ref="dialog" class="modal">
             <div class="modal-box">
