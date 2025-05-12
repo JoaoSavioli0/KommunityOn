@@ -1,20 +1,22 @@
 <template>
-    <section class="w-full h-screen bg-[#F0F4F9] pb-20 ">
+    <section class="w-full min-h-screen bg-[#F0F4F9] py-20">
         <div class="w-full h-full flex justify-center items-center flex-col">
             <transition-group name="move" tag="div" class="flex flex-col items-center">
                 <div key="divLogin"
                     class="w-[450px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
-                    <div class="w-full flex">
-                        <router-link to="/login" class="p-0 z-[150]">
+                    <div class="w-full">
+                        <router-link to="/kommunityon" class="w-full p-0 z-[150] flex items-center justify-between">
                             <button @click=""
-                                class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer ml-auto">
+                                class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
                                 <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
-                                <span class="ml-2 text-xl">Login</span>
+                                <span class="ml-2 text-xl">Voltar</span>
                             </button>
+                            <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
+                                    class="font-semibold">ON</span></h1>
                         </router-link>
                     </div>
                     <div class="w-full">
-                        <div class="w-full my-4 pl-[1px] text-left">
+                        <div class="w-full mt-4 pl-[1px] text-left">
                             <h1 class="text-2xl font-semibold"><span class="font-normal">Faça seu</span> Cadastro</h1>
                         </div>
                     </div>

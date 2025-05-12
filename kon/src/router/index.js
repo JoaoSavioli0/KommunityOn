@@ -15,6 +15,7 @@ import RecuperaSenhaView from '@/views/RecuperaSenhaView.vue';
 import UserView from '@/views/UserView.vue';
 import EcoShopView from '@/views/EcoShopView.vue';
 import RecompensasUsuarioView from '@/views/RecompensasUsuarioView.vue';
+import LandingPageView from '@/views/LandingPageView.vue';
 
 const routes = [
   {
@@ -84,6 +85,11 @@ const routes = [
     path: '/recompensas',
     name: 'recompensas',
     component: RecompensasUsuarioView
+  },
+  {
+    path: '/kommunityon',
+    name: 'landingpage',
+    component: LandingPageView
   }
 ]
 
@@ -106,9 +112,9 @@ router.beforeEach(async (to, from, next) => {
   await userStore.reconectaSessao(); // Verifica se o usuário está autenticado
 
   if ((to.meta.requiresAuth && !userStore.usuario) || (!userStore.usuario && to.path === '/')) {
-    next("/login");
+    next("/kommunityon");
   } else if((userStore.usuario && to.path === '/')) {
-    next("/home");
+    next("/kommunityon");
   } else{
     next()
   }

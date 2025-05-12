@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full h-full bg-[#F0F4F9]">
+    <section class="w-full h-screen flex items-center justify-center bg-[#F0F4F9]">
 
         <dialog id="my_modal_1" ref="dialog" class="modal">
             <div class="modal-box">
@@ -153,7 +153,7 @@
 
                                 <span class="border-l-[1px] border-gray-400 pl-2 font-normal text-sm">{{
                                     25 - novaSenha.length
-                                }}</span>
+                                    }}</span>
 
                             </div>
                         </div>
