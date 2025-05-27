@@ -6,15 +6,15 @@
                     class="w-full lg:w-[450px] rounded-[30px] bg-white p-8 flex flex-col justify-between shadow-sm transition-all duration-300">
                     <div class="w-full">
                         <div class="w-full">
-                            <router-link to="/kommunityon" class="w-full p-0 z-[150] flex items-center justify-between">
-                                <button @click=""
+                            <a class="w-full p-0 z-[150] flex items-center justify-between" @click="voltar">
+                                <button
                                     class="bg-gray-900 flex items-center justify-between rounded-md px-[8px] py-[3px] w-fit text-white font-medium cursor-pointer">
                                     <img src="../assets/arrow.png" class="filtro rotate-180 size-[15px]">
                                     <span class="ml-2 text-xl">Voltar</span>
                                 </button>
                                 <h1 class="text-zinc-800 font-medium"><span class="font-semibold">K</span>ommunity<span
                                         class="font-semibold">ON</span></h1>
-                            </router-link>
+                            </a>
                         </div>
                         <div class="w-full mt-4 pl-[1px] text-left">
                             <h1 class="text-2xl font-semibold"><span class="font-normal">Faça</span> Login</h1>
@@ -97,6 +97,15 @@ export default {
         }
     },
     methods: {
+        voltar() {
+            this.$router.back()
+
+            setTimeout(() => {
+                if (this.$route.name === 'login') {
+                    this.$router.push('/')
+                }
+            }, 500)
+        },
         async fazLogin() {
             if (this.usuario == '' || this.senha == '') {
                 this.aviso = 'Prencha os campos para realizar o login!'

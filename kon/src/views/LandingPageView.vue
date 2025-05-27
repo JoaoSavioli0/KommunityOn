@@ -29,7 +29,7 @@
                 <div class="overflow-hidden h-full w-full">
                     <div class="flex flex-col justify-start">
                         <div class="flex flex-col gap-y-6 pb-6 animate-scroll justify-start">
-                            <div class="w-[80%] rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative solicitacao "
+                            <div class="w-[80%] rounded-[20px] bg-gray-900 flex px-6 py-4 text-left justify-between items-center relative solicitacao pointer-events-none"
                                 v-for="solicitacao in solicitacoesExibicao" :key="solicitacao.id">
                                 <div class="flex flex-col w-full max-[600px]:w-[95%]">
                                     <h1 class="text-white font-semibold text-2xl w-[80%] max-[600px]:text-lg">
@@ -46,7 +46,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
 
@@ -107,7 +107,7 @@
                                                 <img src="../assets/comments.png"
                                                     class="size-[19px] max-[600px]:size-[13px] filtro">
                                                 <span class="ml-2 max-[600px]:text-xs">{{ solicitacao.comentarios
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
 

@@ -2,28 +2,26 @@ import pymysql
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Conexão com o MySQL
 conexao = pymysql.connect(
     host='localhost',
     user='root',
     password='1234',
-    database='kommunityon'  # nome do seu banco
+    database='kommunityon'
 )
 
-# Consulta
+# analisa densidade de solicitações por bairro
 query = """
 SELECT bairro, COUNT(*) AS total
 FROM solicitacao
 GROUP BY bairro;
 """
 
-# Leitura dos dados em um DataFrame
+# le registros pra um dataframe
 df = pd.read_sql(query, conexao)
 
-# Fechar a conexão
 conexao.close()
 
-# Plotar gráfico de barras
+# configurações gráfico
 plt.figure(figsize=(10,6))
 plt.bar(df['bairro'], df['total'], color='skyblue')
 plt.title('Demandas por Bairros')
