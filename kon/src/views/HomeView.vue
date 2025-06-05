@@ -50,6 +50,57 @@
     </div>
   </div>
 
+  <!-- Menu -->
+  <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="menuBox">
+    <div
+      class="flex items-start flex-col fixed w-[300px] rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-8 py-6">
+      <div class="w-full flex justify-between">
+        <h1 class="text-xl font-semibold">Menu</h1>
+        <button @click="menuBox = false, aviso = ''"><img src="../assets/close.svg" class="size-[20px]"></button>
+      </div>
+      <ul class="w-full mt-4">
+        <RouterLink :to="item.link" class="p-0" v-for="item in itemsMenu">
+          <li
+            class="p-2 border-b-[1px] border-gray-400 text-left font-medium menu-item hover:bg-gray-200 transition-all duration-200 cursor-pointer flex items-center group">
+
+            <img :src="item.svg" class="size-[20px]"><span
+              class="ml-2 group-hover:translate-x-2 transition-all duration-200 text-gray-800">{{
+                item.title }}</span>
+
+          </li>
+        </RouterLink>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Aviso confirma interação -->
+  <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="confirmaInteracaoBox">
+    <div
+      class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+      <h1 class="text-xl lg:text-2xl font-semibold text-start">Confirmar interação?</h1>
+      <p class="my-2 text-start">Essa ação não poderá ser revertida.</p>
+      <div class="w-full flex justify-start mt-4">
+        <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
+          @click.prevent="confirmaInteracaoBox = false, curteSolicitacao(idSolicitacaoInteragir)">Confirmar</button>
+        <button
+          class="ml-4 py-2 w-[150px] text-center rounded-full bg-transparent border-2 border-gray-800 text-gray-800 font-medium"
+          @click.prevent="confirmaInteracaoBox = false">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso interacao bloqueada -->
+  <div class="fixed h-screen w-screen bg-black/50 z-[250] top-0" v-if="interacaoBloq">
+    <div
+      class="flex items-start flex-col fixed w-[90%] lg:w-[400px] py-10 rounded-lg bg-gray-100 shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8">
+      <p class="my-2 text-center font-semibold text-lg">{{ avisoTxt }}</p>
+      <div class="w-full flex justify-center mt-4">
+        <button class="py-2 w-[150px] text-center rounded-full bg-gray-900 text-white font-medium"
+          @click.prevent="interacaoBloq = false, avisoTxt = ''">Ok</button>
+      </div>
+    </div>
+  </div>
+
   <div class="flex lg:w-[900px] justify-center lg:py-20 py-8 transition-all duration-500">
 
     <div class="w-[300px] relative px-6 ">
@@ -99,7 +150,7 @@
               <span class="font-medium text-lg ml-2">Suporte</span>
             </router-link>
 
-            <a @click="logout()" class="hover:bg-gray-200">
+            <a @click="logout()" class="hover:bg-gray-200 cursor-pointer">
               <img src="../assets/exit.svg" class="w-[25px] h-auto">
               <span class="font-medium text-lg ml-2">Sair</span>
             </a>
@@ -129,7 +180,7 @@
         <div class="flex flex-col">
           <h1 class="text-3xl lg:text-5xl font-medium text-left text-gray-800">Olá, <span class="font-semibold">{{
             primeiroNome
-          }}</span></h1>
+              }}</span></h1>
           <p class="text-left text-md lg:text-xl font-normal text-gray-600 pr-[30px]">Veja aqui os principais
             chamados
             na

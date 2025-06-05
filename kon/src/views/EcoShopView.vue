@@ -55,7 +55,7 @@
 
             <router-link to="/recompensas" class="p-0">
                 <button
-                    class="px-[15px] h-[50px] rounded-xl border border-lime-600 text-lime-600 bg-zinc-50 font-semibold">
+                    class="px-[15px] h-[50px] rounded-xl border border-lime-600 bg-transparent text-lime-600 bg-zinc-50 font-semibold">
                     Minhas recompensas
                 </button>
             </router-link>
